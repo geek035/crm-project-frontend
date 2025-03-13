@@ -1,59 +1,9 @@
-# Frontend
+# CRM-PROJECT-FRONTEND
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Разработка CRM-системы для небольших банков или кредитных организаций, которая автоматизирует управление клиентскими данными, обработку заявок, управление продуктами и взаимодействие с клиентами.
 
-## Development server
+CRM (Customer Relationship Management) — система для управления взаимодействием с клиентами. Разработка CRM-системы для небольших банков предоставит возможность автоматизировать взаимодействие с клиентами, снизить трудозатраты сотрудников и повысить качество обслуживания.
 
-To start a local development server, run:
+Эта система ориентирована на поддержку небольших финансовых организаций, которым важно эффективно работать с клиентами без использования крупных, дорогостоящих решений.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Для фронтенда используется _Angular_ — современный фреймворк для построения пользовательских интерфейсов.
