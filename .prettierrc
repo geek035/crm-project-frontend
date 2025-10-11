@@ -5,6 +5,19 @@
   "singleQuote": true,
   "semicolon": true,
   "quoteProps": "preserve",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrderParserPlugins": ["typescript", "decorators"],
+  "importOrder": [
+    "^@app/(.*)$",
+    "^@pages/(.*)$",
+    "^@widgets/(.*)$",
+    "^@features/(.*)$",
+    "^@entities/(.*)$",
+    "^@shared/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "overrides": [
     {
       "files": "*.html",

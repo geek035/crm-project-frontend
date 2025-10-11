@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
+
 import { CRMPreset } from './app.preset';
 import { routes } from './app.routes';
 

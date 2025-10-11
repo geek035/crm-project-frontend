@@ -3,5 +3,6 @@
 
 npx pretty-quick --staged
 npm run lint
+npx steiger ./src
 
 npx --no -- commitlint --edit "$1"
