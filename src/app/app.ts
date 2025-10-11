@@ -1,12 +1,17 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, DOCUMENT, inject } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('crm-project-frontend');
+  private readonly document = inject(DOCUMENT);
+
+  toggleDarkMode(): void {
+    const root = this.document.querySelector('html');
+    root?.classList.toggle('crm-dark');
+  }
 }
