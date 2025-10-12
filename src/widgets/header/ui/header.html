@@ -1,0 +1,16 @@
+<header class="">
+  <p-toolbar>
+    <ng-template #start>
+      <p-button icon="pi pi-home" ariaLabel="home" link routerLink="/"></p-button>
+      <ng-content select="[header-start]"></ng-content>
+    </ng-template>
+
+    <ng-template #center>
+      <ng-content select="[header-center]"></ng-content>
+    </ng-template>
+
+    <ng-template #end>
+      <ng-content select="[header-end]"></ng-content>
+    </ng-template>
+  </p-toolbar>
+</header>

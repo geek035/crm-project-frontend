@@ -1,11 +1,14 @@
 import { Component, DOCUMENT, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+
+import { Header } from '@widgets/header';
 
 @Component({
   selector: 'app-root',
-  imports: [ButtonModule],
+  imports: [ButtonModule, RouterOutlet, Header],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrl: './app.css',
 })
 export class App {
   private readonly document = inject(DOCUMENT);
