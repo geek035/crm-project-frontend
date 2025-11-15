@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "module": "ES2022",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "moduleResolution": "bundler"
   },
   "include": ["**/*.spec.ts"]
 }

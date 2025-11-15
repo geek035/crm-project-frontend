@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { Header } from '@widgets/header';
 
-import { App } from './app';
+import { App } from './app.js';
 
-describe('App', () => {
+describe(App.name, () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App, Header],
