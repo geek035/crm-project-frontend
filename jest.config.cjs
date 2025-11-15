@@ -1,24 +1,32 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig.json');
+const { createEsmPreset } = require('jest-preset-angular/presets');
+
+const esmPreset = createEsmPreset({ testEnvironment: 'jsdom' });
 
 module.exports = {
-  preset: 'jest-preset-angular',
+  ...esmPreset,
+  testMatch: ['**/*.spec.ts'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  testEnvironment: 'jsdom',
-  testMatch: ['**/__tests__/**/*.spec.ts', '**/?(*.)+(spec).ts'],
-  moduleFileExtensions: ['ts', 'html', 'js', 'json'],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
-    prefix: '<rootDir>/',
-  }),
+  moduleNameMapper: {
+    ...esmPreset.moduleNameMapper,
+    ...pathsToModuleNameMapper(compilerOptions.paths || {}, {
+      prefix: '<rootDir>/',
+    }),
+    '^src/(.*)$': '<rootDir>/src/$1',
+  },
   transform: {
-    '^.+\\.(ts|mjs|html|js)$': [
+    '^.+\\.(ts|js|mjs|html|svg)$': [
       'jest-preset-angular',
       {
         tsconfig: '<rootDir>/tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.html$',
+        stringifyContentPathRegex: '\\.(html|svg)$',
+        isolatedModules: true,
+        useESM: true,
       },
     ],
   },
+  transformIgnorePatterns: ['node_modules/(?!(.*\\.mjs$|@angular/common/locales/.*\\.js$|tslib))'],
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage/',
   reporters: ['default'],

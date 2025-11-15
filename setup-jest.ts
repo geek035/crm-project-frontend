@@ -1,6 +1,3 @@
-import 'jest-preset-angular/jest-preset.js';
-import { TestBed } from '@angular/core/testing';
-import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
-import 'zone.js';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone/index.mjs';
 
-TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
+setupZoneTestEnv();
