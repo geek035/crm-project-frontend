@@ -1,16 +1,16 @@
-<header class="">
-  <p-toolbar>
+<header
+  class="border-primary sticky inset-0 mx-[var(--header-margin)] flex-auto overflow-hidden rounded-b-2xl border drop-shadow-lg transition-all duration-300"
+  [ngClass]="{ 'translate-y-[var(--header-margin)] rounded-2xl': isScrolled }"
+>
+  <p-menubar [model]="items()">
     <ng-template #start>
-      <p-button icon="pi pi-home" ariaLabel="home" link routerLink="/"></p-button>
-      <ng-content select="[header-start]"></ng-content>
+      <a [routerLink]="homePageLink">
+        <img
+          class="h-auto w-full max-w-[var(--header-height)]"
+          src="assets/icons/app-icon.svg"
+          alt="Home"
+        />
+      </a>
     </ng-template>
-
-    <ng-template #center>
-      <ng-content select="[header-center]"></ng-content>
-    </ng-template>
-
-    <ng-template #end>
-      <ng-content select="[header-end]"></ng-content>
-    </ng-template>
-  </p-toolbar>
+  </p-menubar>
 </header>
