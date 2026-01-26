@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DOCUMENT,
+  HostListener,
+  inject,
+  input,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -17,8 +24,10 @@ export class Header {
 
   isScrolled = false;
 
+  private readonly document = inject(DOCUMENT);
+
   @HostListener('window:scroll')
   onScroll() {
-    this.isScrolled = window.scrollY > 50;
+    this.isScrolled = !!this.document.defaultView?.scrollY;
   }
 }

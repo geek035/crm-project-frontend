@@ -6,9 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "ng test --watch=false",
     "lint": "ng lint --fix",
     "fsd:lint": "steiger ./src",
     "fsd:lint:watch": "steiger ./src --watch",
@@ -50,12 +48,14 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^8.0.0",
+    "jsdom": "^27.4.0",
     "postcss": "^8.5.3",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "pretty-quick": "^4.2.2",
     "steiger": "^0.5.11",
     "typescript": "~5.9.3",
-    "typescript-eslint": "8.40.0"
+    "typescript-eslint": "8.40.0",
+    "vitest": "^4.0.18"
   }
 }
