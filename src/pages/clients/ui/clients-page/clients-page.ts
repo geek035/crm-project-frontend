@@ -5,6 +5,6 @@ import { CardModule } from 'primeng/card';
   selector: 'app-clients-page',
   imports: [CardModule],
   templateUrl: './clients-page.html',
-  styleUrl: './clients-page.css',
+  host: { class: 'crm-page' },
 })
 export class ClientsPage {}

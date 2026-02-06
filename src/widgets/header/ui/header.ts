@@ -1,16 +1,13 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DOCUMENT,
-  HostListener,
-  inject,
-  input,
-} from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { distinctUntilChanged, filter, map } from 'rxjs';
+
+import { HEADER_INTERNAL_ITEMS } from './header.const';
 
 @Component({
   selector: 'app-header',
@@ -20,14 +17,21 @@ import { MenubarModule } from 'primeng/menubar';
 })
 export class Header {
   readonly homePageLink = '/';
-  readonly items = input<MenuItem[]>([]);
+  private readonly router = inject(Router);
 
-  isScrolled = false;
+  private readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.router.url),
+      distinctUntilChanged(),
+    ),
+  );
 
-  private readonly document = inject(DOCUMENT);
-
-  @HostListener('window:scroll')
-  onScroll() {
-    this.isScrolled = !!this.document.defaultView?.scrollY;
-  }
+  readonly items = computed<MenuItem[]>(() => {
+    return HEADER_INTERNAL_ITEMS.map<MenuItem>((item) =>
+      item.routerLink !== this.currentUrl()
+        ? item
+        : { ...item, linkClass: 'bg-primary-900 rounded-2xl text-primary-50' },
+    );
+  });
 }
