@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { Header } from '@widgets/header';
 
@@ -8,6 +9,7 @@ describe(App.name, () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App, Header],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

@@ -1,37 +1,63 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
+import { FocusTrapModule } from 'primeng/focustrap';
 import { MenubarModule } from 'primeng/menubar';
-import { distinctUntilChanged, filter, map } from 'rxjs';
 
 import { HEADER_INTERNAL_ITEMS } from './header.const';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, ButtonModule, MenubarModule, RouterLink],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    MenubarModule,
+    RouterLink,
+    RouterLinkActive,
+    FocusTrapModule,
+    AutoFocusModule,
+  ],
   templateUrl: './header.html',
+  styleUrl: './header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
+  private readonly focusMonitor = inject(FocusMonitor);
+
   readonly homePageLink = '/';
-  private readonly router = inject(Router);
 
-  private readonly currentUrl = toSignal(
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map(() => this.router.url),
-      distinctUntilChanged(),
-    ),
-  );
+  readonly items = signal(HEADER_INTERNAL_ITEMS);
+  readonly panelOpened = signal<'opened' | 'closed' | 'pending'>('pending');
+  private readonly navPanel = viewChild<ElementRef<HTMLElement>>('navPanel');
 
-  readonly items = computed<MenuItem[]>(() => {
-    return HEADER_INTERNAL_ITEMS.map<MenuItem>((item) =>
-      item.routerLink !== this.currentUrl()
-        ? item
-        : { ...item, linkClass: 'bg-primary-900 rounded-2xl text-primary-50' },
-    );
-  });
+  toggleMenu(): void {
+    const opened = this.panelOpened() === 'opened' ? 'closed' : 'opened';
+    this.panelOpened.set(opened);
+
+    if (opened === 'opened') {
+      queueMicrotask(() => {
+        const menuItem = this.navPanel()?.nativeElement.querySelector('a');
+
+        if (menuItem) {
+          this.focusMonitor.focusVia(menuItem, 'keyboard');
+        }
+      });
+    }
+  }
+
+  closeMenu(): void {
+    if (this.panelOpened() === 'opened') {
+      this.panelOpened.set('closed');
+    }
+  }
 }

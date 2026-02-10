@@ -5,7 +5,7 @@
 @custom-variant dark (&:where(.crm-dark, .crm-dark *));
 
 @theme {
-  --header-height: 3rem;
+  --crm-max-w: var(--breakpoint-2xl);
 }
 
 @utility max-w-page {
@@ -16,6 +16,8 @@
   font-family: 'Roboto', sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: 'wdth' 100;
+
+  @apply [--breakpoint-mobile:var(--breakpoint-sm)];
 }
 
 body {

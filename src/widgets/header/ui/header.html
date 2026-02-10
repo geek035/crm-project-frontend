@@ -1,11 +1,63 @@
 <header
-  class="border-primary sticky inset-0 flex-auto overflow-hidden rounded-b-2xl border drop-shadow-lg"
+  class="border-primary bg-primary-contrast w-full justify-center rounded-b-2xl border p-2 shadow-xl [--header-content:2.5rem] [--header-height:4.5rem] [--header-padding:0.5rem]"
 >
-  <p-menubar [model]="items()">
-    <ng-template #start>
-      <a [routerLink]="homePageLink" class="h-auto w-full max-w-(--header-height)">
-        <img src="assets/icons/app-icon.svg" alt="Главная страница" width="48" height="48" />
-      </a>
-    </ng-template>
-  </p-menubar>
+  <div class="mx-auto grid w-full max-w-(--crm-max-w) grid-cols-[auto_1fr]">
+    <a [routerLink]="homePageLink">
+      <img
+        src="assets/icons/app-icon.svg"
+        class="h-auto w-(--header-content)"
+        alt="Главная страница"
+        width="48"
+        height="48"
+      />
+    </a>
+
+    <div class="relative ms-8 justify-self-end sm:justify-self-auto">
+      <p-button
+        icon="pi pi-bars"
+        class="relative z-10 sm:hidden"
+        aria-label="Открыть меню"
+        aria-haspopup="true"
+        aria-controls="nav-panel"
+        [attr.aria-expanded]="panelOpened()"
+        [outlined]="true"
+        [rounded]="true"
+        (onClick)="toggleMenu()"
+      ></p-button>
+
+      <nav
+        #navPanel
+        id="nav-panel"
+        class="navigation-panel"
+        aria-label="Основная навигация"
+        [ngClass]="{
+          'navigation-panel_opened': panelOpened() === 'opened',
+          'navigation-panel_closed': panelOpened() === 'closed',
+        }"
+      >
+        <ul
+          pFocusTrap
+          class="nav-panel-list"
+          [pFocusTrapDisabled]="panelOpened() !== 'opened'"
+          [attr.inert]="panelOpened() === 'closed' || null"
+        >
+          @for (item of items(); track $index) {
+            <li class="nav-panel-item">
+              <a
+                class="nav-panel-link"
+                routerLinkActive="nav-panel-link_active"
+                [routerLink]="item.routerLink"
+                (click)="closeMenu()"
+              >
+                <span aria-hidden="true" class="material-symbols-outlined self-center">
+                  {{ item.icon }}
+                </span>
+                <span>{{ item.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
 </header>
