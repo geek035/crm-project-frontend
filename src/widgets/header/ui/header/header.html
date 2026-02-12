@@ -1,17 +1,16 @@
-<header
-  class="border-primary bg-primary-contrast w-full justify-center rounded-b-2xl border p-2 shadow-xl [--header-content:2.5rem] [--header-height:4.5rem] [--header-padding:0.5rem]"
->
-  <div class="mx-auto grid w-full max-w-(--crm-max-w) grid-cols-[auto_1fr]">
+<header class="[--header-height:4rem] [--header-padding:0.5rem]">
+  <div
+    class="border-primary grid h-(--header-height) grid-cols-[auto_1fr] rounded-b-2xl border-x border-b p-(--header-padding) shadow-xl"
+  >
     <a [routerLink]="homePageLink">
       <img
         src="assets/icons/app-icon.svg"
-        class="h-auto w-(--header-content)"
+        class="h-auto w-[calc(var(--header-height)-var(--header-padding)*2)]"
         alt="Главная страница"
         width="48"
         height="48"
       />
     </a>
-
     <div class="relative ms-8 justify-self-end sm:justify-self-auto">
       <p-button
         icon="pi pi-bars"
@@ -24,7 +23,6 @@
         [rounded]="true"
         (onClick)="toggleMenu()"
       ></p-button>
-
       <nav
         #navPanel
         id="nav-panel"
@@ -59,5 +57,9 @@
         </ul>
       </nav>
     </div>
+  </div>
+
+  <div class="mt-(--header-padding) max-w-1/2">
+    <app-breadcrumbs></app-breadcrumbs>
   </div>
 </header>

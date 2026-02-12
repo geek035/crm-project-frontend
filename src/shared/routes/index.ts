@@ -1,1 +1,1 @@
-export { CLIENTS_ROUTE } from './clients.routes';
+export { CLIENTS_PAGE_URL } from './clients-page.routes';

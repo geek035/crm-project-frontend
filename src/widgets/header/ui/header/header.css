@@ -12,12 +12,19 @@
   display: grid;
   grid-template-columns: auto auto;
 
-  &:hover {
+  &:not(:has(> .nav-panel-link:focus-visible)):hover {
     @apply border-b-primary;
   }
 
   &:not(:has(> .nav-panel-link:focus-visible)):has(.nav-panel-link_active) {
     @apply border-primary rounded-xl border;
+  }
+
+  .nav-panel-link {
+    &:hover,
+    &:focus-visible {
+      @apply text-muted-color;
+    }
   }
 }
 
@@ -25,7 +32,7 @@
   .navigation-panel {
     @apply border-primary bg-primary-contrast rounded-xl border shadow-xl;
     position: absolute;
-    top: calc(var(--header-padding) * -1);
+    top: 0;
     right: 0;
 
     opacity: 0;

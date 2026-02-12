@@ -9,6 +9,9 @@ import { Header } from '@widgets/header';
   imports: [ButtonModule, RouterOutlet, Header],
   templateUrl: './app.html',
   styleUrl: './app.css',
+  host: {
+    class: 'content-center',
+  },
 })
 export class App {
   private readonly document = inject(DOCUMENT);

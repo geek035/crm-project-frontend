@@ -12,8 +12,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { FocusTrapModule } from 'primeng/focustrap';
-import { MenubarModule } from 'primeng/menubar';
 
+import { Breadcrumbs } from '../breadcrumbs/breadcrumbs';
 import { HEADER_INTERNAL_ITEMS } from './header.const';
 
 @Component({
@@ -21,9 +21,9 @@ import { HEADER_INTERNAL_ITEMS } from './header.const';
   imports: [
     CommonModule,
     ButtonModule,
-    MenubarModule,
     RouterLink,
     RouterLinkActive,
+    Breadcrumbs,
     FocusTrapModule,
     AutoFocusModule,
   ],

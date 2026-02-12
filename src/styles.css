@@ -6,10 +6,7 @@
 
 @theme {
   --crm-max-w: var(--breakpoint-2xl);
-}
-
-@utility max-w-page {
-  max-width: var(--breakpoint-xl);
+  --crm-page-mx: --spacing(4);
 }
 
 :root {
@@ -21,7 +18,13 @@
 }
 
 body {
-  font-size: clamp(1rem, 0.2rem + 1vw, 2rem);
+  font-size: clamp(1rem, calc(0.2rem + 1vw), 2rem);
+}
+
+@utility content-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @layer components {
