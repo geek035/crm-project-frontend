@@ -1,11 +1,15 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { App } from './app';
+import { Header } from '@widgets/header';
 
-describe('App', () => {
+import { App } from './app.js';
+
+describe(App.name, () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [App, Header],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

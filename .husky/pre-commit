@@ -1,8 +1,18 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo ""
+echo ">==== RUN PRETTIER ====<"
+echo ""
 npx pretty-quick --staged
+
+echo ""
+echo ">==== RUN ESLINT ====<"
 npm run lint
+
+echo ">==== RUN STEIGER ====<"
+echo ""
 npx steiger ./src
+echo ""
 
 npx --no -- commitlint --edit "$1"

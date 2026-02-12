@@ -14,6 +14,17 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    providePrimeNG({ theme: { preset: CRMPreset, options: { darkModeSelector: '.crm-dark' } } }),
+    providePrimeNG({
+      theme: {
+        preset: CRMPreset,
+        options: {
+          darkModeSelector: '.crm-dark',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
+        },
+      },
+    }),
   ],
 };

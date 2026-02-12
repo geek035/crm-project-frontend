@@ -1,0 +1,65 @@
+<header class="[--header-height:4rem] [--header-padding:0.5rem]">
+  <div
+    class="border-primary grid h-(--header-height) grid-cols-[auto_1fr] rounded-b-2xl border-x border-b p-(--header-padding) shadow-xl"
+  >
+    <a [routerLink]="homePageLink">
+      <img
+        src="assets/icons/app-icon.svg"
+        class="h-auto w-[calc(var(--header-height)-var(--header-padding)*2)]"
+        alt="Главная страница"
+        width="48"
+        height="48"
+      />
+    </a>
+    <div class="relative ms-8 justify-self-end sm:justify-self-auto">
+      <p-button
+        icon="pi pi-bars"
+        class="relative z-10 sm:hidden"
+        aria-label="Открыть меню"
+        aria-haspopup="true"
+        aria-controls="nav-panel"
+        [attr.aria-expanded]="panelOpened()"
+        [outlined]="true"
+        [rounded]="true"
+        (onClick)="toggleMenu()"
+      ></p-button>
+      <nav
+        #navPanel
+        id="nav-panel"
+        class="navigation-panel"
+        aria-label="Основная навигация"
+        [ngClass]="{
+          'navigation-panel_opened': panelOpened() === 'opened',
+          'navigation-panel_closed': panelOpened() === 'closed',
+        }"
+      >
+        <ul
+          pFocusTrap
+          class="nav-panel-list"
+          [pFocusTrapDisabled]="panelOpened() !== 'opened'"
+          [attr.inert]="panelOpened() === 'closed' || null"
+        >
+          @for (item of items(); track $index) {
+            <li class="nav-panel-item">
+              <a
+                class="nav-panel-link"
+                routerLinkActive="nav-panel-link_active"
+                [routerLink]="item.routerLink"
+                (click)="closeMenu()"
+              >
+                <span aria-hidden="true" class="material-symbols-outlined self-center">
+                  {{ item.icon }}
+                </span>
+                <span>{{ item.label }}</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="mt-(--header-padding) max-w-1/2">
+    <app-breadcrumbs></app-breadcrumbs>
+  </div>
+</header>
