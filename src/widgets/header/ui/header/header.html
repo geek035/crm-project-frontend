@@ -1,6 +1,6 @@
-<header class="[--header-height:4rem] [--header-padding:0.5rem]">
+<header class="max-w-(--crm-max-w) flex-1 [--header-height:4rem] [--header-padding:0.5rem]">
   <div
-    class="border-primary grid h-(--header-height) grid-cols-[auto_1fr] rounded-b-2xl border-x border-b p-(--header-padding) shadow-xl"
+    class="border-primary bg-primary-contrast grid h-(--header-height) grid-cols-[auto_1fr] rounded-b-2xl border-x border-b p-(--header-padding) shadow-xl"
   >
     <a [routerLink]="homePageLink">
       <img
@@ -60,6 +60,6 @@
   </div>
 
   <div class="mt-(--header-padding) max-w-1/2">
-    <app-breadcrumbs></app-breadcrumbs>
+    <crm-breadcrumbs></crm-breadcrumbs>
   </div>
 </header>

@@ -1,0 +1,70 @@
+<p-table
+  [value]="data().content"
+  [columns]="columns()"
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [lazy]="true"
+  [totalRecords]="data().total"
+  [loading]="state().status === 'loading'"
+  (onLazyLoad)="handleLazyLoad($event)"
+>
+  <ng-template #header let-columns>
+    <tr>
+      @for (column of columns; track column) {
+        <th>{{ column.header }}</th>
+      }
+    </tr>
+
+    <tr [ngClass]="{ 'hidden': !areThereFilters() }">
+      @for (column of columns; track column) {
+        <th>
+          @let filterObj = column.filter;
+
+          @switch (filterObj?.type) {
+            @case (filterType.Autocomplete) {
+              <p-columnFilter [field]="column.field" [showMenu]="false">
+                <ng-template #filter let-value let-filter="filterCallback">
+                  <crm-autocomplete
+                    [ngModel]="value"
+                    [query]="filterObj?.query"
+                    [optionalLabel]="filterObj?.optionLabel"
+                    [optionalValue]="filterObj?.optionValue"
+                    (ngModelChange)="filter($event)"
+                  ></crm-autocomplete>
+                </ng-template>
+              </p-columnFilter>
+            }
+            @case (filterType.Text) {
+              <p-columnFilter [type]="column.filter.type" [field]="column.field"></p-columnFilter>
+            }
+          }
+        </th>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-item let-columns="columns">
+    <tr>
+      @for (column of columns; track column) {
+        <td>
+          <span>{{ item[column.field] }}</span>
+        </td>
+      }
+    </tr>
+  </ng-template>
+
+  <ng-template #loadingbody let-columns="columns">
+    <tr>
+      <td [colSpan]="columns?.length">
+        <p-skeleton height="calc(1em * var(--crm-line-height))"></p-skeleton>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage let-columns="columns">
+    <tr>
+      <td [colSpan]="columns?.length">Нет данных</td>
+    </tr>
+  </ng-template>
+</p-table>

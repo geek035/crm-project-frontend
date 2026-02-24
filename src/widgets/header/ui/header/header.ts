@@ -17,7 +17,7 @@ import { Breadcrumbs } from '../breadcrumbs/breadcrumbs';
 import { HEADER_INTERNAL_ITEMS } from './header.const';
 
 @Component({
-  selector: 'app-header',
+  selector: 'crm-header',
   imports: [
     CommonModule,
     ButtonModule,
@@ -30,6 +30,9 @@ import { HEADER_INTERNAL_ITEMS } from './header.const';
   templateUrl: './header.html',
   styleUrl: './header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'content-center',
+  },
 })
 export class Header {
   private readonly focusMonitor = inject(FocusMonitor);

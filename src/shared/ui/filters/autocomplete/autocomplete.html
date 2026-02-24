@@ -1,0 +1,8 @@
+<p-autocomplete
+  [(ngModel)]="value"
+  [disabled]="disabled"
+  [optionLabel]="optionalLabel()"
+  [suggestions]="suggestions()"
+  (onBlur)="onTouched()"
+  (completeMethod)="handleComplete($event)"
+></p-autocomplete>
