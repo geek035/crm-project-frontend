@@ -6,7 +6,6 @@
 
 @theme {
   --crm-max-w: var(--breakpoint-2xl);
-  --crm-page-mx: --spacing(4);
 }
 
 :root {
@@ -18,6 +17,7 @@
   line-height: var(--crm-line-height);
 
   @apply [--breakpoint-mobile:var(--breakpoint-sm)];
+  @apply [--crm-page-mx:--spacing(2)] sm:[--crm-page-mx:--spacing(4)];
 }
 
 body {

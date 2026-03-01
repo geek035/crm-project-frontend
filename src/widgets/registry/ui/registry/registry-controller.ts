@@ -20,6 +20,11 @@ export class RegistryController<T> {
     return this._columns;
   }
 
+  private readonly _commands = computed(() => this.configService.registrySettings()['commands']);
+  get commands(): Signal<RegistryConfigModel<T>['commands']> {
+    return this._commands;
+  }
+
   private readonly params$ = new ReplaySubject<RegistryLoadParamsModel>(1);
   private readonly data$ = defer(() => {
     if (this._state().status !== 'initial') {

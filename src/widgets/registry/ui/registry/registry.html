@@ -1,14 +1,52 @@
 <p-table
+  selectionMode="single"
+  [dataKey]="dataKey()"
   [value]="data().content"
   [columns]="columns()"
   [paginator]="true"
   [rows]="5"
-  [rowsPerPageOptions]="[5, 10, 20]"
+  [rowHover]="true"
+  [rowsPerPageOptions]="rowsPerPageOptions()"
   [lazy]="true"
   [totalRecords]="data().total"
   [loading]="state().status === 'loading'"
+  [metaKeySelection]="true"
+  [(selection)]="selectedValue"
   (onLazyLoad)="handleLazyLoad($event)"
 >
+  <ng-template #caption>
+    <div role="toolbar" [attr.aria-labelledby]="tableCaptionActionsId">
+      <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>
+      <ul
+        role="list"
+        class="flex flex-wrap justify-end gap-2"
+        [id]="tableCaptionActionsId"
+        [ngClass]="{ 'hidden': !tableCommands().length }"
+      >
+        @for (command of tableCommands(); track command) {
+          <li>
+            @if (command.link) {
+              <a pButton [routerLink]="command.routerLink">
+                <span pButtonLabel>{{ command.label }}</span>
+              </a>
+            } @else {
+              <p-button
+                [ariaLabel]="command?.ariaLabel"
+                [badge]="command?.badge"
+                [icon]="command?.icon"
+                [label]="command?.label"
+                [variant]="command?.variant"
+                [severity]="command?.severity"
+                [badgeSeverity]="command?.badgeSeverity"
+                (onClick)="command?.command && command?.command(selectedValue)"
+              ></p-button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  </ng-template>
+
   <ng-template #header let-columns>
     <tr>
       @for (column of columns; track column) {
@@ -45,7 +83,7 @@
   </ng-template>
 
   <ng-template #body let-item let-columns="columns">
-    <tr>
+    <tr [pSelectableRow]="item">
       @for (column of columns; track column) {
         <td>
           <span>{{ item[column.field] }}</span>

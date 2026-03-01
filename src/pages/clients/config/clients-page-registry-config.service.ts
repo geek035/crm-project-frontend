@@ -15,6 +15,12 @@ export class ClientsPageRegistryConfigService extends RegistryConfigService<Clie
   private readonly clientAPI = inject(ClientAPIService);
 
   override config: Signal<RegistryConfigModel<ClientModel>> = signal({
+    commands: {
+      general: [
+        { link: true, routerLink: '/', 'label': 'link' },
+        { label: 'example', command: () => console.log('example') },
+      ],
+    },
     columns: [
       { field: 'id', header: 'id' },
       { field: 'firstName', header: 'firstName', filter: { type: RegistryFilterType.Text } },
