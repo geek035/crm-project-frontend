@@ -1,7 +1,10 @@
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
+import { PRESET_DATATABLE } from './app-components.preset';
+
 export const CRMPreset = definePreset(Aura, {
+  components: { datatable: PRESET_DATATABLE },
   semantic: {
     primary: {
       50: '{surface.50}',

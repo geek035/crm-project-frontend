@@ -1,6 +1,6 @@
 import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ReplaySubject, catchError, defer, of, switchMap, tap } from 'rxjs';
+import { ReplaySubject, catchError, of, switchMap, tap } from 'rxjs';
 
 import { RegistryConfigService } from '../../config/registry-config.service';
 import { RegistryConfigModel, RegistryContentModel } from '../../model/registry-config.model';
@@ -15,6 +15,18 @@ export class RegistryController<T> {
     return this._state;
   }
 
+  private readonly _generalSettings = computed(() => {
+    const { dataKey, rowsPerPageOptions, showSearch } = this.configService.registrySettings();
+
+    return { dataKey, rowsPerPageOptions, showSearch };
+  });
+
+  get generalSettings(): Signal<
+    Pick<RegistryConfigModel<T>, 'dataKey' | 'rowsPerPageOptions' | 'showSearch'>
+  > {
+    return this._generalSettings;
+  }
+
   private readonly _columns = computed(() => this.configService.registrySettings()['columns']);
   get columns(): Signal<RegistryConfigModel<T>['columns']> {
     return this._columns;
@@ -25,23 +37,34 @@ export class RegistryController<T> {
     return this._commands;
   }
 
+  private readonly _contextMenu = computed(
+    () => this.configService.registrySettings()['contextMenu'],
+  );
+
+  get contextMenu(): Signal<RegistryConfigModel<T>['contextMenu']> {
+    return this._contextMenu;
+  }
+
+  private readonly _stateSaving = computed(
+    () => this.configService.registrySettings()['stateSaving'],
+  );
+
+  get stateSaving(): Signal<RegistryConfigModel<T>['stateSaving']> {
+    return this._stateSaving;
+  }
+
   private readonly params$ = new ReplaySubject<RegistryLoadParamsModel>(1);
-  private readonly data$ = defer(() => {
-    if (this._state().status !== 'initial') {
-      this._state.set({ status: 'loading' });
-    }
+  private readonly data$ = this.params$.pipe(
+    tap(() => this._state().status !== 'initial' && this._state.set({ status: 'loading' })),
+    switchMap((params) => this.configService.requestData(params)),
+    tap(() => this._state.set({ status: 'success' })),
+    catchError((error) => {
+      console.error(error);
+      this._state.set({ status: 'error', error });
 
-    return this.params$.pipe(
-      switchMap((params) => this.configService.requestData(params)),
-      tap(() => this._state.set({ status: 'success' })),
-      catchError((error) => {
-        console.error(error);
-        this._state.set({ status: 'error', error });
-
-        return of<RegistryContentModel<T>>({ total: 0, content: [] });
-      }),
-    );
-  });
+      return of<RegistryContentModel<T>>({ total: 0, content: [] });
+    }),
+  );
 
   private readonly _data = toSignal(this.data$, {
     initialValue: { total: 5, content: new Array(5).fill(0) },

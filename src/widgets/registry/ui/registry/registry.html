@@ -1,64 +1,88 @@
+<p-contextmenu #cm [model]="contextMenu()"></p-contextmenu>
 <p-table
+  #dt
   selectionMode="single"
-  [dataKey]="dataKey()"
+  [rows]="5"
+  [lazy]="true"
   [value]="data().content"
   [columns]="columns()"
-  [paginator]="true"
-  [rows]="5"
-  [rowHover]="true"
-  [rowsPerPageOptions]="rowsPerPageOptions()"
-  [lazy]="true"
-  [totalRecords]="data().total"
+  [dataKey]="generalSettings().dataKey ?? 'id'"
   [loading]="state().status === 'loading'"
-  [metaKeySelection]="true"
+  [rowHover]="true"
+  [stateKey]="stateSaving()?.key"
+  [paginator]="true"
+  [contextMenu]="contextMenu()?.length && cm"
+  [stateStorage]="stateSaving()?.storage ?? 'session'"
+  [totalRecords]="data().total"
+  [metaKeySelection]="false"
+  [rowsPerPageOptions]="generalSettings().rowsPerPageOptions ?? [5, 10, 20]"
   [(selection)]="selectedValue"
+  [(contextMenuSelection)]="selectedValue"
   (onLazyLoad)="handleLazyLoad($event)"
 >
   <ng-template #caption>
-    <div role="toolbar" [attr.aria-labelledby]="tableCaptionActionsId">
-      <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>
-      <ul
-        role="list"
-        class="flex flex-wrap justify-end gap-2"
-        [id]="tableCaptionActionsId"
-        [ngClass]="{ 'hidden': !tableCommands().length }"
-      >
-        @for (command of tableCommands(); track command) {
-          <li>
-            @if (command.link) {
-              <a pButton [routerLink]="command.routerLink">
-                <span pButtonLabel>{{ command.label }}</span>
-              </a>
-            } @else {
-              <p-button
-                [ariaLabel]="command?.ariaLabel"
-                [badge]="command?.badge"
-                [icon]="command?.icon"
-                [label]="command?.label"
-                [variant]="command?.variant"
-                [severity]="command?.severity"
-                [badgeSeverity]="command?.badgeSeverity"
-                (onClick)="command?.command && command?.command(selectedValue)"
-              ></p-button>
-            }
-          </li>
-        }
-      </ul>
-    </div>
+    <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>
+    <p-toolbar [ariaLabelledBy]="tableCaptionActionsId">
+      <ng-template #start>
+        <div class="flex flex-wrap gap-2">
+          <p-iconfield [ngClass]="{ hidden: !generalSettings().showSearch }" iconPosition="left">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input
+              fluid
+              pInputText
+              type="text"
+              [(ngModel)]="searchValue"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Поиск"
+            />
+          </p-iconfield>
+          <p-button
+            label="Очистить"
+            icon="pi pi-filter-slash"
+            [ngClass]="{ hidden: !generalSettings().showSearch && !areThereFilters() }"
+            [outlined]="true"
+            (click)="clear(dt)"
+          />
+        </div>
+      </ng-template>
+      <ng-template #end>
+        <ul class="flex gap-2">
+          @for (command of tableCommands(); track command) {
+            <li>
+              @if (command.link) {
+                <a pButton [routerLink]="command.routerLink">
+                  <span pButtonLabel>{{ command.label }}</span>
+                </a>
+              } @else {
+                <p-button
+                  [ariaLabel]="command?.ariaLabel"
+                  [badge]="command?.badge"
+                  [icon]="command?.icon"
+                  [label]="command?.label"
+                  [variant]="command?.variant"
+                  [severity]="command?.severity"
+                  [badgeSeverity]="command?.badgeSeverity"
+                  (onClick)="command?.command && command?.command(selectedValue())"
+                ></p-button>
+              }
+            </li>
+          }
+        </ul>
+      </ng-template>
+    </p-toolbar>
   </ng-template>
-
   <ng-template #header let-columns>
     <tr>
       @for (column of columns; track column) {
         <th>{{ column.header }}</th>
       }
     </tr>
-
     <tr [ngClass]="{ 'hidden': !areThereFilters() }">
       @for (column of columns; track column) {
         <th>
           @let filterObj = column.filter;
-
           @switch (filterObj?.type) {
             @case (filterType.Autocomplete) {
               <p-columnFilter [field]="column.field" [showMenu]="false">
@@ -81,9 +105,8 @@
       }
     </tr>
   </ng-template>
-
   <ng-template #body let-item let-columns="columns">
-    <tr [pSelectableRow]="item">
+    <tr [pSelectableRow]="item" [pContextMenuRow]="item">
       @for (column of columns; track column) {
         <td>
           <span>{{ item[column.field] }}</span>
@@ -91,15 +114,15 @@
       }
     </tr>
   </ng-template>
-
   <ng-template #loadingbody let-columns="columns">
-    <tr>
-      <td [colSpan]="columns?.length">
-        <p-skeleton height="calc(1em * var(--crm-line-height))"></p-skeleton>
-      </td>
-    </tr>
+    @if (state().status === 'initial') {
+      <tr>
+        <td [colSpan]="columns?.length">
+          <p-skeleton height="calc(1em * var(--crm-line-height))"></p-skeleton>
+        </td>
+      </tr>
+    }
   </ng-template>
-
   <ng-template #emptymessage let-columns="columns">
     <tr>
       <td [colSpan]="columns?.length">Нет данных</td>
