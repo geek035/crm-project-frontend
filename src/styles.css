@@ -2,11 +2,13 @@
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
 
+@import './widgets/header/ui/breadcrumbs/breadcrumbs.css';
+@import './widgets/registry/ui/registry/registry.css';
+
 @custom-variant dark (&:where(.crm-dark, .crm-dark *));
 
 @theme {
   --crm-max-w: var(--breakpoint-2xl);
-  --crm-page-mx: --spacing(4);
 }
 
 :root {
@@ -14,7 +16,11 @@
   font-optical-sizing: auto;
   font-variation-settings: 'wdth' 100;
 
+  --crm-line-height: 1.5;
+  line-height: var(--crm-line-height);
+
   @apply [--breakpoint-mobile:var(--breakpoint-sm)];
+  @apply [--crm-page-mx:--spacing(2)] sm:[--crm-page-mx:--spacing(4)];
 }
 
 body {
@@ -28,9 +34,7 @@ body {
 }
 
 @layer components {
-  .crm-page {
-    display: grid;
-    grid-template-columns: subgrid;
-    grid-column: span 4 / span 4;
+  .crm-card {
+    @apply border-primary border shadow-xl;
   }
 }

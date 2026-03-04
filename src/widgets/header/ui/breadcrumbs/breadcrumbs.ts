@@ -5,14 +5,12 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { BreadcrumbsService } from '../../model/breadcrumbs.service';
 
 @Component({
-  selector: 'app-breadcrumbs',
+  selector: 'crm-breadcrumbs',
   imports: [BreadcrumbModule],
   templateUrl: './breadcrumbs.html',
   styleUrl: './breadcrumbs.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'flex',
-  },
+  host: { class: 'flex' },
 })
 export class Breadcrumbs {
   private readonly breadcrumbsService = inject(BreadcrumbsService);

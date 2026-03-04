@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { Header } from '@widgets/header';
 
 @Component({
-  selector: 'app-root',
+  selector: 'crm-root',
   imports: [ButtonModule, RouterOutlet, Header],
   templateUrl: './app.html',
   styleUrl: './app.css',
