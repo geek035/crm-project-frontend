@@ -1,5 +1,5 @@
 import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Observable, delay, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import {
   RegistryConfigModel,
@@ -40,9 +40,6 @@ export class ClientsPageRegistryConfigService extends RegistryConfigService<Clie
   });
 
   override requestData(): Observable<RegistryContentModel<ClientModel>> {
-    return this.clientAPI.getClients().pipe(
-      map((content) => ({ total: content.length, content })),
-      delay(3000),
-    );
+    return this.clientAPI.getClients().pipe(map((content) => ({ total: content.length, content })));
   }
 }

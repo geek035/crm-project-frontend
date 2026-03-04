@@ -1,0 +1,28 @@
+.crm-registry {
+  .p-datatable-header {
+    padding: 0;
+    border: 0;
+  }
+
+  .p-datatable-table-container {
+    display: flex;
+  }
+
+  &.crm-registry_full-page {
+    margin-inline: calc(var(--crm-page-mx) * -1);
+
+    .p-datatable-header {
+      border: 0;
+      padding: var(--crm-page-mx);
+    }
+
+    .p-datatable-table-container {
+      padding-inline: var(--crm-page-mx);
+      display: flex;
+
+      .p-datatable-table {
+        flex-grow: 1;
+      }
+    }
+  }
+}

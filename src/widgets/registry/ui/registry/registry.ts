@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -43,6 +43,8 @@ import { RegistryController } from './registry-controller';
 })
 export class Registry<T> {
   private static nextId = 0;
+
+  readonly useFullPageClass = input(true);
 
   private readonly controller = inject(RegistryController<T>);
 

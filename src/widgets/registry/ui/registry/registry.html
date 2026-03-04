@@ -1,6 +1,8 @@
 <p-contextmenu #cm [model]="contextMenu()"></p-contextmenu>
 <p-table
   #dt
+  class="crm-registry"
+  [ngClass]="{ 'crm-registry_full-page': useFullPageClass() }"
   selectionMode="single"
   [rows]="5"
   [lazy]="true"
