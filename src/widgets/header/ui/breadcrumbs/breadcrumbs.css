@@ -1,21 +1,21 @@
 @reference "tailwindcss";
 @reference "tailwindcss-primeui";
 
-:host {
-  ::ng-deep .p-breadcrumb-list {
+.crm-breadcrumb {
+  .p-breadcrumb-list {
     height: 100%;
     overflow-x: auto;
   }
 
-  ::ng-deep .p-breadcrumb-item,
-  ::ng-deep .p-breadcrumb,
-  ::ng-deep .p-breadcrumb-home-item {
+  .p-breadcrumb-item,
+  .p-breadcrumb,
+  .p-breadcrumb-home-item {
     padding: 0.2rem;
   }
 }
 
 @supports (scrollbar-width: auto) {
-  ::ng-deep .p-breadcrumb-list {
+  .p-breadcrumb-list {
     scrollbar-width: thin;
     scrollbar-color: var(--color-primary);
   }

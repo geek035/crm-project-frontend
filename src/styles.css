@@ -2,6 +2,7 @@
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
 
+@import './widgets/header/ui/breadcrumbs/breadcrumbs.css';
 @import './widgets/registry/ui/registry/registry.css';
 
 @custom-variant dark (&:where(.crm-dark, .crm-dark *));
