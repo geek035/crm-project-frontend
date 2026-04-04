@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
 
-import { ClientsPage } from './clients-page';
+import { IndividualsRegistryPage } from './individuals-registry-page';
 
-describe('ClientsPage', () => {
-  let component: ClientsPage;
-  let fixture: ComponentFixture<ClientsPage>;
+describe('IndividualsRegistryPage', () => {
+  let component: IndividualsRegistryPage;
+  let fixture: ComponentFixture<IndividualsRegistryPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClientsPage],
-      providers: [provideRouter([])],
+      imports: [IndividualsRegistryPage],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ClientsPage);
+    fixture = TestBed.createComponent(IndividualsRegistryPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

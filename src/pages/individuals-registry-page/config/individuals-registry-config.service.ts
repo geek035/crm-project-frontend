@@ -8,13 +8,13 @@ import {
   RegistryFilterType,
 } from '@widgets/registry';
 
-import { ClientAPIService, ClientModel } from '@entities/client';
+import { IndividualAPIService, IndividualModel } from '@entities/individual';
 
 @Injectable()
-export class ClientsPageRegistryConfigService extends RegistryConfigService<ClientModel> {
-  private readonly clientAPI = inject(ClientAPIService);
+export class IndividualsRegistryConfigService extends RegistryConfigService<IndividualModel> {
+  private readonly individualAPI = inject(IndividualAPIService);
 
-  override config: Signal<RegistryConfigModel<ClientModel>> = signal({
+  override config: Signal<RegistryConfigModel<IndividualModel>> = signal({
     rowsPerPageOptions: [5, 10],
     contextMenu: [{ label: 'Меню' }],
     commands: {
@@ -34,12 +34,14 @@ export class ClientsPageRegistryConfigService extends RegistryConfigService<Clie
       { field: 'secondName', header: 'secondName' },
     ],
     stateSaving: {
-      key: 'clients-page-registry',
+      key: 'individuals-page-registry',
       storage: 'session',
     },
   });
 
-  override requestData(): Observable<RegistryContentModel<ClientModel>> {
-    return this.clientAPI.getClients().pipe(map((content) => ({ total: content.length, content })));
+  override requestData(): Observable<RegistryContentModel<IndividualModel>> {
+    return this.individualAPI
+      .getIndividuals()
+      .pipe(map((content) => ({ total: content.length, content })));
   }
 }

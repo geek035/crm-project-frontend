@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { CLIENT_PAGE_ROUTES, ClientsPage } from '@pages/clients';
+import { INDIVIDUALS_REGISTRY_PAGE_ROUTES } from '@pages/individuals-registry-page';
 
-export const routes: Routes = [
-  ...CLIENT_PAGE_ROUTES,
-  { path: 'foo', component: ClientsPage },
-  { path: '', pathMatch: 'full', redirectTo: 'clients' },
-];
+export const routes: Routes = [...INDIVIDUALS_REGISTRY_PAGE_ROUTES];

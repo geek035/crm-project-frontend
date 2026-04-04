@@ -1,1 +1,1 @@
-export { CLIENTS_PAGE_URL } from './clients-page.routes';
+export { INDIVIDUALS_REGISTRY_PAGE_URL } from './individuals-registry-page.routes';
