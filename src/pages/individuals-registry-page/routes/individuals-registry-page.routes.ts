@@ -1,18 +1,10 @@
-import { Routes } from '@angular/router';
+import { Route } from '@angular/router';
 
-import { BreadcrumbModel } from '@widgets/header';
+import { INDIVIDUALS_URL } from '@features/individuals-navigation';
 
-import { INDIVIDUALS_REGISTRY_PAGE_URL } from '@shared/routes';
+import { IndividualsRegistryPage } from '../ui/individuals-registry-page/individuals-registry-page';
 
-const breadcrumbs: BreadcrumbModel[] = [{ label: 'Клиенты' }];
-
-export const INDIVIDUALS_REGISTRY_PAGE_ROUTES: Routes = [
-  {
-    path: INDIVIDUALS_REGISTRY_PAGE_URL,
-    data: { breadcrumbs },
-    loadComponent: () =>
-      import('../ui/individuals-registry-page/individuals-registry-page').then(
-        (c) => c.IndividualsRegistryPage,
-      ),
-  },
-];
+export const INDIVIDUALS_REGISTRY_PAGE_ROUTE: Route = {
+  path: INDIVIDUALS_URL,
+  component: IndividualsRegistryPage,
+};

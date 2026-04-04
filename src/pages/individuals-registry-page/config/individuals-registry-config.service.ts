@@ -8,6 +8,8 @@ import {
   RegistryFilterType,
 } from '@widgets/registry';
 
+import { INDIVIDUAL_CREATE_URL } from '@features/individuals-navigation';
+
 import { IndividualAPIService, IndividualModel } from '@entities/individual';
 
 @Injectable()
@@ -18,11 +20,7 @@ export class IndividualsRegistryConfigService extends RegistryConfigService<Indi
     rowsPerPageOptions: [5, 10],
     contextMenu: [{ label: 'Меню' }],
     commands: {
-      general: [
-        { link: true, routerLink: '/', 'label': 'link' },
-        { label: 'example', command: () => console.log('example') },
-      ],
-      specific: [{ label: 'specific' }],
+      general: [{ link: true, routerLink: `/${INDIVIDUAL_CREATE_URL}`, label: 'Создать' }],
     },
     columns: [
       { field: 'id', header: 'id' },

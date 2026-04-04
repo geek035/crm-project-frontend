@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
-import { BreadcrumbModel } from './breacrumbs.model';
+import { BreadcrumbModel } from '../../model/breadcrumbs.model';
 
 interface CalculateBreadcrumbsParams {
   breadcrumbByToken: BreadcrumbModel | null;
@@ -31,7 +31,7 @@ export class BreadcrumbsService {
       : undefined;
   });
 
-  getBredcrumbs(): Signal<BreadcrumbModel[] | undefined> {
+  getBreadcrumbs(): Signal<BreadcrumbModel[] | undefined> {
     return this.breadcrumbs;
   }
 
@@ -45,6 +45,10 @@ export class BreadcrumbsService {
   ): BreadcrumbModel[] {
     if (!route.url.length && route.children.length) {
       return this.calculateBreadcrumbs(route.children[0], { breadcrumbByToken, parentUrl });
+    }
+
+    if (!route.url.length) {
+      return [];
     }
 
     const urlSegment = route.url.map((url) => url.path);

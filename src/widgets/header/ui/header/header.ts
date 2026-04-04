@@ -13,7 +13,8 @@ import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { FocusTrapModule } from 'primeng/focustrap';
 
-import { Breadcrumbs } from '../breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@shared/ui';
+
 import { HEADER_INTERNAL_ITEMS } from './header.const';
 
 @Component({
