@@ -2,7 +2,7 @@
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
 
-@import './widgets/header/ui/breadcrumbs/breadcrumbs.css';
+@import './shared/ui/breadcrumbs/breadcrumbs.css';
 @import './widgets/registry/ui/registry/registry.css';
 
 @custom-variant dark (&:where(.crm-dark, .crm-dark *));
@@ -36,5 +36,11 @@ body {
 @layer components {
   .crm-card {
     @apply border-primary border shadow-xl;
+  }
+
+  .crm-heading-1 {
+    @apply font-semibold text-shadow-2xs;
+
+    font-size: calc(1em * 1.3);
   }
 }

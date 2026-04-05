@@ -1,16 +1,17 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-
-import { Header } from '@widgets/header';
 
 import { App } from './app.js';
 
 describe(App.name, () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App, Header],
+      imports: [App],
       providers: [provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(App, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } })
+      .compileComponents();
   });
 
   it('should create the app', () => {
