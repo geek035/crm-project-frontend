@@ -27,14 +27,18 @@
     <p-toolbar [ariaLabelledBy]="tableCaptionActionsId">
       <ng-template #start>
         <div class="flex flex-wrap gap-2">
-          <p-iconfield [ngClass]="{ hidden: !generalSettings().showSearch }" iconPosition="left">
+          <p-iconfield
+            role="search"
+            [ngClass]="{ hidden: !generalSettings().showSearch }"
+            iconPosition="left"
+          >
             <p-inputicon>
               <i class="pi pi-search"></i>
             </p-inputicon>
             <input
               fluid
               pInputText
-              type="text"
+              type="search"
               [(ngModel)]="searchValue"
               (input)="dt.filterGlobal($event.target.value, 'contains')"
               placeholder="Поиск"

@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { CLIENT_PAGE_ROUTES, ClientsPage } from '@pages/clients';
+import { INDIVIDUAL_CARD_PAGE_ROUTE } from '@pages/individual-card-page';
+import { INDIVIDUAL_CREATE_ROUTE } from '@pages/individual-create-page';
+import { INDIVIDUALS_REGISTRY_PAGE_ROUTE } from '@pages/individuals-registry-page';
+
+import { getIndividualsRoutes } from '@features/individuals-navigation';
 
 export const routes: Routes = [
-  ...CLIENT_PAGE_ROUTES,
-  { path: 'foo', component: ClientsPage },
-  { path: '', pathMatch: 'full', redirectTo: 'clients' },
+  getIndividualsRoutes([
+    INDIVIDUAL_CARD_PAGE_ROUTE,
+    INDIVIDUAL_CREATE_ROUTE,
+    INDIVIDUALS_REGISTRY_PAGE_ROUTE,
+  ]),
 ];

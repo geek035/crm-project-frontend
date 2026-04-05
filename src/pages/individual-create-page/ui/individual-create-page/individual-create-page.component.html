@@ -1,0 +1,186 @@
+<main class="mx-(--crm-page-mx)">
+  <p-toast></p-toast>
+  <p-toast [key]="individualFormKey">
+    <ng-template let-message #headless let-closeFn="closeFn">
+      <section class="grid grid-rows-[auto_1fr_1fr] p-4">
+        <header class="flex">
+          <h3 class="text-lg font-bold">{{ message.summary }}</h3>
+        </header>
+
+        <p class="text-sm">{{ message.detail }}</p>
+        <footer class="flex justify-end gap-4">
+          <button
+            pButton
+            severity="secondary"
+            (click)="restoreForm(); closeFn($event)"
+            size="small"
+          >
+            Восстановить
+          </button>
+          <button pButton severity="secondary" (click)="closeFn($event)" size="small">
+            Отмена
+          </button>
+        </footer>
+      </section>
+    </ng-template>
+  </p-toast>
+
+  <h1 class="crm-heading-1 mb-4">Создание физического лица</h1>
+
+  <form
+    id="individual-form"
+    class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+    [formGroup]="individualForm"
+    (ngSubmit)="handleSubmit()"
+  >
+    <section class="sm:w-1/2" aria-labelledby="individual-generalinfo">
+      <p-card class="border-primary border shadow-xl">
+        <ng-template #title>
+          <div class="flex">
+            <h2 class="w-fit" id="individual-generalinfo">Основная информация</h2>
+            <p-button
+              class="ms-auto"
+              icon="pi pi-undo"
+              pTooltip="Очистить"
+              tooltipStyleClass="text-sm"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="clearForm()"
+            ></p-button>
+          </div>
+        </ng-template>
+
+        <div
+          class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+        >
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+            <div>
+              <p-float-label variant="on">
+                <input
+                  fluid
+                  pInputText
+                  id="individual-firstname"
+                  [formControl]="individualControls.firstName"
+                />
+                <label for="individual-firstname">Имя</label>
+              </p-float-label>
+
+              <crm-form-message-error
+                [control]="individualControls.firstName"
+                [defaultErrors]="['required']"
+              ></crm-form-message-error>
+            </div>
+            <div>
+              <p-float-label variant="on">
+                <input
+                  fluid
+                  pInputText
+                  id="individual-surname"
+                  [formControl]="individualControls.surname"
+                />
+                <label for="individual-surname">Отчество</label>
+              </p-float-label>
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap) lg:grid-cols-[minmax(150px,1fr)_minmax(0,250px)]"
+          >
+            <div>
+              <p-float-label variant="on">
+                <input
+                  fluid
+                  pInputText
+                  id="individual-secondname"
+                  [formControl]="individualControls.secondName"
+                />
+                <label for="individual-secondname">Фамилия</label>
+              </p-float-label>
+
+              <crm-form-message-error
+                [control]="individualControls.secondName"
+                [defaultErrors]="['required']"
+              ></crm-form-message-error>
+            </div>
+
+            <div>
+              <p-float-label variant="on">
+                <p-date-picker
+                  fluid
+                  showIcon
+                  id="individual-birthdate"
+                  [dateFormat]="dateFormat"
+                  [placeholder]="datePlaceholder"
+                  [formControl]="individualControls.birthdate"
+                ></p-date-picker>
+                <label for="individual-birthdate">День рождения</label>
+              </p-float-label>
+
+              <crm-form-message-error
+                [control]="individualControls.birthdate"
+                [defaultErrors]="['required']"
+              ></crm-form-message-error>
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap) lg:grid-cols-[minmax(150px,1fr)_minmax(0,250px)]"
+          >
+            <div>
+              <p-float-label variant="on">
+                <input
+                  fluid
+                  pInputText
+                  type="email"
+                  id="individual-email"
+                  [formControl]="individualControls.email"
+                />
+                <label for="individual-email">Email</label>
+              </p-float-label>
+
+              <crm-form-message-error
+                [control]="individualControls.email"
+                [defaultErrors]="['required', 'email']"
+              ></crm-form-message-error>
+            </div>
+
+            <div>
+              <p-float-label variant="on">
+                <input
+                  fluid
+                  pInputText
+                  type="tel"
+                  id="individual-phone"
+                  pIn="999-99-9999"
+                  [formControl]="individualControls.phoneNumber"
+                />
+                <label for="individual-phone">Номер телефона</label>
+              </p-float-label>
+
+              <crm-form-message-error
+                [control]="individualControls.phoneNumber"
+                [defaultErrors]="['required']"
+                [customErrors]="['pattern']"
+              >
+                @if (individualControls.phoneNumber.hasError('pattern')) {
+                  <p-message severity="error" variant="simple">
+                    Неверный формат телефона
+                  </p-message>
+                }
+              </crm-form-message-error>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #footer>
+          <p-button
+            form="individual-form"
+            type="submit"
+            [disabled]="individualForm.invalid"
+            [loading]="loading()"
+          >
+            Создать
+          </p-button>
+        </ng-template>
+      </p-card>
+    </section>
+  </form>
+</main>

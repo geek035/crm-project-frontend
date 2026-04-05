@@ -1,7 +1,7 @@
 import { MenuItem } from 'primeng/api';
 
-import { CLIENTS_PAGE_URL } from '@shared/routes';
+import { INDIVIDUALS_URL } from '@features/individuals-navigation';
 
 export const HEADER_INTERNAL_ITEMS: MenuItem[] = [
-  { label: 'Клиенты', routerLink: CLIENTS_PAGE_URL },
+  { label: 'Физ. лица', routerLink: INDIVIDUALS_URL },
 ];
