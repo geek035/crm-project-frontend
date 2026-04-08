@@ -5,14 +5,14 @@ import {
   RegistryConfigModel,
   RegistryConfigService,
   RegistryContentModel,
-} from '@widgets/registry';
+} from '@shared/ui/registry';
 
 @Injectable()
 export class ApplicationsRegistryConfigService<T> extends RegistryConfigService<T> {
   protected config: Signal<RegistryConfigModel<T>> = signal({ columns: [] });
 
   requestData(): Observable<RegistryContentModel<T>> {
-    const data: RegistryContentModel<T> = { total: 0, content: [] };
+    const data: RegistryContentModel<T> = { total: 0, data: [] };
     return of(data);
   }
 }

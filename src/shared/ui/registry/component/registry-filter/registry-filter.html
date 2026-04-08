@@ -1,0 +1,20 @@
+@let columnObj = column();
+@let filterObj = columnObj?.filter;
+
+@if (isAutocompleteFilter(filterObj)) {
+  <p-columnFilter [field]="$any(columnObj.field)" [showMenu]="false">
+    <ng-template #filter let-value let-filter="filterCallback">
+      <crm-autocomplete
+        [ngModel]="value"
+        [query]="filterObj.query"
+        [optionalLabel]="filterObj.optionLabel"
+        [optionalValue]="filterObj.optionValue"
+        (ngModelChange)="filter($event)"
+      ></crm-autocomplete>
+    </ng-template>
+  </p-columnFilter>
+}
+
+@if (isTextFilter(filterObj)) {
+  <p-columnFilter [type]="filterObj.type" [field]="$any(columnObj.field)"></p-columnFilter>
+}

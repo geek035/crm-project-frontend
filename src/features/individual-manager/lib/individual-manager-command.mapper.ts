@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 
 import { IndividualAddDTO } from '@entities/individual';
 
-import { NotValidDateError } from '@shared/model';
+import { NotValidDateError } from '@shared/lib';
 
 import { IndividualAddCommand } from '../model/commands/individual-add-command.model';
 

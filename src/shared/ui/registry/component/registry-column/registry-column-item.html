@@ -1,0 +1,21 @@
+@let col = column();
+
+@switch (col.type) {
+  @case (columnType.TEXT) {
+    <span>{{ item()[col.field] }}</span>
+  }
+
+  @case (columnType.EMAIL) {
+    <a class="crm-link" [href]="col?.mailTo?.(item()) ?? `mailto:${item()[col.field]}`">
+      <i role="none" aria-hidden="true" class="pi pi-envelope crm-link__icon"></i>
+      {{ item()[col.field] }}
+    </a>
+  }
+
+  @case (columnType.PHONE) {
+    <a class="crm-link" [href]="col?.tel?.(item()) ?? `tel:${item()[col.field]}`">
+      <i class="pi pi-phone crm-link__icon"></i>
+      {{ item()[col.field] }}
+    </a>
+  }
+}

@@ -1,8 +1,8 @@
 import { Injectable, Signal, linkedSignal } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { RegistryConfigModel, RegistryContentModel } from '../model/registry-config.model';
-import { RegistryLoadParamsModel } from '../model/registry-state.model';
+import { RegistryConfigModel, RegistryContentModel } from '../registry-model/registry-config.model';
+import { RegistryLoadParamsModel } from '../registry-model/registry-state.model';
 
 @Injectable()
 export abstract class RegistryConfigService<T> {

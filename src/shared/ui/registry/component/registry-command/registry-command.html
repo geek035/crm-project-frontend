@@ -1,0 +1,20 @@
+@let commandObj = command();
+
+@if (isLinkCommand(commandObj)) {
+  <a pButton [routerLink]="routerLink()">
+    <span pButtonLabel>{{ commandObj.label }}</span>
+  </a>
+}
+
+@if (isButtonCommand(commandObj)) {
+  <p-button
+    [ariaLabel]="commandObj?.ariaLabel"
+    [badge]="commandObj?.badge"
+    [icon]="commandObj?.icon"
+    [label]="commandObj?.label"
+    [variant]="$any(commandObj?.variant)"
+    [severity]="commandObj?.severity"
+    [badgeSeverity]="$any(commandObj?.badgeSeverity)"
+    (onClick)="commandObj?.command && commandObj?.command(selectedValue())"
+  ></p-button>
+}

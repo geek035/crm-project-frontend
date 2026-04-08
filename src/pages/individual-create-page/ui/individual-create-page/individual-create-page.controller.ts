@@ -5,8 +5,8 @@ import { IndividualManagerService } from '@features/individual-manager';
 
 import { IndividualModel } from '@entities/individual';
 
-import { watchSource } from '@shared/lib';
-import { CRMErrorModel, NotValidDateError } from '@shared/model';
+import { NotValidDateError, watchSource } from '@shared/lib';
+import { CRMErrorModel } from '@shared/model';
 
 import { IndividualCreateFormValueModel } from '../../model/individual-create-form-value.model';
 

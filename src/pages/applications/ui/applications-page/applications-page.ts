@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ApplicationsRegistryConfigService } from '@pages/applications/config/applications-registry.config';
 
-import { Registry, RegistryConfigService } from '@widgets/registry';
+import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
 @Component({
   selector: 'crm-applications-page',

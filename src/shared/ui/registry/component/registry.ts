@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  model,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { FluidModule } from 'primeng/fluid';
@@ -9,24 +18,28 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Table, TableModule } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule, TableRowSelectEvent } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 
-import { RegistryFilterType } from '@widgets/registry/model/registry-config.model';
-import { RegistryLoadParamsModel } from '@widgets/registry/model/registry-state.model';
+import { CRMErrorModel } from '@shared/model';
+import { CRM_TOAST_KEY } from '@shared/ui/notifications/crm-toast-key.const';
 
-import { Autocomplete } from '@shared/ui';
-
+import { RegistryFilterType } from '../registry-model/registry-filter.model';
+import { RegistryColumnItem } from './registry-column/registry-column-item';
+import { RegistryCommand } from './registry-command/registry-command';
 import { RegistryController } from './registry-controller';
+import { RegistryFilter } from './registry-filter/registry-filter';
 
 @Component({
   selector: 'crm-registry',
   imports: [
+    RegistryColumnItem,
+    RegistryFilter,
+    RegistryCommand,
     CommonModule,
     FormsModule,
     TableModule,
     SkeletonModule,
-    Autocomplete,
     ButtonModule,
     RouterModule,
     FluidModule,
@@ -47,6 +60,7 @@ export class Registry<T> {
   readonly useFullPageClass = input(true);
 
   private readonly controller = inject(RegistryController<T>);
+  private readonly messageService = inject(MessageService);
 
   readonly data = this.controller.data;
   readonly state = this.controller.state;
@@ -69,12 +83,38 @@ export class Registry<T> {
     () => this.columns().findIndex((column) => !!column.filter) >= 0,
   );
 
-  handleLazyLoad(params: RegistryLoadParamsModel): void {
-    this.controller.load(params);
+  constructor() {
+    effect(() => {
+      const state = this.state();
+
+      if (state.status === 'error') {
+        this.handledError(state.error);
+      }
+    });
+  }
+
+  handleLazyLoad(tableLazyLoadEvent: TableLazyLoadEvent): void {
+    this.controller.load(tableLazyLoadEvent);
+  }
+
+  handleDoubleClickOnRow(event: TableRowSelectEvent): void {
+    console.log(event);
+  }
+
+  handledError(error: CRMErrorModel): void {
+    this.messageService.add({
+      key: CRM_TOAST_KEY,
+      summary: error.title,
+      detail: error.message,
+      severity: 'error',
+      sticky: true,
+    });
   }
 
   clear(dt: Table): void {
     dt.clear();
+    dt.clearFilterValues();
+    dt.clearState();
     this.searchValue.set('');
   }
 }
