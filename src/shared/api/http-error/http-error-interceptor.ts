@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { EMPTY, catchError, throwError } from 'rxjs';
 
 import { isWebErrorModel } from '@shared/model';
+import { CRM_TOAST_KEY } from '@shared/ui';
 
 import { HTTP_ERROR_BYPASS_CONTEXT_TOKEN } from './http-error-bypass-context.token';
 
@@ -25,6 +26,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   function handleHttpErrorsResponse(responseError: HttpErrorResponse): void {
     if (responseError.status === 0) {
       messageService.add({
+        key: CRM_TOAST_KEY,
         severity: 'error',
         closable: true,
         sticky: true,
@@ -39,6 +41,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     if (!isWebErrorModel(rawError)) {
       messageService.add({
+        key: CRM_TOAST_KEY,
         severity: 'error',
         closable: true,
         sticky: true,
@@ -52,6 +55,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const [firstMessage, ...otherMessages] = rawError.messages ?? [];
 
     messageService.add({
+      key: CRM_TOAST_KEY,
       severity: 'error',
       closable: true,
       sticky: true,
@@ -61,6 +65,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
     otherMessages.forEach((message) => {
       messageService.add({
+        key: CRM_TOAST_KEY,
         severity: 'error',
         closable: true,
         sticky: true,

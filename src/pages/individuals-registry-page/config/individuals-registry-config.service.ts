@@ -1,35 +1,75 @@
-import { Injectable, Signal, inject, signal } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { IndividualManagerService } from '@features/individual-manager';
+import { INDIVIDUAL_CREATE_URL, getIndividualCardURL } from '@features/individuals-navigation';
+
+import { IndividualModel } from '@entities/individual';
 
 import {
+  RegistryColumnType,
+  RegistryCommandType,
   RegistryConfigModel,
   RegistryConfigService,
   RegistryContentModel,
   RegistryFilterType,
-} from '@widgets/registry';
-
-import { INDIVIDUAL_CREATE_URL } from '@features/individuals-navigation';
-
-import { IndividualAPIService, IndividualModel } from '@entities/individual';
+  RegistryLoadParamsModel,
+} from '@shared/ui/registry';
 
 @Injectable()
 export class IndividualsRegistryConfigService extends RegistryConfigService<IndividualModel> {
-  private readonly individualAPI = inject(IndividualAPIService);
+  private readonly individualManager = inject(IndividualManagerService);
 
-  override config: Signal<RegistryConfigModel<IndividualModel>> = signal({
+  override config = signal<RegistryConfigModel<IndividualModel>>({
     rowsPerPageOptions: [5, 10],
-    contextMenu: [{ label: 'Меню' }],
     commands: {
-      general: [{ link: true, routerLink: `/${INDIVIDUAL_CREATE_URL}`, label: 'Создать' }],
+      general: [
+        {
+          type: RegistryCommandType.LINK,
+          routerLink: `/${INDIVIDUAL_CREATE_URL}`,
+          label: 'Создать',
+        },
+      ],
+      specific: [
+        {
+          type: RegistryCommandType.LINK,
+          label: 'Открыть карточку',
+          routerLink: (individual) =>
+            individual ? `/${getIndividualCardURL(individual.id)}` : null,
+        },
+      ],
     },
     columns: [
-      { field: 'id', header: 'id' },
-      { field: 'firstName', header: 'firstName', filter: { type: RegistryFilterType.Text } },
-      { field: 'secondName', header: 'secondName' },
-      { field: 'secondName', header: 'secondName' },
-      { field: 'secondName', header: 'secondName' },
-      { field: 'secondName', header: 'secondName' },
-      { field: 'secondName', header: 'secondName' },
+      {
+        field: 'firstName',
+        header: 'Имя',
+        type: RegistryColumnType.TEXT,
+        filter: { type: RegistryFilterType.TEXT },
+      },
+      {
+        field: 'secondName',
+        header: 'Фамилия',
+        type: RegistryColumnType.TEXT,
+        filter: { type: RegistryFilterType.TEXT },
+      },
+      {
+        field: 'surname',
+        header: 'Отчество',
+        type: RegistryColumnType.TEXT,
+        filter: { type: RegistryFilterType.TEXT },
+      },
+      {
+        field: 'email',
+        header: 'Email',
+        type: RegistryColumnType.EMAIL,
+        filter: { type: RegistryFilterType.TEXT },
+      },
+      {
+        field: 'phoneNumber',
+        header: 'Номер телефона',
+        type: RegistryColumnType.PHONE,
+        filter: { type: RegistryFilterType.TEXT },
+      },
     ],
     stateSaving: {
       key: 'individuals-page-registry',
@@ -37,9 +77,9 @@ export class IndividualsRegistryConfigService extends RegistryConfigService<Indi
     },
   });
 
-  override requestData(): Observable<RegistryContentModel<IndividualModel>> {
-    return this.individualAPI
-      .getIndividuals()
-      .pipe(map((content) => ({ total: content.length, content })));
+  override requestData(
+    params: RegistryLoadParamsModel,
+  ): Observable<RegistryContentModel<IndividualModel>> {
+    return this.individualManager.getIndividuals(params);
   }
 }

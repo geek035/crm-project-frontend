@@ -3,7 +3,7 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Observable, filter, map } from 'rxjs';
 
-import { NotBrowserError } from '@shared/model';
+import { NotBrowserError } from '@shared/lib';
 
 @Injectable({ providedIn: 'root' })
 export class FormStateSaverService {

@@ -3,7 +3,7 @@
 @import 'primeicons/primeicons.css';
 
 @import './shared/ui/breadcrumbs/breadcrumbs.css';
-@import './widgets/registry/ui/registry/registry.css';
+@import './shared/ui/registry/component/registry.css';
 
 @custom-variant dark (&:where(.crm-dark, .crm-dark *));
 
@@ -37,10 +37,17 @@ body {
   .crm-card {
     @apply border-primary border shadow-xl;
   }
-
   .crm-heading-1 {
     @apply font-semibold text-shadow-2xs;
 
     font-size: calc(1em * 1.3);
+  }
+
+  .crm-link {
+    @apply inline-flex items-center gap-1 font-medium no-underline transition-colors duration-150;
+    @apply hover:text-blue-400 hover:underline;
+  }
+  .crm-link__icon {
+    @apply text-sm opacity-80;
   }
 }

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CardModule } from 'primeng/card';
 
-import { Registry, RegistryConfigService } from '@widgets/registry';
+import { IndividualManagerService } from '@features/individual-manager';
+
+import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
 import { IndividualsRegistryConfigService } from '../../config/individuals-registry-config.service';
 
@@ -10,6 +12,7 @@ import { IndividualsRegistryConfigService } from '../../config/individuals-regis
   imports: [CardModule, Registry],
   templateUrl: './individuals-registry.component.html',
   providers: [
+    IndividualManagerService,
     IndividualsRegistryConfigService,
     { provide: RegistryConfigService, useExisting: IndividualsRegistryConfigService },
   ],

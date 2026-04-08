@@ -1,7 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { IndividualAPIService } from '@entities/individual';
+import { IndividualAPIService, IndividualModel, IndividualsQueryDTO } from '@entities/individual';
+
+import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
+import { PageModel } from '@shared/model';
 
 import { mapToIndividualAddDTO } from '../lib/individual-manager-command.mapper';
 import { IndividualAddCommand } from './commands/individual-add-command.model';
@@ -15,6 +18,18 @@ interface IndividualManagerCommandOptions<S, E, R> {
 @Injectable()
 export class IndividualManagerService {
   private readonly individualAPI = inject(IndividualAPIService);
+
+  getIndividuals(query: IndividualsQueryDTO): Observable<PageModel<IndividualModel>> {
+    if (query.pageNumber < 0 || query.pageSize < 0) {
+      throw new NotPositiveOrZeroValueError();
+    }
+
+    if (!Array.isArray(query.sort) || !Array.isArray(query.filters)) {
+      throw new NotValidValueError(`сортировка или фильтрация`);
+    }
+
+    return this.individualAPI.getIndividuals(query);
+  }
 
   addIndividual<R>(
     command: IndividualAddCommand,

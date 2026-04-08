@@ -2,25 +2,29 @@
 <p-table
   #dt
   class="crm-registry"
-  [ngClass]="{ 'crm-registry_full-page': useFullPageClass() }"
   selectionMode="single"
-  [rows]="5"
-  [lazy]="true"
-  [value]="data().content"
-  [columns]="columns()"
+  currentPageReportTemplate="От {first} до {last} из {totalRecords}"
   [dataKey]="generalSettings().dataKey ?? 'id'"
-  [loading]="state().status === 'loading'"
+  [ngClass]="{ 'crm-registry_full-page': useFullPageClass() }"
+  [showCurrentPageReport]="true"
+  [rows]="5"
   [rowHover]="true"
-  [stateKey]="stateSaving()?.key"
-  [paginator]="true"
-  [contextMenu]="contextMenu()?.length && cm"
-  [stateStorage]="stateSaving()?.storage ?? 'session'"
-  [totalRecords]="data().total"
-  [metaKeySelection]="false"
   [rowsPerPageOptions]="generalSettings().rowsPerPageOptions ?? [5, 10, 20]"
+  [metaKeySelection]="false"
+  [lazy]="true"
+  [loading]="state().status === 'loading'"
+  [value]="data().data"
+  [columns]="columns()"
+  [contextMenu]="contextMenu()?.length && cm"
+  [stateKey]="stateSaving()?.key"
+  [stateStorage]="stateSaving()?.storage ?? 'session'"
+  [paginator]="true"
+  [sortField]="$any(generalSettings().defaultSortField)"
+  [totalRecords]="data().total"
   [(selection)]="selectedValue"
   [(contextMenuSelection)]="selectedValue"
   (onLazyLoad)="handleLazyLoad($event)"
+  (onRowSelect)="handleDoubleClickOnRow($event)"
 >
   <ng-template #caption>
     <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>
@@ -57,22 +61,10 @@
         <ul class="flex gap-2">
           @for (command of tableCommands(); track command) {
             <li>
-              @if (command.link) {
-                <a pButton [routerLink]="command.routerLink">
-                  <span pButtonLabel>{{ command.label }}</span>
-                </a>
-              } @else {
-                <p-button
-                  [ariaLabel]="command?.ariaLabel"
-                  [badge]="command?.badge"
-                  [icon]="command?.icon"
-                  [label]="command?.label"
-                  [variant]="command?.variant"
-                  [severity]="command?.severity"
-                  [badgeSeverity]="command?.badgeSeverity"
-                  (onClick)="command?.command && command?.command(selectedValue())"
-                ></p-button>
-              }
+              <crm-registry-command
+                [command]="command"
+                [selectedValue]="selectedValue()"
+              ></crm-registry-command>
             </li>
           }
         </ul>
@@ -82,31 +74,18 @@
   <ng-template #header let-columns>
     <tr>
       @for (column of columns; track column) {
-        <th>{{ column.header }}</th>
+        <th [pSortableColumn]="column.field" [pSortableColumnDisabled]="column.disableSorting">
+          <div class="flex gap-1">
+            {{ column.header }}
+            <p-sortIcon [ngClass]="{ hidden: column.disableSorting }" [field]="column.field" />
+          </div>
+        </th>
       }
     </tr>
     <tr [ngClass]="{ 'hidden': !areThereFilters() }">
       @for (column of columns; track column) {
         <th>
-          @let filterObj = column.filter;
-          @switch (filterObj?.type) {
-            @case (filterType.Autocomplete) {
-              <p-columnFilter [field]="column.field" [showMenu]="false">
-                <ng-template #filter let-value let-filter="filterCallback">
-                  <crm-autocomplete
-                    [ngModel]="value"
-                    [query]="filterObj?.query"
-                    [optionalLabel]="filterObj?.optionLabel"
-                    [optionalValue]="filterObj?.optionValue"
-                    (ngModelChange)="filter($event)"
-                  ></crm-autocomplete>
-                </ng-template>
-              </p-columnFilter>
-            }
-            @case (filterType.Text) {
-              <p-columnFilter [type]="column.filter.type" [field]="column.field"></p-columnFilter>
-            }
-          }
+          <crm-registry-filter [column]="column"></crm-registry-filter>
         </th>
       }
     </tr>
@@ -115,7 +94,7 @@
     <tr [pSelectableRow]="item" [pContextMenuRow]="item">
       @for (column of columns; track column) {
         <td>
-          <span>{{ item[column.field] }}</span>
+          <crm-registry-column [column]="column" [item]="item"></crm-registry-column>
         </td>
       }
     </tr>
