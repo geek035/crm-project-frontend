@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
-import { BreadcrumbModel } from '../../model/breadcrumbs.model';
+import { BreadcrumbModel } from '../../model/user-interface/breadcrumbs.model';
 
 interface CalculateBreadcrumbsParams {
   breadcrumbByToken: BreadcrumbModel | null;

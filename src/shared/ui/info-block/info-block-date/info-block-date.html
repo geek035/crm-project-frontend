@@ -1,0 +1,27 @@
+@let valueObj = value();
+
+@switch (accessibility()) {
+  @case ('none') {
+    <div class="flex flex-col gap-1">
+      <div class="text-muted-color text-sm">{{ label() }}</div>
+      <div>
+        @if (valueObj) {
+          <crm-info-block-state-wrapper [state]="state()">
+            {{ valueObj | date: format() }}
+          </crm-info-block-state-wrapper>
+        }
+      </div>
+    </div>
+  }
+
+  @case ('term') {
+    <dt class="text-muted-color text-sm">{{ label() }}</dt>
+    <dd>
+      @if (valueObj) {
+        <crm-info-block-state-wrapper [state]="state()">
+          {{ valueObj | date: format() }}
+        </crm-info-block-state-wrapper>
+      }
+    </dd>
+  }
+}

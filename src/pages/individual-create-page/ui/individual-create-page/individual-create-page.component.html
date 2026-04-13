@@ -2,9 +2,14 @@
   <p-toast></p-toast>
   <p-toast [key]="individualFormKey">
     <ng-template let-message #headless let-closeFn="closeFn">
-      <section class="grid grid-rows-[auto_1fr_1fr] p-4">
+      <section
+        aria-describedby="individual-create-form-reset-toast"
+        class="grid grid-rows-[auto_1fr_1fr] p-4"
+      >
         <header class="flex">
-          <h3 class="text-lg font-bold">{{ message.summary }}</h3>
+          <h3 id="individual-create-form-reset-toast" class="text-lg font-bold">
+            {{ message.summary }}
+          </h3>
         </header>
 
         <p class="text-sm">{{ message.detail }}</p>

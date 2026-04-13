@@ -13,6 +13,10 @@ import { IndividualModel } from '../model/individual.model';
 export class IndividualAPIService {
   private readonly httpClient = inject(HttpClient);
 
+  getIndividualByID(id: IndividualModel['id']): Observable<IndividualModel> {
+    return this.httpClient.get<IndividualModel>(`${environment.API}/individuals/${id}`);
+  }
+
   addIndividual(payload: IndividualAddDTO): Observable<IndividualModel['id']> {
     return this.httpClient.post<IndividualModel['id']>(
       `${environment.API}/individuals/create`,

@@ -1,0 +1,11 @@
+<dl
+  class="grid gap-4"
+  [ngClass]="{
+    'grid-cols-1': colsSpan() === 1,
+    'grid-cols-2': colsSpan() === 2,
+    'grid-cols-3': colsSpan() === 3,
+    'grid-cols-4': colsSpan() === 4,
+  }"
+>
+  <ng-content></ng-content>
+</dl>

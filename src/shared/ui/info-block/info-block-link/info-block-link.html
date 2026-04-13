@@ -1,0 +1,33 @@
+@switch (accessibility()) {
+  @case ('link') {
+    <div class="flex flex-col gap-1">
+      <div class="text-muted-color text-sm">{{ label() }}</div>
+      <crm-info-block-state-wrapper [state]="state()">
+        <a
+          [ngClass]="{ 'crm-link': !disabled() }"
+          [attr.href]="currentLink() | infoBlockLink: type()"
+        >
+          {{ value() }}
+        </a>
+      </crm-info-block-state-wrapper>
+    </div>
+  }
+
+  @case ('link-term') {
+    <dt class="text-muted-color text-sm">{{ label() }}</dt>
+    <dd>
+      <crm-info-block-state-wrapper [state]="state()">
+        <a
+          [ngClass]="{ 'crm-link': !disabled() }"
+          [attr.href]="currentLink() | infoBlockLink: type()"
+        >
+          {{ value() }}
+        </a>
+      </crm-info-block-state-wrapper>
+    </dd>
+  }
+}
+
+<ng-template #skeleton>
+  <p-skeleton height="1em" />
+</ng-template>

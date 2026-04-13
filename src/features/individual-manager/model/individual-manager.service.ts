@@ -19,6 +19,14 @@ interface IndividualManagerCommandOptions<S, E, R> {
 export class IndividualManagerService {
   private readonly individualAPI = inject(IndividualAPIService);
 
+  getIndividualByID(id: IndividualModel['id']): Observable<IndividualModel> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор физ. лица');
+    }
+
+    return this.individualAPI.getIndividualByID(id);
+  }
+
   getIndividuals(query: IndividualsQueryDTO): Observable<PageModel<IndividualModel>> {
     if (query.pageNumber < 0 || query.pageSize < 0) {
       throw new NotPositiveOrZeroValueError();

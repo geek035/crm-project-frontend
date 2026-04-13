@@ -1,9 +1,12 @@
-export type { BreadcrumbModel } from './breadcrumbs.model';
-export { CRMErrorModel } from './crm-error.model';
-export { CRMFilterMatchMode, isCRMFilterMatchMode } from './filter-criterion.model';
-export type { FilterCriterionModel } from './filter-criterion.model';
-export type { PageModel } from './page.model';
-export { SortCriterionDirection } from './sort-criterion.model';
-export type { SortCriterionModel } from './sort-criterion.model';
-export { isWebErrorModel } from './web-error.model';
-export type { WebErrorModel } from './web-error.model';
+export { CRMErrorModel } from './technical/crm-error.model';
+export type { CRMStateModel } from './technical/crm-state.model';
+
+export type { BreadcrumbModel } from './user-interface/breadcrumbs.model';
+
+export { CRMFilterMatchMode, isCRMFilterMatchMode } from './web/filter-criterion.model';
+export type { FilterCriterionModel } from './web/filter-criterion.model';
+export type { PageModel } from './web/page.model';
+export { SortCriterionDirection } from './web/sort-criterion.model';
+export type { SortCriterionModel } from './web/sort-criterion.model';
+export { isWebErrorModel } from './web/web-error.model';
+export type { WebErrorModel } from './web/web-error.model';
