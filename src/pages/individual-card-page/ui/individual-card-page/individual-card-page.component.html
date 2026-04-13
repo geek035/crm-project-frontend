@@ -3,38 +3,58 @@
   @let stateObj = state();
 
   <h1 class="crm-heading-1 max-w-1/2">
-    <crm-info-block-text
-      accessibility="none"
-      [value]="individualObj | infoBlockFullname"
-      [state]="stateObj"
-    ></crm-info-block-text>
+    <crm-info-block-state [state]="stateObj">
+      {{ individualObj | infoBlockFullname | infoBlockEmpty: 'Не удалось получить данные' }}
+    </crm-info-block-state>
   </h1>
 
   <div class="mt-2 grid grid-cols-[1fr_auto]">
-    <p-card class="crm-card w-1/2">
+    <p-card class="crm-card sm:w-1/2">
       <section aria-describedby="individual-card-general-info">
         <header class="mb-2 border-b">
           <h2 id="individual-card-general-info" class="crm-heading-2">Основная информация</h2>
         </header>
 
-        <crm-info-block-grid [state]="stateObj" [colsSpan]="2">
-          <crm-info-block-link
-            type="mailto"
-            label="Email"
-            [value]="individualObj?.email"
-          ></crm-info-block-link>
+        <crm-info-block-state-wrapper [state]="stateObj">
+          <dl class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <div>
+              <dt class="text-muted-color text-sm">Электронная почта</dt>
+              <dd>
+                <crm-info-block-state>
+                  <a
+                    class="crm-link break-all"
+                    [attr.href]="individualObj?.email | infoBlockLink: 'mailto'"
+                  >
+                    {{ individualObj?.email | infoBlockEmpty }}
+                  </a>
+                </crm-info-block-state>
+              </dd>
+            </div>
 
-          <crm-info-block-link
-            type="tel"
-            label="Телефон"
-            [value]="individualObj?.phoneNumber"
-          ></crm-info-block-link>
+            <div>
+              <dt class="text-muted-color text-sm">Телефон</dt>
+              <dd>
+                <crm-info-block-state>
+                  <a
+                    class="crm-link break-all"
+                    [attr.href]="individualObj?.phoneNumber | infoBlockLink: 'tel'"
+                  >
+                    {{ individualObj?.phoneNumber | infoBlockEmpty }}
+                  </a>
+                </crm-info-block-state>
+              </dd>
+            </div>
 
-          <crm-info-block-date
-            label="Дата рождения"
-            [value]="individualObj?.birthdate"
-          ></crm-info-block-date>
-        </crm-info-block-grid>
+            <div>
+              <dt class="text-muted-color text-sm">Дата рождения</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ individualObj?.birthdate | date: dateFormat | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+          </dl>
+        </crm-info-block-state-wrapper>
       </section>
     </p-card>
   </div>

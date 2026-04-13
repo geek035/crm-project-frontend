@@ -9,7 +9,11 @@ interface InfoBlockFullnameAvailableType {
 export function getEntityFullname(
   entity: InfoBlockFullnameAvailableType | null | undefined,
 ): string | null {
-  return !entity ? null : `${entity.secondName} ${entity.firstName} ${entity?.surname ?? ''}`;
+  if (!entity?.secondName && !entity?.firstName) {
+    return null;
+  }
+
+  return `${entity.secondName} ${entity.firstName} ${entity?.surname ?? ''}`;
 }
 
 @Pipe({ name: 'infoBlockFullname' })

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InfoBlockLink } from './info-block-link';
+import { InfoBlockState } from './info-block-state';
 
-describe('InfoBlockLink', () => {
-  let component: InfoBlockLink;
-  let fixture: ComponentFixture<InfoBlockLink>;
+describe('InfoBlockStateWrapper', () => {
+  let component: InfoBlockState;
+  let fixture: ComponentFixture<InfoBlockState>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InfoBlockLink],
+      imports: [InfoBlockState],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InfoBlockLink);
+    fixture = TestBed.createComponent(InfoBlockState);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

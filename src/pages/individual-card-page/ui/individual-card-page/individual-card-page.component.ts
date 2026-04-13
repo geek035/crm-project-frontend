@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -5,14 +6,15 @@ import { CardModule } from 'primeng/card';
 
 import { IndividualManagerService } from '@features/individual-manager';
 
+import { BACKEND_DATE_FORMAT } from '@shared/lib';
 import { BreadcrumbModel, CRMErrorModel } from '@shared/model';
 import { BreadcrumbsService } from '@shared/ui/breadcrumbs';
 import {
-  InfoBlockDate,
+  InfoBlockEmptyPipe,
   InfoBlockFullnamePipe,
-  InfoBlockGrid,
-  InfoBlockLink,
-  InfoBlockText,
+  InfoBlockLinkPipe,
+  InfoBlockState,
+  InfoBlockStateWrapper,
   getEntityFullname,
 } from '@shared/ui/info-block';
 
@@ -22,11 +24,12 @@ import { IndividualCardController } from './individual-card-page.controller';
   selector: 'crm-individual-card',
   providers: [IndividualManagerService, IndividualCardController],
   imports: [
+    CommonModule,
     InfoBlockFullnamePipe,
-    InfoBlockGrid,
-    InfoBlockText,
-    InfoBlockDate,
-    InfoBlockLink,
+    InfoBlockState,
+    InfoBlockStateWrapper,
+    InfoBlockLinkPipe,
+    InfoBlockEmptyPipe,
     RouterModule,
     CardModule,
   ],
@@ -43,6 +46,8 @@ export class IndividualCardPage {
   readonly state = this.controller.state;
   readonly error = this.controller.error;
 
+  readonly dateFormat = BACKEND_DATE_FORMAT;
+
   constructor() {
     effect(() => {
       const error = this.error();
@@ -56,7 +61,9 @@ export class IndividualCardPage {
       const individual = this.individual();
 
       const url = this.router.url;
-      const label = getEntityFullname(individual) ?? 'Загрузка...';
+      const label = !individual
+        ? '...'
+        : (getEntityFullname(individual) ?? 'Неизвестное физ. лицо');
       const breadcrumb: BreadcrumbModel = { label, url };
       this.breadcrumbsService.setBreadcrumbByToken(breadcrumb);
     });
