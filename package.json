@@ -10,6 +10,7 @@
     "test": "ng test --watch=false",
     "test:watch": "ng test",
     "lint": "ng lint --fix",
+    "lint:all": "npm run pretty-quick && npm run lint && npm run fsd:lint",
     "fsd:lint": "steiger ./src",
     "fsd:lint:watch": "steiger ./src --watch",
     "pretty-quick": "pretty-quick --staged",

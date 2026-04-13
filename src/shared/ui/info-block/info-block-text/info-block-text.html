@@ -1,0 +1,17 @@
+@switch (accessibility()) {
+  @case ('none') {
+    <div class="flex flex-col gap-1">
+      <div class="text-muted-color text-sm">{{ label() }}</div>
+      <div>
+        <crm-info-block-state-wrapper [state]="state()">{{ value() }}</crm-info-block-state-wrapper>
+      </div>
+    </div>
+  }
+
+  @case ('term') {
+    <dt class="text-muted-color text-sm">{{ label() }}</dt>
+    <dd>
+      <crm-info-block-state-wrapper [state]="state()">{{ value() }}</crm-info-block-state-wrapper>
+    </dd>
+  }
+}

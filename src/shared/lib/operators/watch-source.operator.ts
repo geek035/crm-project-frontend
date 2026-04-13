@@ -1,11 +1,15 @@
-import { WritableSignal, isSignal } from '@angular/core';
+import { WritableSignal, isWritableSignal } from '@angular/core';
 import { MonoTypeOperatorFunction, Subject, defer, finalize } from 'rxjs';
 
 export function watchSource<T>(
-  loading$: Subject<boolean> | WritableSignal<boolean>,
+  loading$: Subject<boolean> | WritableSignal<boolean> | ((loading: boolean) => void),
 ): MonoTypeOperatorFunction<T> {
   const setValue = (value: boolean) =>
-    isSignal(loading$) ? loading$.set(value) : loading$.next(value);
+    isWritableSignal(loading$)
+      ? loading$.set(value)
+      : loading$ instanceof Subject
+        ? loading$.next(value)
+        : loading$(value);
 
   return (source$) =>
     defer(() => {

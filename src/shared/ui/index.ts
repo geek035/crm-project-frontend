@@ -1,8 +1,6 @@
 export { Autocomplete } from './controls/autocomplete/autocomplete';
 export type { AutocompleteInput } from './controls/autocomplete/autocomplete.model';
 
-export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
-
 export { FormMessageError } from './forms/form-message-error/form-message-error';
 export { FormStateSaverService } from './forms/form-state-saver/form-state-saver.service';
 export { hasControlErrors } from './forms/has-control-errors/has-control-errors';

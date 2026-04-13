@@ -1,0 +1,11 @@
+@let stateObj = currentState();
+
+@switch (stateObj.state) {
+  @case ('initial') {
+    <p-skeleton height="1em" />
+  }
+
+  @case ('success') {
+    <ng-content></ng-content>
+  }
+}

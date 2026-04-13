@@ -1,1 +1,41 @@
-<p>individual-card works!</p>
+<main class="mx-(--crm-page-mx)">
+  @let individualObj = individual();
+  @let stateObj = state();
+
+  <h1 class="crm-heading-1 max-w-1/2">
+    <crm-info-block-text
+      accessibility="none"
+      [value]="individualObj | infoBlockFullname"
+      [state]="stateObj"
+    ></crm-info-block-text>
+  </h1>
+
+  <div class="mt-2 grid grid-cols-[1fr_auto]">
+    <p-card class="crm-card w-1/2">
+      <section aria-describedby="individual-card-general-info">
+        <header class="mb-2 border-b">
+          <h2 id="individual-card-general-info" class="crm-heading-2">Основная информация</h2>
+        </header>
+
+        <crm-info-block-grid [state]="stateObj" [colsSpan]="2">
+          <crm-info-block-link
+            type="mailto"
+            label="Email"
+            [value]="individualObj?.email"
+          ></crm-info-block-link>
+
+          <crm-info-block-link
+            type="tel"
+            label="Телефон"
+            [value]="individualObj?.phoneNumber"
+          ></crm-info-block-link>
+
+          <crm-info-block-date
+            label="Дата рождения"
+            [value]="individualObj?.birthdate"
+          ></crm-info-block-date>
+        </crm-info-block-grid>
+      </section>
+    </p-card>
+  </div>
+</main>
