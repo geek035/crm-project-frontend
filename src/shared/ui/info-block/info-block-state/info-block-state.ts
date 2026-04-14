@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { SkeletonModule } from 'primeng/skeleton';
 
 import { CRMStateModel } from '@shared/model';
@@ -21,4 +21,10 @@ export class InfoBlockState {
   readonly currentState = computed<CRMStateModel>(
     () => this.state() || this.stateWrapper?.sharedState() || { state: 'initial' },
   );
+
+  constructor() {
+    effect(() => {
+      console.log(this.state());
+    });
+  }
 }

@@ -1,4 +1,4 @@
-export interface IndividualCreateFormValueModel<V extends boolean = boolean> {
+export interface IndividualFormValueModel<V extends boolean = boolean> {
   firstName: string;
   secondName: string;
   surname: string | null;

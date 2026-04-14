@@ -6,7 +6,11 @@ import { PageModel } from '@shared/model';
 
 import { environment } from '@environment';
 
-import { IndividualAddDTO, IndividualsQueryDTO } from '../model/individual-request.model';
+import {
+  IndividualAddDTO,
+  IndividualUpdateDTO,
+  IndividualsQueryDTO,
+} from '../model/individual-request.model';
 import { IndividualModel } from '../model/individual.model';
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +26,13 @@ export class IndividualAPIService {
       `${environment.API}/individuals/create`,
       payload,
     );
+  }
+
+  updateIndividual(
+    id: IndividualModel['id'],
+    payload: IndividualUpdateDTO,
+  ): Observable<IndividualModel> {
+    return this.httpClient.post<IndividualModel>(`${environment.API}/individual/${id}`, payload);
   }
 
   getIndividuals(

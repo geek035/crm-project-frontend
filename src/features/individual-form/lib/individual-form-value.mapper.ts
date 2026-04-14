@@ -1,8 +1,8 @@
-import { IndividualCreateFormValueModel } from '../model/individual-create-form-value.model';
+import { IndividualFormValueModel } from '../model/individual-create-form-value.model';
 
-export function mapToIndividualCreateFormValue<
-  T extends Record<keyof IndividualCreateFormValueModel, unknown>,
->(value: T): IndividualCreateFormValueModel {
+export function mapToIndividualFormValue<T extends Record<keyof IndividualFormValueModel, unknown>>(
+  value: T,
+): IndividualFormValueModel {
   return {
     firstName: String(value.firstName),
     secondName: String(value.secondName),

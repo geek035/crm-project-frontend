@@ -1,14 +1,13 @@
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { EMPTY, Observable, catchError } from 'rxjs';
 
+import { IndividualFormValueModel } from '@features/individual-form';
 import { IndividualManagerService } from '@features/individual-manager';
 
 import { IndividualModel } from '@entities/individual';
 
 import { NotValidDateError, watchSource } from '@shared/lib';
 import { CRMErrorModel } from '@shared/model';
-
-import { IndividualCreateFormValueModel } from '../../model/individual-create-form-value.model';
 
 @Injectable()
 export class IndividualCreatePageController {
@@ -24,9 +23,7 @@ export class IndividualCreatePageController {
     return this._error;
   }
 
-  addIndividual(
-    formValue: IndividualCreateFormValueModel<true>,
-  ): Observable<IndividualModel['id']> {
+  addIndividual(formValue: IndividualFormValueModel<true>): Observable<IndividualModel['id']> {
     return this.individualManager
       .addIndividual(formValue, {
         postprocessor: watchSource(this._loading),
@@ -37,18 +34,6 @@ export class IndividualCreatePageController {
           return EMPTY;
         }),
       );
-  }
-
-  isFormFieldsValid(
-    formValue: IndividualCreateFormValueModel,
-  ): formValue is IndividualCreateFormValueModel<true> {
-    return (
-      !!formValue.firstName &&
-      !!formValue.secondName &&
-      !!formValue.email &&
-      !!formValue.phoneNumber &&
-      formValue.birthdate instanceof Date
-    );
   }
 
   private handleError(error: Error): void {
