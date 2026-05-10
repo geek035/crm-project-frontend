@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { InfoBlockLinkType } from './info-block-link.model';
+export type InfoBlockLinkType = 'default' | 'tel' | 'mailto';
 
 @Pipe({ name: 'infoBlockLink' })
 export class InfoBlockLinkPipe implements PipeTransform {

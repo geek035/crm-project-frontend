@@ -8,8 +8,10 @@ import {
   concat,
   filter,
   map,
+  merge,
   shareReplay,
   switchMap,
+  tap,
 } from 'rxjs';
 
 import { IndividualManagerService } from '@features/individual-manager';
@@ -35,18 +37,26 @@ export class IndividualCardController {
     return this._state;
   }
 
+  private individualID: IndividualModel['id'] | null = null;
+
   private readonly individualID$ = new ReplaySubject<IndividualModel['id']>();
+  private readonly individualModel$ = new ReplaySubject<IndividualModel>();
   private readonly individualRouteID$ = this.activatedRoute.paramMap.pipe(
     map((paramMap) => paramMap.get('id')),
+    tap((id) => (this.individualID = id)),
   );
 
-  private readonly individual$ = concat(this.individualRouteID$, this.individualID$).pipe(
-    filter(Boolean),
-    switchMap((id) =>
-      this.individualManager
-        .getIndividualByID(id)
-        .pipe(watchSource((loading) => this.setLoading(loading))),
+  private readonly individual$ = merge(
+    concat(this.individualRouteID$, this.individualID$).pipe(
+      filter(Boolean),
+      switchMap((id) =>
+        this.individualManager
+          .getIndividualByID(id)
+          .pipe(watchSource((loading) => this.setLoading(loading))),
+      ),
     ),
+    this.individualModel$,
+  ).pipe(
     catchError((error: Error) => {
       console.error(error);
       this.setError();
@@ -76,5 +86,13 @@ export class IndividualCardController {
 
     this._state.set({ state: 'error', error: crmError });
     this._error.set(crmError);
+  }
+
+  update(model?: IndividualModel): void {
+    if (model) {
+      this.individualModel$.next(model);
+    } else if (this.individualID) {
+      this.individualID$.next(this.individualID);
+    }
   }
 }

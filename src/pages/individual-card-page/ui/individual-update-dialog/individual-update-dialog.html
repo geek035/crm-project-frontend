@@ -1,0 +1,27 @@
+<p-dialog [(visible)]="visible" [modal]="true" [resizable]="true">
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">Обновление данных физ. лица</h2>
+    </header>
+  </ng-template>
+
+  <crm-individual-form
+    #form="individualForm"
+    [customSubmitButton]="true"
+    [initialValue]="initialValue()"
+    (formSubmit)="handleFormSubmit($event)"
+  ></crm-individual-form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="form.individualFormKey"
+        [disabled]="form.individualForm.invalid"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>

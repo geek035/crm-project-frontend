@@ -1,10 +1,15 @@
+import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 import { BreadcrumbsService } from '@shared/ui/breadcrumbs';
-import { InfoBlockFullnamePipe } from '@shared/ui/info-block';
+import {
+  InfoBlockEmptyPipe,
+  InfoBlockFullnamePipe,
+  InfoBlockLinkPipe,
+} from '@shared/ui/info-block';
 
 import { IndividualCardPage } from './individual-card-page.component';
 import { IndividualCardController } from './individual-card-page.controller';
@@ -29,7 +34,11 @@ describe(IndividualCardPage.name, () => {
       ],
     })
       .overrideComponent(IndividualCardPage, {
-        set: { imports: [InfoBlockFullnamePipe], providers: [], schemas: [NO_ERRORS_SCHEMA] },
+        set: {
+          imports: [InfoBlockFullnamePipe, InfoBlockEmptyPipe, InfoBlockLinkPipe, DatePipe],
+          providers: [],
+          schemas: [NO_ERRORS_SCHEMA],
+        },
       })
       .compileComponents();
 
