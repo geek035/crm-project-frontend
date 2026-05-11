@@ -1,0 +1,6 @@
+export enum CompanyClientSegmentCode {
+  MICRO = 'MICRO',
+  SMALL_BUSINESS = 'SMALL_BUSINESS',
+  MEDIUM_BUSINESS = 'MEDIUM_BUSINESS',
+  PARTNER = 'PARTNER',
+}

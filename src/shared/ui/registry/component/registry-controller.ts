@@ -63,7 +63,6 @@ export class RegistryController<T> {
   );
 
   get stateSaving(): Signal<RegistryConfigModel<T>['stateSaving']> {
-    console.log(this._stateSaving());
     return this._stateSaving;
   }
 

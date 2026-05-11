@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { INDIVIDUAL_CARD_PAGE_ROUTE } from '@pages/individual-card-page';
-import { INDIVIDUAL_CREATE_ROUTE } from '@pages/individual-create-page';
-import { INDIVIDUALS_REGISTRY_PAGE_ROUTE } from '@pages/individuals-registry-page';
+import { COMPANIES_REGISTRY_PAGE_ROUTE } from '@pages/companies-registry';
+import { INDIVIDUAL_CARD_PAGE_ROUTE } from '@pages/individual-card';
+import { INDIVIDUAL_CREATE_ROUTE } from '@pages/individual-create';
+import { INDIVIDUALS_REGISTRY_PAGE_ROUTE } from '@pages/individuals-registry';
 
+import { getCompaniesRoutes } from '@features/companies-navigation';
 import { getIndividualsRoutes } from '@features/individuals-navigation';
 
 export const routes: Routes = [
@@ -12,4 +14,5 @@ export const routes: Routes = [
     INDIVIDUAL_CREATE_ROUTE,
     INDIVIDUALS_REGISTRY_PAGE_ROUTE,
   ]),
+  getCompaniesRoutes([COMPANIES_REGISTRY_PAGE_ROUTE]),
 ];

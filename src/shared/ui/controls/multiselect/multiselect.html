@@ -1,0 +1,13 @@
+<p-multi-select
+  appendTo="body"
+  [options]="options()"
+  [optionValue]="optionValue()"
+  [optionLabel]="optionLabel() ?? defaultOptionLabel"
+  [placeholder]="placeholder()"
+  [disabled]="disabled()"
+  [loading]="loading()"
+  [maxSelectedLabels]="2"
+  [showClear]="true"
+  [ngModel]="value()"
+  (ngModelChange)="handleModelChange($event)"
+></p-multi-select>

@@ -1,5 +1,7 @@
 export { Autocomplete } from './controls/autocomplete/autocomplete';
 export type { AutocompleteInput } from './controls/autocomplete/autocomplete.model';
+export { Multiselect } from './controls/multiselect/multiselect';
+export type { MultiselectInput } from './controls/multiselect/multiselect.model';
 
 export { FormMessageError } from './forms/form-message-error/form-message-error';
 export { FormStateSaverService } from './forms/form-state-saver/form-state-saver.service';

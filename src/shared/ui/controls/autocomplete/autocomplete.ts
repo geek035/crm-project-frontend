@@ -21,7 +21,6 @@ import { AutocompleteInput } from './autocomplete.model';
   selector: 'crm-autocomplete',
   imports: [CommonModule, FormsModule, AutoCompleteModule],
   templateUrl: './autocomplete.html',
-  styleUrl: './autocomplete.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => Autocomplete), multi: true },
@@ -46,6 +45,10 @@ export class Autocomplete<T> implements ControlValueAccessor {
 
   value: T | null = null;
   disabled = false;
+
+  handleModelChange(value: T): void {
+    this.onChange(value);
+  }
 
   handleComplete({ query }: AutoCompleteCompleteEvent): void {
     this.query$.next(query);

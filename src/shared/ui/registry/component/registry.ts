@@ -18,7 +18,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Table, TableLazyLoadEvent, TableModule, TableRowSelectEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { CRMErrorModel } from '@shared/model';
@@ -95,10 +95,6 @@ export class Registry<T> {
 
   handleLazyLoad(tableLazyLoadEvent: TableLazyLoadEvent): void {
     this.controller.load(tableLazyLoadEvent);
-  }
-
-  handleDoubleClickOnRow(event: TableRowSelectEvent): void {
-    console.log(event);
   }
 
   handledError(error: CRMErrorModel): void {

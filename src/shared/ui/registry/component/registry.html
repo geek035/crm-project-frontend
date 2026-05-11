@@ -24,7 +24,6 @@
   [(selection)]="selectedValue"
   [(contextMenuSelection)]="selectedValue"
   (onLazyLoad)="handleLazyLoad($event)"
-  (onRowSelect)="handleDoubleClickOnRow($event)"
 >
   <ng-template #caption>
     <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>

@@ -18,3 +18,18 @@
 @if (isTextFilter(filterObj)) {
   <p-columnFilter [type]="filterObj.type" [field]="$any(columnObj.field)"></p-columnFilter>
 }
+
+@if (isMultiselectFilter(filterObj)) {
+  <p-columnFilter [field]="$any(columnObj.field)" [matchMode]="matchMode.IN" [showMenu]="false">
+    <ng-template #filter let-value let-filter="filterCallback">
+      <crm-multiselect
+        [ngModel]="value"
+        [query]="filterObj.query"
+        [optionLabel]="filterObj.optionLabel"
+        [optionValue]="filterObj.optionValue"
+        [placeholder]="filterObj.placeholder"
+        (ngModelChange)="filter($event)"
+      ></crm-multiselect>
+    </ng-template>
+  </p-columnFilter>
+}
