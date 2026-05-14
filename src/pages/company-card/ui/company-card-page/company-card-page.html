@@ -1,0 +1,188 @@
+<main class="mx-(--crm-page-mx)">
+  @let companyObj = company();
+  @let stateObj = state();
+
+  <div class="flex flex-wrap justify-between gap-4">
+    <h1 class="crm-heading-1 grow self-end">
+      <crm-info-block-state [state]="stateObj">
+        {{
+          companyObj?.commercialName || companyObj?.officialName
+            | infoBlockEmpty: 'Не удалось получить данные'
+        }}
+      </crm-info-block-state>
+    </h1>
+
+    <nav
+      class="border-primary flex w-fit gap-4 rounded-[calc(var(--p-button-border-radius)+var(--company-card-nav-padding))] border p-(--company-card-nav-padding) [--company-card-nav-padding:--spacing(2)]"
+      aria-label="Действия с компанией"
+    >
+      <p-button
+        icon="pi pi-refresh"
+        ariaLabel="Обновить данные"
+        pTooltip="Обновить данные"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        [loading]="stateObj.state === 'loading'"
+        (onClick)="refreshCompany()"
+      ></p-button>
+    </nav>
+  </div>
+
+  <div class="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+    <p-card class="crm-card h-fit">
+      <section aria-labelledby="company-card-general-info">
+        <header class="mb-2 border-b">
+          <h2 id="company-card-general-info" class="crm-heading-2">Основная информация</h2>
+        </header>
+
+        <crm-info-block-state-wrapper [state]="stateObj">
+          <dl class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <div>
+              <dt class="text-muted-color text-sm">Коммерческое название</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.commercialName | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Официальное название</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.officialName | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">ИНН</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.inn | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">КПП</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.kpp | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Сегмент клиента</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (companyObj) {
+                    <p-tag
+                      [value]="companyObj.clientSegment.description"
+                      [severity]="getClientSegmentSeverity(companyObj)"
+                    ></p-tag>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Статус жизненного цикла</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (companyObj) {
+                    <p-tag
+                      [value]="companyObj.lifecycleStatus.description"
+                      [severity]="getLifecycleStatusSeverity(companyObj)"
+                    ></p-tag>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+          </dl>
+        </crm-info-block-state-wrapper>
+      </section>
+    </p-card>
+
+    <p-card class="crm-card">
+      <section aria-labelledby="company-card-registered-address">
+        <header class="mb-2 border-b">
+          <h2 id="company-card-registered-address" class="crm-heading-2">Юридический адрес</h2>
+        </header>
+
+        <crm-info-block-state-wrapper [state]="stateObj">
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
+            <div>
+              <dt class="text-muted-color text-sm">Страна</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.country | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Регион</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.region | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Город</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.city | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Улица</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.street | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Дом</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.building | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Офис</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.office | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Индекс</dt>
+              <dd>
+                <crm-info-block-state>
+                  <span>{{ companyObj?.registeredAddress?.postalCode | infoBlockEmpty }}</span>
+                </crm-info-block-state>
+              </dd>
+            </div>
+          </dl>
+        </crm-info-block-state-wrapper>
+      </section>
+    </p-card>
+  </div>
+</main>

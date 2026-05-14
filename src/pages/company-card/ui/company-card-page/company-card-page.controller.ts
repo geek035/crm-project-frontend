@@ -13,16 +13,14 @@ import {
   tap,
 } from 'rxjs';
 
-import { IndividualManagerService } from '@features/individual-manager';
-
-import { IndividualModel } from '@entities/individual';
+import { CompanyAPIService, CompanyDTO } from '@entities/company';
 
 import { watchSource } from '@shared/lib';
 import { CRMErrorModel, CRMStateModel } from '@shared/model';
 
 @Injectable()
-export class IndividualCardController {
-  private readonly individualManager = inject(IndividualManagerService);
+export class CompanyCardController {
+  private readonly companyAPI = inject(CompanyAPIService);
   private readonly activatedRoute = inject(ActivatedRoute);
 
   private readonly _error = signal<CRMErrorModel | null>(null);
@@ -35,38 +33,36 @@ export class IndividualCardController {
     return this._state;
   }
 
-  private individualID: IndividualModel['id'] | null = null;
+  private companyID: CompanyDTO['id'] | null = null;
 
-  private readonly individualID$ = new ReplaySubject<IndividualModel['id']>();
-  private readonly individualModel$ = new ReplaySubject<IndividualModel>();
-  private readonly individualRouteID$ = this.activatedRoute.paramMap.pipe(
+  private readonly companyID$ = new ReplaySubject<CompanyDTO['id']>();
+  private readonly companyModel$ = new ReplaySubject<CompanyDTO>();
+  private readonly companyRouteID$ = this.activatedRoute.paramMap.pipe(
     map((paramMap) => paramMap.get('id')),
-    tap((id) => (this.individualID = id)),
+    tap((id) => (this.companyID = id)),
   );
 
-  private readonly individual$ = merge(
-    merge(this.individualRouteID$, this.individualID$).pipe(
+  private readonly company$ = merge(
+    merge(this.companyRouteID$, this.companyID$).pipe(
       filter(Boolean),
       switchMap((id) =>
-        this.individualManager
-          .getIndividualByID(id)
-          .pipe(watchSource((loading) => this.setLoading(loading))),
+        this.companyAPI.getCompanyByID(id).pipe(watchSource((loading) => this.setLoading(loading))),
       ),
     ),
-    this.individualModel$,
+    this.companyModel$,
   ).pipe(
     catchError((error: Error) => {
       console.error(error);
-      this.setError();
+      this.setError(error);
 
       return EMPTY;
     }),
     shareReplay(1),
   );
 
-  private readonly _individual = toSignal(this.individual$, { initialValue: null });
-  get individual(): Signal<IndividualModel | null> {
-    return this._individual;
+  private readonly _company = toSignal(this.company$, { initialValue: null });
+  get company(): Signal<CompanyDTO | null> {
+    return this._company;
   }
 
   setLoading(value: boolean): void {
@@ -78,7 +74,7 @@ export class IndividualCardController {
     this._state.set(state);
   }
 
-  setError(error?: Error) {
+  setError(error?: Error): void {
     const message = error?.message ?? 'Произошла непредвиденная ошибка';
     const crmError = new CRMErrorModel(message);
 
@@ -86,11 +82,11 @@ export class IndividualCardController {
     this._error.set(crmError);
   }
 
-  update(model?: IndividualModel): void {
+  update(model?: CompanyDTO): void {
     if (model) {
-      this.individualModel$.next(model);
-    } else if (this.individualID) {
-      this.individualID$.next(this.individualID);
+      this.companyModel$.next(model);
+    } else if (this.companyID) {
+      this.companyID$.next(this.companyID);
     }
   }
 }

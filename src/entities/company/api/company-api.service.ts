@@ -37,4 +37,8 @@ export class CompanyAPIService {
   createCompany(payload: CompanyCreateDTO): Observable<string> {
     return this.httpClient.post<string>(`${environment.API}/companies/create`, payload);
   }
+
+  getCompanyByID(id: CompanyDTO['id']): Observable<CompanyDTO> {
+    return this.httpClient.get<CompanyDTO>(`${environment.API}/companies/${id}`);
+  }
 }

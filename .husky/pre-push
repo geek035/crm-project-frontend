@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo ">==== RUN STEIGER ====<"
+echo ""
+npm run fsd:lint ./src
+echo ""
+
+echo ">==== RUN TESTS ====<"
+echo ""
 npm run test
