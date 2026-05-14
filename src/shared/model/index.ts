@@ -1,5 +1,6 @@
 export { CRMErrorModel } from './technical/crm-error.model';
 export type { CRMStateModel } from './technical/crm-state.model';
+export type { FormControlsOF } from './technical/form-control-of.model';
 
 export type { BreadcrumbModel } from './user-interface/breadcrumbs.model';
 

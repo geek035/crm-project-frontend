@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -20,7 +19,7 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 
 import { DATE_PRIMENG_FORMAT, DATE_PRIMENG_PLACEHOLDER, PHONE_NUMBER_REGEXP } from '@shared/lib';
-import { FormMessageError, FormStateSaverService } from '@shared/ui';
+import { FormMessageError, FormRestoreSuggestion, FormStateSaverService } from '@shared/ui';
 
 import { isIndividualFormFieldsValid } from '../lib/individual-form-is-valid';
 import { mapToIndividualFormValue } from '../lib/individual-form-value.mapper';
@@ -32,6 +31,7 @@ import { IndividualFormValueModel } from '../model/individual-create-form-value.
   imports: [
     ReactiveFormsModule,
     FormMessageError,
+    FormRestoreSuggestion,
     CardModule,
     ButtonModule,
     MessageModule,
@@ -46,7 +46,6 @@ import { IndividualFormValueModel } from '../model/individual-create-form-value.
 export class IndividualForm implements AfterViewInit, OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly formBuilder = inject(FormBuilder);
-  private readonly messageService = inject(MessageService);
   private readonly formStateSaver = inject(FormStateSaverService);
 
   readonly initialValue = input<Partial<IndividualFormValueModel> | null>(null);
@@ -58,7 +57,7 @@ export class IndividualForm implements AfterViewInit, OnInit {
   readonly dateFormat = DATE_PRIMENG_FORMAT;
   readonly datePlaceholder = DATE_PRIMENG_PLACEHOLDER;
 
-  readonly individualFormKey = 'individual-form';
+  readonly individualFormKey = 'individual-create-form';
   readonly individualForm = this.formBuilder.nonNullable.group({
     firstName: ['', [Validators.required]],
     secondName: ['', [Validators.required]],
@@ -88,10 +87,6 @@ export class IndividualForm implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.subscribeToSaveFormState();
-
-    queueMicrotask(() => {
-      this.suggestRestoreForm();
-    });
   }
 
   handleSubmit(): void {
@@ -103,7 +98,7 @@ export class IndividualForm implements AfterViewInit, OnInit {
   }
 
   restoreForm(): void {
-    const savedValue = this.formStateSaver.getFormState<typeof this.individualForm.value>(
+    const savedValue = this.formStateSaver.getFormState<IndividualFormValueModel>(
       this.individualFormKey,
     );
 
@@ -116,18 +111,6 @@ export class IndividualForm implements AfterViewInit, OnInit {
   clearForm(): void {
     this.individualForm.reset();
     this.formStateSaver.clearFormState(this.individualFormKey);
-  }
-
-  private suggestRestoreForm(): void {
-    if (this.formStateSaver.isFormStateSaved(this.individualFormKey)) {
-      this.messageService.add({
-        key: this.individualFormKey,
-        sticky: true,
-        severity: 'contrast',
-        summary: 'Нашли данные',
-        detail: 'Нашли сохраненную форму. Восстановить данные?',
-      });
-    }
   }
 
   private subscribeToSaveFormState(): void {

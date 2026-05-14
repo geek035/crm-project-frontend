@@ -13,8 +13,8 @@ export class FormStateSaverService {
     return !!this.getItem(key);
   }
 
-  getFormState<T>(key: string): Record<keyof T, unknown> | null {
-    return this.getItem(key);
+  getFormState<T>(key: string): T | null {
+    return this.getItem<T>(key);
   }
 
   clearFormState(key: string): void {

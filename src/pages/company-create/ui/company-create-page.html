@@ -1,13 +1,13 @@
 <main class="mx-(--crm-page-mx)">
   <p-toast></p-toast>
 
-  <h1 class="crm-heading-1 mb-4">Создание записи о физическом лица</h1>
+  <h1 class="crm-heading-1 mb-4">Создание записи о компании</h1>
 
   <div class="lg:w-1/2">
-    <crm-individual-form
+    <crm-company-form
       submitLabel="Создать"
       [loading]="loading()"
       (formSubmit)="handleSubmit($event)"
-    ></crm-individual-form>
+    ></crm-company-form>
   </div>
 </main>

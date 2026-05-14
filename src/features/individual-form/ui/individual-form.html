@@ -1,43 +1,7 @@
-<p-toast [key]="individualFormKey">
-  <ng-template let-message #headless let-closeFn="closeFn">
-    <section
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-      aria-labelledby="individual-form-toast-summary"
-      aria-describedby="individual-form-toast-detail"
-      class="grid grid-rows-[auto_1fr_1fr] p-4"
-    >
-      <header class="flex">
-        <h3 id="individual-form-toast-summary" class="text-lg font-bold">
-          {{ message.summary }}
-        </h3>
-      </header>
-
-      <p id="individual-form-toast-summary" class="text-sm">{{ message.detail }}</p>
-      <footer class="flex justify-end gap-4">
-        <button
-          pButton
-          size="small"
-          severity="secondary"
-          aria-label="Восстановить данные формы"
-          (click)="restoreForm(); closeFn($event)"
-        >
-          Восстановить
-        </button>
-        <button
-          pButton
-          size="small"
-          severity="secondary"
-          aria-label="Закрыть уведомление"
-          (click)="closeFn($event)"
-        >
-          Отмена
-        </button>
-      </footer>
-    </section>
-  </ng-template>
-</p-toast>
+<crm-form-restore-suggestion
+  [formKey]="individualFormKey"
+  (restore)="restoreForm()"
+></crm-form-restore-suggestion>
 
 <form
   class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"

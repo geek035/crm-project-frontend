@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { COMPANIES_CREATE_URL, getCompanyCardURL } from '@features/companies-navigation';
+import { COMPANY_CREATE_URL, getCompanyCardURL } from '@features/companies-navigation';
 import { CompanyManagerService } from '@features/company-manager';
 
 import {
@@ -35,7 +35,7 @@ export class CompaniesRegistryConfigService extends RegistryConfigService<Compan
       general: [
         {
           type: RegistryCommandType.LINK,
-          routerLink: `/${COMPANIES_CREATE_URL}`,
+          routerLink: `/${COMPANY_CREATE_URL}`,
           label: 'Создать',
         },
       ],
@@ -110,6 +110,6 @@ export class CompaniesRegistryConfigService extends RegistryConfigService<Compan
       filters: mappedFilters,
     };
 
-    return this.companyManager.getIndividuals(mappedParams);
+    return this.companyManager.getCompanies(mappedParams);
   }
 }

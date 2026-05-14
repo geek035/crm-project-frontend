@@ -5,8 +5,8 @@ import { CompanyDTO } from '@entities/company';
 import { BreadcrumbModel } from '@shared/model';
 
 export const COMPANIES_URL = 'companies';
-export const COMPANIES_CREATE_URL = `${COMPANIES_URL}/create`;
-export const COMPANIES_CARD_URL = `${COMPANIES_URL}/card/:id`;
+export const COMPANY_CREATE_URL = `${COMPANIES_URL}/create`;
+export const COMPANY_CARD_URL = `${COMPANIES_URL}/card/:id`;
 
 export const getCompanyCardURL = (id: CompanyDTO['id']) => `${COMPANIES_URL}/card/${id}`;
 

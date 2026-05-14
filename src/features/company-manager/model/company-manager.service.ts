@@ -6,6 +6,9 @@ import { CompanyAPIService, CompanyDTO } from '@entities/company';
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
 import { BaseQueryDTO, PageModel } from '@shared/model';
 
+import { mapToCompanyCreateDTO } from '../lib/company-manager-command.mapper';
+import { CompanyCreateCommand } from './commands/company-create-command.model';
+
 interface CompanyManagerCommandOptions<S, E, R> {
   preprocessor: MonoTypeOperatorFunction<S>;
   apiProcessor: MonoTypeOperatorFunction<E>;
@@ -16,7 +19,7 @@ interface CompanyManagerCommandOptions<S, E, R> {
 export class CompanyManagerService {
   private readonly companyAPI = inject(CompanyAPIService);
 
-  getIndividuals<R>(
+  getCompanies<R>(
     query: BaseQueryDTO,
     options?: Pick<CompanyManagerCommandOptions<null, PageModel<CompanyDTO>, R>, 'postprocessor'>,
   ): Observable<R> {
@@ -31,6 +34,16 @@ export class CompanyManagerService {
     const handledOptions = this.handleProcessors(options);
 
     return this.companyAPI.getCompanies(query).pipe(handledOptions.postprocessor);
+  }
+
+  createCompany<R>(
+    command: CompanyCreateCommand,
+    options?: Pick<CompanyManagerCommandOptions<null, string, R>, 'postprocessor'>,
+  ): Observable<R> {
+    const handledOptions = this.handleProcessors(options);
+    const requestDTO = mapToCompanyCreateDTO(command);
+
+    return this.companyAPI.createCompany(requestDTO).pipe(handledOptions.postprocessor);
   }
 
   private handleProcessors<S, E, R>(
