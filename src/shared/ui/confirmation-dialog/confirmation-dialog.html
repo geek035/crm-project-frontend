@@ -1,0 +1,22 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="false"
+  [style]="{ width: 'min(28rem, calc(100vw - 2rem))' }"
+  (onHide)="handleCancel()"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">{{ dialogHeader() }}</h2>
+    </header>
+  </ng-template>
+
+  <p>{{ label() }}</p>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end gap-2 border-t pt-2">
+      <p-button label="Отмена" severity="secondary" [outlined]="true" (onClick)="handleCancel()" />
+      <p-button label="Подтвердить" severity="danger" (onClick)="handleConfirm()" />
+    </footer>
+  </ng-template>
+</p-dialog>

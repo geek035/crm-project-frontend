@@ -50,8 +50,8 @@ body {
   }
 
   .crm-link {
-    @apply inline-flex cursor-pointer items-center gap-1 font-medium no-underline transition-colors duration-150;
-    @apply hover:text-blue-400 hover:underline;
+    @apply inline-flex cursor-pointer items-center gap-1 font-medium underline transition-colors duration-150;
+    @apply hover:text-blue-400;
   }
   .crm-link__icon {
     @apply text-sm opacity-80;

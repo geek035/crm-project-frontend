@@ -2,32 +2,35 @@
 @let itemObj = item();
 
 @if (isTextColumn(columnObj)) {
-  <span>{{ itemObj[columnObj.field] }}</span>
+  <span>{{ getValue() }}</span>
+}
+
+@if (isLinkColumn(columnObj)) {
+  <a class="crm-link" [routerLink]="routerLink()">
+    <span>{{ getValue() }}</span>
+  </a>
 }
 
 @if (isEmailColumn(columnObj)) {
   <a class="crm-link" [href]="columnObj?.mailTo?.(itemObj) ?? `mailto:${itemObj[columnObj.field]}`">
     <i role="none" aria-hidden="true" class="pi pi-envelope crm-link__icon"></i>
-    {{ itemObj[columnObj.field] }}
+    {{ getValue() }}
   </a>
 }
 
 @if (isPhoneColumn(columnObj)) {
   <a class="crm-link" [href]="columnObj?.tel?.(itemObj) ?? `tel:${itemObj[columnObj.field]}`">
     <i class="pi pi-phone crm-link__icon"></i>
-    {{ itemObj[columnObj.field] }}
+    {{ getValue() }}
   </a>
 }
 
 @if (isDateColumn(columnObj)) {
   <time [attr.datetime]="itemObj[columnObj.field]">
-    {{ $any(itemObj[columnObj.field]) | date: columnObj.format }}
+    {{ $any(getValue()) | date: columnObj.format }}
   </time>
 }
 
 @if (isTagColumn(columnObj)) {
-  <p-tag
-    [value]="columnObj?.getValue?.(itemObj) ?? $any(itemObj[columnObj.field])"
-    [severity]="columnObj?.getSeverity?.(itemObj)"
-  ></p-tag>
+  <p-tag [value]="$any(getValue())" [severity]="columnObj?.getSeverity?.(itemObj)"></p-tag>
 }

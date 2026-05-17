@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
-import { IndividualsRegistry } from './individuals-registry/individuals-registry.component';
+import { IndividualsRegistry } from './individuals-registry.component';
 
 describe(IndividualsRegistry.name, () => {
   let component: IndividualsRegistry;

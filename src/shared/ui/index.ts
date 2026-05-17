@@ -3,6 +3,10 @@ export type { AutocompleteInput } from './controls/autocomplete/autocomplete.mod
 export { Multiselect } from './controls/multiselect/multiselect';
 export type { MultiselectInput } from './controls/multiselect/multiselect.model';
 
+export { ConfirmationDialog } from './confirmation-dialog/confirmation-dialog';
+export { ConfirmationDialogService } from './confirmation-dialog/confirmation-dialog.service';
+export type { ConfirmationDialogRequest } from './confirmation-dialog/confirmation-dialog.service';
+
 export { FormMessageError } from './forms/form-message-error/form-message-error';
 export { FormRestoreSuggestion } from './forms/form-restore-suggestion/form-restore-suggestion';
 export { FormStateSaverService } from './forms/form-state-saver/form-state-saver.service';

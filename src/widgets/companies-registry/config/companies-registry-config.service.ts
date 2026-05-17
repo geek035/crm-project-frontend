@@ -70,7 +70,7 @@ export class CompaniesRegistryConfigService extends RegistryConfigService<Compan
         field: 'clientSegment',
         header: 'Сегмент',
         type: RegistryColumnType.TAG,
-        getValue: (item) => item.clientSegment.description,
+        get: (item) => item.clientSegment.description,
         getSeverity: (item) => mapCompanyClientSegmentSeverity(item),
         filter: {
           type: RegistryFilterType.MULTISELECT,
@@ -82,7 +82,7 @@ export class CompaniesRegistryConfigService extends RegistryConfigService<Compan
         field: 'lifecycleStatus',
         header: 'Статус',
         type: RegistryColumnType.TAG,
-        getValue: (item) => item.lifecycleStatus.description,
+        get: (item) => item.lifecycleStatus.description,
         getSeverity: (item) => mapCompanyLifecycleStatusSeverity(item),
         filter: {
           type: RegistryFilterType.MULTISELECT,

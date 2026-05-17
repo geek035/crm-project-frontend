@@ -1,0 +1,9 @@
+@if (companyID(); as id) {
+  <crm-company-contact-create-dialog
+    [companyID]="id"
+    [(visible)]="createDialogVisible"
+    (created)="handleContactCreated()"
+  ></crm-company-contact-create-dialog>
+}
+
+<crm-registry></crm-registry>

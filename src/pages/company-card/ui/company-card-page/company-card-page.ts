@@ -2,35 +2,32 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { TagModule } from 'primeng/tag';
+import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 
-import {
-  CompanyDTO,
-  mapCompanyClientSegmentSeverity,
-  mapCompanyLifecycleStatusSeverity,
-} from '@entities/company';
+import { CompanyDTO } from '@entities/company';
 
 import { BreadcrumbModel, CRMErrorModel } from '@shared/model';
 import { CRM_TOAST_KEY } from '@shared/ui';
 import { BreadcrumbsService } from '@shared/ui/breadcrumbs';
-import { InfoBlockEmptyPipe, InfoBlockState, InfoBlockStateWrapper } from '@shared/ui/info-block';
+import { InfoBlockEmptyPipe, InfoBlockState } from '@shared/ui/info-block';
 
 import { COMPANY_CARD_BREADCRUMB_TOKEN } from '../../lib/company-card-breadcrumb-token.const';
+import { CompanyContacts } from '../company-contacts/company-contacts';
+import { CompanyGeneralInfo } from '../company-general-info/company-general-info';
 import { CompanyCardController } from './company-card-page.controller';
 
 @Component({
   selector: 'crm-company-card-page',
   providers: [CompanyCardController],
   imports: [
+    CompanyGeneralInfo,
+    CompanyContacts,
     InfoBlockState,
-    InfoBlockStateWrapper,
     InfoBlockEmptyPipe,
-    CardModule,
     ButtonModule,
-    TagModule,
     TooltipModule,
+    TabsModule,
   ],
   templateUrl: './company-card-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,9 +41,6 @@ export class CompanyCardPage {
   readonly company = this.controller.company;
   readonly state = this.controller.state;
   readonly error = this.controller.error;
-
-  readonly getClientSegmentSeverity = mapCompanyClientSegmentSeverity;
-  readonly getLifecycleStatusSeverity = mapCompanyLifecycleStatusSeverity;
 
   constructor() {
     effect(() => {

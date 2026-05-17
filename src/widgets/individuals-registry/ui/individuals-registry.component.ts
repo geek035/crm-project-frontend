@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { CardModule } from 'primeng/card';
 
 import { IndividualManagerService } from '@features/individual-manager';
+
+import { IndividualModel } from '@entities/individual';
 
 import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
@@ -17,4 +19,6 @@ import { IndividualsRegistryConfigService } from '../config/individuals-registry
     { provide: RegistryConfigService, useExisting: IndividualsRegistryConfigService },
   ],
 })
-export class IndividualsRegistry {}
+export class IndividualsRegistry {
+  readonly selectedValue = model<IndividualModel | null>(null);
+}
