@@ -1,11 +1,11 @@
 <crm-form-restore-suggestion
-  [formKey]="companyFormKey"
+  [formKey]="companyFormKey()"
   (restore)="restoreForm()"
 ></crm-form-restore-suggestion>
 
 <form
   class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
-  [id]="companyFormKey"
+  [id]="companyFormKey()"
   [formGroup]="companyForm"
   (ngSubmit)="handleSubmit()"
 >
@@ -272,17 +272,17 @@
     </p-card>
   </section>
 
-  <p-card class="border-primary border shadow-xl">
-    @if (!customSubmitButton()) {
+  @if (!customSubmitButton()) {
+    <p-card class="border-primary border shadow-xl">
       <button
         pButton
         type="submit"
-        [attr.form]="companyFormKey"
+        [attr.form]="companyFormKey()"
         [disabled]="companyForm.invalid"
         [loading]="loading()"
       >
         <span pButtonLabel>{{ submitLabel() }}</span>
       </button>
-    }
-  </p-card>
+    </p-card>
+  }
 </form>

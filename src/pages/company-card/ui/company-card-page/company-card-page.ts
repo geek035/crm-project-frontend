@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
+
+import { CompanyManagerService } from '@features/company-manager';
 
 import { CompanyDTO } from '@entities/company';
 
@@ -15,14 +17,18 @@ import { InfoBlockEmptyPipe, InfoBlockState } from '@shared/ui/info-block';
 import { COMPANY_CARD_BREADCRUMB_TOKEN } from '../../lib/company-card-breadcrumb-token.const';
 import { CompanyContacts } from '../company-contacts/company-contacts';
 import { CompanyGeneralInfo } from '../company-general-info/company-general-info';
+import { CompanyLifecycleUpdateDialog } from '../company-lifecycle-update-dialog/company-lifecycle-update-dialog';
+import { CompanyUpdateDialog } from '../company-update-dialog/company-update-dialog';
 import { CompanyCardController } from './company-card-page.controller';
 
 @Component({
   selector: 'crm-company-card-page',
-  providers: [CompanyCardController],
+  providers: [CompanyManagerService, CompanyCardController],
   imports: [
     CompanyGeneralInfo,
     CompanyContacts,
+    CompanyLifecycleUpdateDialog,
+    CompanyUpdateDialog,
     InfoBlockState,
     InfoBlockEmptyPipe,
     ButtonModule,
@@ -41,6 +47,8 @@ export class CompanyCardPage {
   readonly company = this.controller.company;
   readonly state = this.controller.state;
   readonly error = this.controller.error;
+  readonly updateDialogOpened = signal(false);
+  readonly lifecycleUpdateDialogOpened = signal(false);
 
   constructor() {
     effect(() => {
@@ -70,6 +78,14 @@ export class CompanyCardPage {
 
   refreshCompany(): void {
     this.controller.update();
+  }
+
+  openUpdateDialog(): void {
+    this.updateDialogOpened.set(true);
+  }
+
+  openLifecycleUpdateDialog(): void {
+    this.lifecycleUpdateDialogOpened.set(true);
   }
 
   handleCompanyUpdate(company: CompanyDTO): void {

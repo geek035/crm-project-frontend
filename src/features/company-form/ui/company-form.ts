@@ -54,6 +54,7 @@ export class CompanyForm implements OnInit, AfterViewInit {
   readonly loading = input(false);
   readonly submitLabel = input('Подтвердить');
   readonly customSubmitButton = input(false);
+  readonly formKey = input('company-create-form');
   readonly formSubmit = output<CompanyCreateFormValueModel<true>>();
 
   readonly clientSegmentsLoading = signal(false);
@@ -65,7 +66,7 @@ export class CompanyForm implements OnInit, AfterViewInit {
     { initialValue: [] },
   );
 
-  readonly companyFormKey = 'company-create-form';
+  readonly companyFormKey = this.formKey;
   readonly companyForm = this.formBuilder.nonNullable.group<
     FormControlsOF<CompanyCreateFormValueModel>
   >({
@@ -123,7 +124,7 @@ export class CompanyForm implements OnInit, AfterViewInit {
 
   restoreForm(): void {
     const savedValue = this.formStateSaver.getFormState<CompanyCreateFormValueModel>(
-      this.companyFormKey,
+      this.companyFormKey(),
     );
 
     if (savedValue) {
@@ -133,12 +134,12 @@ export class CompanyForm implements OnInit, AfterViewInit {
 
   clearForm(): void {
     this.companyForm.reset();
-    this.formStateSaver.clearFormState(this.companyFormKey);
+    this.formStateSaver.clearFormState(this.companyFormKey());
   }
 
   private subscribeToSaveFormState(): void {
     this.formStateSaver
-      .saveFormState(this.companyFormKey, this.companyForm)
+      .saveFormState(this.companyFormKey(), this.companyForm)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
   }

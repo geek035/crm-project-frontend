@@ -2,6 +2,20 @@
   @let companyObj = company();
   @let stateObj = state();
 
+  @if (companyObj) {
+    <crm-company-update-dialog
+      [model]="companyObj"
+      [(visible)]="updateDialogOpened"
+      (updated)="handleCompanyUpdate($event)"
+    ></crm-company-update-dialog>
+
+    <crm-company-lifecycle-update-dialog
+      [model]="companyObj"
+      [(visible)]="lifecycleUpdateDialogOpened"
+      (updated)="handleCompanyUpdate($event)"
+    ></crm-company-lifecycle-update-dialog>
+  }
+
   <div class="flex flex-wrap justify-between gap-4">
     <h1 class="crm-heading-1 grow self-end">
       <crm-info-block-state [state]="stateObj">
@@ -17,14 +31,23 @@
       aria-label="Действия с компанией"
     >
       <p-button
-        icon="pi pi-refresh"
-        ariaLabel="Обновить данные"
-        pTooltip="Обновить данные"
+        icon="pi pi-pencil"
+        ariaLabel="Редактировать"
+        pTooltip="Редактировать"
         tooltipStyleClass="text-sm"
         [rounded]="true"
         [outlined]="true"
-        [loading]="stateObj.state === 'loading'"
-        (onClick)="refreshCompany()"
+        (onClick)="openUpdateDialog()"
+      ></p-button>
+
+      <p-button
+        icon="pi pi-tag"
+        ariaLabel="Обновить статус"
+        pTooltip="Обновить статус"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        (onClick)="openLifecycleUpdateDialog()"
       ></p-button>
     </nav>
   </div>
@@ -34,7 +57,7 @@
       <p-tab value="general-info">Основная информация</p-tab>
       <p-tab value="contacts">Контакты</p-tab>
     </p-tablist>
-    <p-tabpanels>
+    <p-tabpanels [style]="{ 'padding': 0 }">
       <p-tabpanel value="general-info" [style]="{ 'padding': 0 }">
         <crm-company-general-info></crm-company-general-info>
       </p-tabpanel>

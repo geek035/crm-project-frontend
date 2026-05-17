@@ -9,7 +9,11 @@ import { environment } from '@environment';
 import { CompanyClientSegmentCode } from '../model/company-client-segment-code.model';
 import { CompanyDTO } from '../model/company-dto.model';
 import { CompanyLifecycleStatusCode } from '../model/company-lifecycle-status-code.model';
-import { CompanyCreateDTO } from '../model/company-request.model';
+import {
+  CompanyCreateDTO,
+  CompanyUpdateDTO,
+  CompanyUpdateLifecycleDTO,
+} from '../model/company-request.model';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyAPIService {
@@ -40,5 +44,19 @@ export class CompanyAPIService {
 
   getCompanyByID(id: CompanyDTO['id']): Observable<CompanyDTO> {
     return this.httpClient.get<CompanyDTO>(`${environment.API}/companies/${id}`);
+  }
+
+  updateCompany(id: CompanyDTO['id'], payload: CompanyUpdateDTO): Observable<CompanyDTO> {
+    return this.httpClient.put<CompanyDTO>(`${environment.API}/companies/${id}`, payload);
+  }
+
+  updateLifecycle(
+    id: CompanyDTO['id'],
+    payload: CompanyUpdateLifecycleDTO,
+  ): Observable<CompanyDTO> {
+    return this.httpClient.post<CompanyDTO>(
+      `${environment.API}/companies/${id}/lifecycle`,
+      payload,
+    );
   }
 }

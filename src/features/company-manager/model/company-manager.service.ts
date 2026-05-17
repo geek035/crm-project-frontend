@@ -1,13 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { CompanyAPIService, CompanyDTO } from '@entities/company';
+import { CompanyAPIService, CompanyDTO, CompanyLifecycleStatusCode } from '@entities/company';
 
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
 import { BaseQueryDTO, PageModel } from '@shared/model';
 
-import { mapToCompanyCreateDTO } from '../lib/company-manager-command.mapper';
+import {
+  mapToCompanyCreateDTO,
+  mapToCompanyUpdateDTO,
+} from '../lib/company-manager-command.mapper';
 import { CompanyCreateCommand } from './commands/company-create-command.model';
+import { CompanyUpdateCommand } from './commands/company-update-command.model';
 
 interface CompanyManagerCommandOptions<S, E, R> {
   preprocessor: MonoTypeOperatorFunction<S>;
@@ -44,6 +48,41 @@ export class CompanyManagerService {
     const requestDTO = mapToCompanyCreateDTO(command);
 
     return this.companyAPI.createCompany(requestDTO).pipe(handledOptions.postprocessor);
+  }
+
+  updateCompany<R>(
+    id: CompanyDTO['id'],
+    command: CompanyUpdateCommand,
+    options?: Pick<CompanyManagerCommandOptions<null, CompanyDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор компании');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+    const requestDTO = mapToCompanyUpdateDTO(command);
+
+    return this.companyAPI.updateCompany(id, requestDTO).pipe(handledOptions.postprocessor);
+  }
+
+  updateLifecycle<R>(
+    id: CompanyDTO['id'],
+    lifecycleCode: CompanyLifecycleStatusCode,
+    options?: Pick<CompanyManagerCommandOptions<null, CompanyDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор компании');
+    }
+
+    if (!lifecycleCode) {
+      throw new NotValidValueError('Не задан статус жизненного цикла компании');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.companyAPI
+      .updateLifecycle(id, { lifecycleCode })
+      .pipe(handledOptions.postprocessor);
   }
 
   private handleProcessors<S, E, R>(

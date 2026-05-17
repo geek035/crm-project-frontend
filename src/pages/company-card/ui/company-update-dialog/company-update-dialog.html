@@ -1,0 +1,35 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="true"
+  [style]="{ width: 'min(72rem, calc(100vw - 2rem))' }"
+  [contentStyle]="{ 'max-width': '100%', 'overflow-x': 'hidden' }"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">Обновление данных компании</h2>
+    </header>
+  </ng-template>
+
+  <crm-company-form
+    #form
+    formKey="company-update-form"
+    [customSubmitButton]="true"
+    [initialValue]="initialValue()"
+    (formSubmit)="handleFormSubmit($event)"
+  ></crm-company-form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="form.companyFormKey()"
+        [disabled]="form.companyForm.invalid"
+        [loading]="state().state === 'loading'"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>
