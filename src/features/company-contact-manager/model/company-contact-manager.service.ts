@@ -1,7 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction, filter, switchMap } from 'rxjs';
 
-import { CompanyContactAPIService, CompanyContactDTO } from '@entities/company-contact';
+import {
+  CompanyContactAPIService,
+  CompanyContactDTO,
+  CompanyContactRoleCode,
+  CompanyContactStatusCode,
+} from '@entities/company-contact';
 
 import { NotValidValueError } from '@shared/lib';
 import { ConfirmationDialogService } from '@shared/ui';
@@ -68,6 +73,60 @@ export class CompanyContactManagerService {
         ),
         handledOptions.postprocessor,
       );
+  }
+
+  updateRole<R>(
+    companyID: string,
+    contact: CompanyContactDTO,
+    roleCode: CompanyContactRoleCode,
+    options?: Partial<
+      Omit<CompanyContactManagerCommandOptions<null, CompanyContactDTO, R>, 'preprocessor'>
+    >,
+  ): Observable<R> {
+    if (!companyID) {
+      throw new NotValidValueError('Не задан идентификатор компании');
+    }
+
+    if (!contact?.id) {
+      throw new NotValidValueError('Не задан идентификатор контакта');
+    }
+
+    if (!roleCode) {
+      throw new NotValidValueError('Не задана роль контакта');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.companyContactAPI
+      .updateRole(companyID, contact.id, { roleCode })
+      .pipe(handledOptions.apiProcessor, handledOptions.postprocessor);
+  }
+
+  updateStatus<R>(
+    companyID: string,
+    contact: CompanyContactDTO,
+    statusCode: CompanyContactStatusCode,
+    options?: Partial<
+      Omit<CompanyContactManagerCommandOptions<null, CompanyContactDTO, R>, 'preprocessor'>
+    >,
+  ): Observable<R> {
+    if (!companyID) {
+      throw new NotValidValueError('Не задан идентификатор компании');
+    }
+
+    if (!contact?.id) {
+      throw new NotValidValueError('Не задан идентификатор контакта');
+    }
+
+    if (!statusCode) {
+      throw new NotValidValueError('Не задан статус контакта');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.companyContactAPI
+      .updateStatus(companyID, contact.id, { statusCode })
+      .pipe(handledOptions.apiProcessor, handledOptions.postprocessor);
   }
 
   private handleProcessors<S, E, R>(

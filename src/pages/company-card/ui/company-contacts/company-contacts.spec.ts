@@ -12,7 +12,11 @@ describe(CompanyContacts.name, () => {
   const controller = {
     companyID: signal(null),
     createDialogVisible: signal(false),
-    deletedRevision: signal(0),
+    updateDialogVisible: signal(false),
+    updateDialogMode: signal('role'),
+    updateDialogContact: signal(null),
+    contactsChangedRevision: signal(0),
+    handleUpdateDialogVisibilityChange: vitest.fn(),
   };
   const registryConfig = { refresh: vitest.fn() };
 

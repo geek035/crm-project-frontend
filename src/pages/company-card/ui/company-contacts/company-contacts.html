@@ -2,8 +2,19 @@
   <crm-company-contact-create-dialog
     [companyID]="id"
     [(visible)]="createDialogVisible"
-    (created)="handleContactCreated()"
+    (created)="handleContactChanged()"
   ></crm-company-contact-create-dialog>
+
+  @if (updateDialogContact(); as contact) {
+    <crm-company-contact-update-dialog
+      [companyID]="id"
+      [contact]="contact"
+      [mode]="updateDialogMode()"
+      [visible]="updateDialogVisible()"
+      (visibleChange)="handleUpdateDialogVisibilityChange($event)"
+      (updated)="handleContactChanged()"
+    ></crm-company-contact-update-dialog>
+  }
 }
 
 <crm-registry></crm-registry>

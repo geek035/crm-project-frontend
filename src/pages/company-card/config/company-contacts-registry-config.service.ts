@@ -52,6 +52,18 @@ export class CompanyContactsRegistryConfigService extends RegistryConfigService<
       specific: [
         {
           type: RegistryCommandType.BUTTON,
+          icon: 'pi pi-briefcase',
+          label: 'Обновить роль',
+          command: (contact) => this.contactsController.openRoleUpdateDialog(contact),
+        },
+        {
+          type: RegistryCommandType.BUTTON,
+          icon: 'pi pi-tag',
+          label: 'Обновить статус',
+          command: (contact) => this.contactsController.openStatusUpdateDialog(contact),
+        },
+        {
+          type: RegistryCommandType.BUTTON,
           icon: 'pi pi-trash',
           label: 'Удалить',
           severity: 'danger',
@@ -63,6 +75,7 @@ export class CompanyContactsRegistryConfigService extends RegistryConfigService<
       {
         field: 'fio',
         header: 'ФИО',
+        disableSorting: true,
         type: RegistryColumnType.LINK,
         routerLink: (contact) => `/${getIndividualCardURL(contact.individual.id)}`,
         get: (contact) => getEntityFullname(contact.individual) ?? '-',

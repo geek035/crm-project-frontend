@@ -6,11 +6,12 @@ import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
 import { CompanyContactsRegistryConfigService } from '../../config/company-contacts-registry-config.service';
 import { CompanyContactCreateDialog } from '../company-contact-create-dialog/company-contact-create-dialog';
+import { CompanyContactUpdateDialog } from '../company-contact-update-dialog/company-contact-update-dialog';
 import { CompanyContactsController } from './company-contacts.controller';
 
 @Component({
   selector: 'crm-company-contacts',
-  imports: [Registry, CompanyContactCreateDialog],
+  imports: [Registry, CompanyContactCreateDialog, CompanyContactUpdateDialog],
   templateUrl: './company-contacts.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -26,16 +27,23 @@ export class CompanyContacts {
 
   readonly companyID = this.controller.companyID;
   readonly createDialogVisible = this.controller.createDialogVisible;
+  readonly updateDialogVisible = this.controller.updateDialogVisible;
+  readonly updateDialogMode = this.controller.updateDialogMode;
+  readonly updateDialogContact = this.controller.updateDialogContact;
 
   constructor() {
     effect(() => {
-      if (this.controller.deletedRevision() > 0) {
+      if (this.controller.contactsChangedRevision() > 0) {
         untracked(() => this.registryConfig.refresh());
       }
     });
   }
 
-  handleContactCreated(): void {
+  handleContactChanged(): void {
     this.registryConfig.refresh();
+  }
+
+  handleUpdateDialogVisibilityChange(visible: boolean): void {
+    this.controller.handleUpdateDialogVisibilityChange(visible);
   }
 }

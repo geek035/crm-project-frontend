@@ -11,6 +11,7 @@ import { watchSource } from '@shared/lib';
 import { CRM_TOAST_KEY } from '@shared/ui';
 
 import { CompanyCardController } from '../company-card-page/company-card-page.controller';
+import { CompanyContactUpdateMode } from '../company-contact-update-dialog/company-contact-update-dialog.model';
 
 @Injectable()
 export class CompanyContactsController {
@@ -21,11 +22,30 @@ export class CompanyContactsController {
 
   readonly companyID = computed(() => this.companyCardController.company()?.id ?? null);
   readonly createDialogVisible = signal(false);
+  readonly updateDialogVisible = signal(false);
+  readonly updateDialogMode = signal<CompanyContactUpdateMode>('role');
+  readonly updateDialogContact = signal<CompanyContactDTO | null>(null);
   readonly loading = signal(false);
-  readonly deletedRevision = signal(0);
+  readonly contactsChangedRevision = signal(0);
 
   openCreateDialog(): void {
     this.createDialogVisible.set(true);
+  }
+
+  openRoleUpdateDialog(contact: CompanyContactDTO | null): void {
+    this.openUpdateDialog(contact, 'role');
+  }
+
+  openStatusUpdateDialog(contact: CompanyContactDTO | null): void {
+    this.openUpdateDialog(contact, 'status');
+  }
+
+  handleUpdateDialogVisibilityChange(visible: boolean): void {
+    this.updateDialogVisible.set(visible);
+
+    if (!visible) {
+      this.updateDialogContact.set(null);
+    }
   }
 
   deleteContact(contact: CompanyContactDTO | null): void {
@@ -53,7 +73,7 @@ export class CompanyContactsController {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
-        this.deletedRevision.update((revision) => revision + 1);
+        this.contactsChangedRevision.update((revision) => revision + 1);
         this.messageService.add({
           severity: 'success',
           key: CRM_TOAST_KEY,
@@ -61,5 +81,18 @@ export class CompanyContactsController {
           detail: 'Контакт компании удален',
         });
       });
+  }
+
+  private openUpdateDialog(
+    contact: CompanyContactDTO | null,
+    mode: CompanyContactUpdateMode,
+  ): void {
+    if (!contact) {
+      return;
+    }
+
+    this.updateDialogContact.set(contact);
+    this.updateDialogMode.set(mode);
+    this.updateDialogVisible.set(true);
   }
 }

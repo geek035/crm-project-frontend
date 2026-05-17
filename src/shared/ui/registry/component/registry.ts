@@ -78,6 +78,7 @@ export class Registry<T> {
   readonly filterType = RegistryFilterType;
   readonly tableCaptionActionsId = `registry-actions-${Registry.nextId++}`;
 
+  readonly showCommands = input(true);
   readonly selectedValue = model<T | null>(null);
   readonly searchValue = model<string>('');
   readonly tableCommands = computed(

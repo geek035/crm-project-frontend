@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { CardModule } from 'primeng/card';
 
 import { IndividualManagerService } from '@features/individual-manager';
@@ -21,4 +21,5 @@ import { IndividualsRegistryConfigService } from '../config/individuals-registry
 })
 export class IndividualsRegistry {
   readonly selectedValue = model<IndividualModel | null>(null);
+  readonly showCommands = input(true);
 }
