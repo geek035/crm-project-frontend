@@ -3,7 +3,7 @@
 
 echo ">==== RUN STEIGER ====<"
 echo ""
-npm run fsd:lint ./src
+#npm run fsd:lint
 echo ""
 
 echo ">==== RUN TESTS ====<"

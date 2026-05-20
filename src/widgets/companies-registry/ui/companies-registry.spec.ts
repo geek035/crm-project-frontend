@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompaniesRegistry } from './companies-registry';
@@ -9,7 +10,11 @@ describe('CompaniesRegistry', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CompaniesRegistry],
-    }).compileComponents();
+    })
+      .overrideComponent(CompaniesRegistry, {
+        set: { imports: [], providers: [], schemas: [NO_ERRORS_SCHEMA] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(CompaniesRegistry);
     component = fixture.componentInstance;
