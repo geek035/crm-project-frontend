@@ -1,0 +1,70 @@
+<main class="mx-(--crm-page-mx)">
+  @let companyObj = company();
+  @let stateObj = state();
+
+  @if (companyObj) {
+    <crm-company-update-dialog
+      [model]="companyObj"
+      [(visible)]="updateDialogOpened"
+      (updated)="handleCompanyUpdate($event)"
+    ></crm-company-update-dialog>
+
+    <crm-company-lifecycle-update-dialog
+      [model]="companyObj"
+      [(visible)]="lifecycleUpdateDialogOpened"
+      (updated)="handleCompanyUpdate($event)"
+    ></crm-company-lifecycle-update-dialog>
+  }
+
+  <div class="flex flex-wrap justify-between gap-4">
+    <h1 class="crm-heading-1 grow self-end">
+      <crm-info-block-state [state]="stateObj">
+        {{
+          companyObj?.commercialName || companyObj?.officialName
+            | infoBlockEmpty: 'Не удалось получить данные'
+        }}
+      </crm-info-block-state>
+    </h1>
+
+    <nav
+      class="border-primary flex w-fit gap-4 rounded-[calc(var(--p-button-border-radius)+var(--company-card-nav-padding))] border p-(--company-card-nav-padding) [--company-card-nav-padding:--spacing(2)]"
+      aria-label="Действия с компанией"
+    >
+      <p-button
+        icon="pi pi-pencil"
+        ariaLabel="Редактировать"
+        pTooltip="Редактировать"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        (onClick)="openUpdateDialog()"
+      ></p-button>
+
+      <p-button
+        icon="pi pi-tag"
+        ariaLabel="Обновить статус"
+        pTooltip="Обновить статус"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        (onClick)="openLifecycleUpdateDialog()"
+      ></p-button>
+    </nav>
+  </div>
+
+  <p-tabs value="general-info">
+    <p-tablist>
+      <p-tab value="general-info">Основная информация</p-tab>
+      <p-tab value="contacts">Контакты</p-tab>
+    </p-tablist>
+    <p-tabpanels [style]="{ 'padding': 0 }">
+      <p-tabpanel value="general-info" [style]="{ 'padding': 0 }">
+        <crm-company-general-info></crm-company-general-info>
+      </p-tabpanel>
+
+      <p-tabpanel value="contacts" [style]="{ 'padding': 0 }">
+        <crm-company-contacts></crm-company-contacts>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</main>

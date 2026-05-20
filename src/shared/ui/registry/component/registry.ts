@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   computed,
   effect,
   inject,
   input,
   model,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -18,12 +20,13 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SkeletonModule } from 'primeng/skeleton';
-import { Table, TableLazyLoadEvent, TableModule, TableRowSelectEvent } from 'primeng/table';
+import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { CRMErrorModel } from '@shared/model';
 import { CRM_TOAST_KEY } from '@shared/ui/notifications/crm-toast-key.const';
 
+import { RegistryConfigService } from '../registry-config/registry-config.service';
 import { RegistryFilterType } from '../registry-model/registry-filter.model';
 import { RegistryColumnItem } from './registry-column/registry-column-item';
 import { RegistryCommand } from './registry-command/registry-command';
@@ -60,7 +63,9 @@ export class Registry<T> {
   readonly useFullPageClass = input(true);
 
   private readonly controller = inject(RegistryController<T>);
+  private readonly configService = inject(RegistryConfigService<T>);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly data = this.controller.data;
   readonly state = this.controller.state;
@@ -73,6 +78,7 @@ export class Registry<T> {
   readonly filterType = RegistryFilterType;
   readonly tableCaptionActionsId = `registry-actions-${Registry.nextId++}`;
 
+  readonly showCommands = input(true);
   readonly selectedValue = model<T | null>(null);
   readonly searchValue = model<string>('');
   readonly tableCommands = computed(
@@ -84,6 +90,10 @@ export class Registry<T> {
   );
 
   constructor() {
+    this.configService.refreshes
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.selectedValue.set(null));
+
     effect(() => {
       const state = this.state();
 
@@ -95,10 +105,6 @@ export class Registry<T> {
 
   handleLazyLoad(tableLazyLoadEvent: TableLazyLoadEvent): void {
     this.controller.load(tableLazyLoadEvent);
-  }
-
-  handleDoubleClickOnRow(event: TableRowSelectEvent): void {
-    console.log(event);
   }
 
   handledError(error: CRMErrorModel): void {

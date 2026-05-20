@@ -24,7 +24,6 @@
   [(selection)]="selectedValue"
   [(contextMenuSelection)]="selectedValue"
   (onLazyLoad)="handleLazyLoad($event)"
-  (onRowSelect)="handleDoubleClickOnRow($event)"
 >
   <ng-template #caption>
     <span class="sr-only" [id]="tableCaptionActionsId">Действия таблицы</span>
@@ -58,7 +57,7 @@
         </div>
       </ng-template>
       <ng-template #end>
-        <ul class="flex gap-2">
+        <ul class="flex gap-2" [ngClass]="{ hidden: !showCommands() }">
           @for (command of tableCommands(); track command) {
             <li>
               <crm-registry-command

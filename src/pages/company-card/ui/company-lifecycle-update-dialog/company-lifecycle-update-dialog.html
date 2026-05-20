@@ -1,0 +1,68 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="false"
+  [style]="{ width: 'min(32rem, calc(100vw - 2rem))' }"
+  (onHide)="resetForm()"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">Обновление статуса компании</h2>
+    </header>
+  </ng-template>
+
+  @let stateObj = state();
+
+  <form
+    class="mt-2 grid gap-4"
+    [id]="formID"
+    [formGroup]="lifecycleForm"
+    (ngSubmit)="handleSubmit()"
+  >
+    @if (stateObj.state === 'error') {
+      <p-message severity="error" variant="simple">
+        {{ stateObj.error?.message }}
+      </p-message>
+    }
+
+    <section aria-labelledby="company-lifecycle-status">
+      <p-float-label variant="on">
+        <p-select
+          fluid
+          appendTo="body"
+          inputId="company-lifecycle-status"
+          optionLabel="description"
+          optionValue="code"
+          [options]="statuses()"
+          [loading]="statusesLoading()"
+          [formControl]="lifecycleControls.lifecycleCode"
+        ></p-select>
+        <label for="company-lifecycle-status">Статус жизненного цикла</label>
+      </p-float-label>
+
+      @if (lifecycleControls.lifecycleCode.touched && lifecycleControls.lifecycleCode.invalid) {
+        <p-message severity="error" variant="simple">
+          Выберите статус жизненного цикла компании
+        </p-message>
+      }
+
+      @if (statusesError(); as error) {
+        <p-message severity="error" variant="simple">{{ error }}</p-message>
+      }
+    </section>
+  </form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="formID"
+        [disabled]="lifecycleForm.invalid"
+        [loading]="stateObj.state === 'loading'"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>

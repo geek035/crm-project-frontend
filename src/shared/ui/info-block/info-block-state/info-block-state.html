@@ -1,11 +1,7 @@
 @let stateObj = currentState();
 
-@switch (stateObj.state) {
-  @case ('initial') {
-    <p-skeleton height="1.2em" />
-  }
-
-  @case ('success') {
-    <ng-content></ng-content>
-  }
+@if (stateObj.state === 'initial' || stateObj.state === 'loading') {
+  <p-skeleton height="1.2em" />
+} @else if (stateObj.state === 'success') {
+  <ng-content />
 }

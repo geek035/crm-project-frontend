@@ -1,0 +1,288 @@
+<crm-form-restore-suggestion
+  [formKey]="companyFormKey()"
+  (restore)="restoreForm()"
+></crm-form-restore-suggestion>
+
+<form
+  class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+  [id]="companyFormKey()"
+  [formGroup]="companyForm"
+  (ngSubmit)="handleSubmit()"
+>
+  <section aria-labelledby="company-generalinfo">
+    <p-card class="border-primary border shadow-xl">
+      <ng-template #title>
+        <div class="flex">
+          <h2 class="w-fit" id="company-generalinfo">Основная информация</h2>
+          <p-button
+            class="ms-auto"
+            icon="pi pi-undo"
+            pTooltip="Очистить"
+            tooltipStyleClass="text-sm"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="clearForm()"
+          ></p-button>
+        </div>
+      </ng-template>
+
+      <div
+        class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+      >
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-commercial-name"
+                [formControl]="companyControls.commercialName"
+              />
+              <label for="company-commercial-name">Коммерческое название</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="companyControls.commercialName"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-official-name"
+                [formControl]="companyControls.officialName"
+              />
+              <label for="company-official-name">Официальное название</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="companyControls.officialName"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap) lg:grid-cols-[minmax(150px,1fr)_minmax(0,250px)_minmax(0,250px)]"
+        >
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="company-client-segment"
+                optionLabel="description"
+                [options]="clientSegments()"
+                [loading]="clientSegmentsLoading()"
+                [formControl]="companyControls.clientSegment"
+              ></p-select>
+              <label for="company-client-segment">Сегмент клиента</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="companyControls.clientSegment"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input fluid pInputText id="company-inn" [formControl]="companyControls.inn" />
+              <label for="company-inn">ИНН</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="companyControls.inn"
+              [defaultErrors]="['required']"
+              [customErrors]="['pattern']"
+            >
+              @if (companyControls.inn.hasError('pattern')) {
+                <p-message severity="error" variant="simple"
+                  >ИНН должен состоять из 10 цифр</p-message
+                >
+              }
+            </crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input fluid pInputText id="company-kpp" [formControl]="companyControls.kpp" />
+              <label for="company-kpp">КПП</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="companyControls.kpp"
+              [defaultErrors]="['required']"
+              [customErrors]="['pattern']"
+            >
+              @if (companyControls.kpp.hasError('pattern')) {
+                <p-message severity="error" variant="simple"
+                  >КПП должен состоять из 9 цифр</p-message
+                >
+              }
+            </crm-form-message-error>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  <section aria-labelledby="company-registered-address">
+    <p-card class="border-primary border shadow-xl">
+      <ng-template #title>
+        <h2 id="company-registered-address">Юридический адрес</h2>
+      </ng-template>
+
+      <div
+        class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+        formGroupName="registeredAddress"
+      >
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-country"
+                [formControl]="registeredAddressControls.country"
+              />
+              <label for="company-address-country">Страна</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.country"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-region"
+                [formControl]="registeredAddressControls.region"
+              />
+              <label for="company-address-region">Регион</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.region"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-city"
+                [formControl]="registeredAddressControls.city"
+              />
+              <label for="company-address-city">Город</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.city"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-street"
+                [formControl]="registeredAddressControls.street"
+              />
+              <label for="company-address-street">Улица</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.street"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap) lg:grid-cols-[minmax(0,250px)_minmax(0,250px)_minmax(0,250px)]"
+        >
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-building"
+                [formControl]="registeredAddressControls.building"
+              />
+              <label for="company-address-building">Дом</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.building"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-office"
+                [formControl]="registeredAddressControls.office"
+              />
+              <label for="company-address-office">Офис</label>
+            </p-float-label>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                id="company-address-postal-code"
+                [formControl]="registeredAddressControls.postalCode"
+              />
+              <label for="company-address-postal-code">Индекс</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="registeredAddressControls.postalCode"
+              [defaultErrors]="['required']"
+              [customErrors]="['pattern']"
+            >
+              @if (registeredAddressControls.postalCode.hasError('pattern')) {
+                <p-message severity="error" variant="simple"
+                  >Индекс должен состоять из 6 цифр</p-message
+                >
+              }
+            </crm-form-message-error>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  @if (!customSubmitButton()) {
+    <p-card class="border-primary border shadow-xl">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="companyFormKey()"
+        [disabled]="companyForm.invalid"
+        [loading]="loading()"
+      >
+        <span pButtonLabel>{{ submitLabel() }}</span>
+      </button>
+    </p-card>
+  }
+</form>

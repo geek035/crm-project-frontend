@@ -2,7 +2,7 @@ import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FilterMetadata } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { ReplaySubject, catchError, of, switchMap, tap } from 'rxjs';
+import { ReplaySubject, catchError, map, merge, of, switchMap, tap, withLatestFrom } from 'rxjs';
 
 import { isNotNullOrUndefined } from '@shared/lib';
 import {
@@ -63,12 +63,18 @@ export class RegistryController<T> {
   );
 
   get stateSaving(): Signal<RegistryConfigModel<T>['stateSaving']> {
-    console.log(this._stateSaving());
     return this._stateSaving;
   }
 
   private readonly params$ = new ReplaySubject<RegistryLoadParamsModel>(1);
-  private readonly data$ = this.params$.pipe(
+  private readonly requestParams$ = merge(
+    this.params$,
+    this.configService.refreshes.pipe(
+      withLatestFrom(this.params$),
+      map(([, params]) => params),
+    ),
+  );
+  private readonly data$ = this.requestParams$.pipe(
     tap(() => this._state().status !== 'initial' && this._state.set({ status: 'loading' })),
     switchMap((params) => this.configService.requestData(params)),
     tap(() => this._state.set({ status: 'success' })),

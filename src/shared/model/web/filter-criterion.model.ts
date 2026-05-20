@@ -5,6 +5,7 @@ export enum CRMFilterMatchMode {
   ENDS_WITH = 'endsWith',
   EQUALS = 'equals',
   NOT_EQUALS = 'notEquals',
+  IN = 'in',
 }
 
 export interface FilterCriterionModel<T = unknown> {

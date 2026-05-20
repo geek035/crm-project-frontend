@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { IndividualAPIService, IndividualModel, IndividualsQueryDTO } from '@entities/individual';
+import { IndividualAPIService, IndividualModel } from '@entities/individual';
 
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
-import { PageModel } from '@shared/model';
+import { BaseQueryDTO, PageModel } from '@shared/model';
 
 import {
   mapToIndividualAddDTO,
@@ -37,7 +37,7 @@ export class IndividualManagerService {
   }
 
   getIndividuals<R>(
-    query: IndividualsQueryDTO,
+    query: BaseQueryDTO,
     options?: Pick<
       IndividualManagerCommandOptions<null, PageModel<IndividualModel>, R>,
       'postprocessor'

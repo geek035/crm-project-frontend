@@ -1,0 +1,40 @@
+<p-toast [key]="formKey()">
+  <ng-template let-message #headless let-closeFn="closeFn">
+    <section
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-labelledby="restore-form-toast-summary"
+      aria-describedby="restore-form-toast-detail"
+      class="grid grid-rows-[auto_1fr_1fr] p-4"
+    >
+      <header class="flex">
+        <h3 id="restore-form-toast-summary" class="text-lg font-bold">
+          {{ message.summary }}
+        </h3>
+      </header>
+
+      <p id="restore-form-toast-summary" class="text-sm">{{ message.detail }}</p>
+      <footer class="flex justify-end gap-4">
+        <button
+          pButton
+          size="small"
+          severity="secondary"
+          aria-label="Восстановить данные формы"
+          (click)="handleRestoreClick(); closeFn($event)"
+        >
+          Восстановить
+        </button>
+        <button
+          pButton
+          size="small"
+          severity="secondary"
+          aria-label="Закрыть уведомление"
+          (click)="closeFn($event)"
+        >
+          Отмена
+        </button>
+      </footer>
+    </section>
+  </ng-template>
+</p-toast>

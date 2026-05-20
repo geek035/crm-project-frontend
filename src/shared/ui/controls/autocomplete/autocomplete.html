@@ -1,8 +1,9 @@
 <p-autocomplete
-  [(ngModel)]="value"
+  [ngModel]="value"
   [disabled]="disabled"
   [optionLabel]="optionalLabel()"
   [suggestions]="suggestions()"
+  (ngModelChange)="handleModelChange($event)"
   (onBlur)="onTouched()"
   (completeMethod)="handleComplete($event)"
 ></p-autocomplete>

@@ -3,12 +3,12 @@ import { MenuItem } from 'primeng/api';
 import { RegistryColumnModel } from './registry-column.model';
 import { RegistryCommandModel } from './registry-command.model';
 
-export interface RegistryConfigModel<T> {
+export interface RegistryConfigModel<T, TAdditional = keyof T> {
   dataKey?: string;
   defaultSortField?: keyof T;
   rowsPerPageOptions?: number[];
   showSearch?: boolean;
-  columns: RegistryColumnModel<T>[];
+  columns: RegistryColumnModel<T, TAdditional>[];
   contextMenu?: MenuItem[];
   commands?: {
     general?: RegistryCommandModel<T>[];

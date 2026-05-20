@@ -1,0 +1,63 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="false"
+  [style]="{ width: 'min(32rem, calc(100vw - 2rem))' }"
+  (onHide)="resetForm()"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">{{ dialogHeader() }}</h2>
+    </header>
+  </ng-template>
+
+  @let stateObj = state();
+
+  <form class="mt-2 grid gap-4" [id]="formID" [formGroup]="updateForm" (ngSubmit)="handleSubmit()">
+    @if (stateObj.state === 'error') {
+      <p-message severity="error" variant="simple">
+        {{ stateObj.error?.message }}
+      </p-message>
+    }
+
+    <section [attr.aria-labelledby]="selectInputID()">
+      <p-float-label variant="on">
+        <p-select
+          fluid
+          appendTo="body"
+          optionLabel="description"
+          optionValue="code"
+          [inputId]="selectInputID()"
+          [options]="options()"
+          [loading]="optionsLoading()"
+          [formControl]="updateControls.value"
+        ></p-select>
+        <label [for]="selectInputID()">{{ fieldLabel() }}</label>
+      </p-float-label>
+
+      @if (updateControls.value.touched && updateControls.value.invalid) {
+        <p-message severity="error" variant="simple">
+          Выберите {{ mode() === 'role' ? 'роль' : 'статус' }} контакта
+        </p-message>
+      }
+
+      @if (optionsError(); as error) {
+        <p-message severity="error" variant="simple">{{ error }}</p-message>
+      }
+    </section>
+  </form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="formID"
+        [disabled]="updateForm.invalid"
+        [loading]="stateObj.state === 'loading'"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>

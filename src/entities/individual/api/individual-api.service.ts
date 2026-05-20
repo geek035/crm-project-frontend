@@ -2,15 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { PageModel } from '@shared/model';
+import { BaseQueryDTO, PageModel } from '@shared/model';
 
 import { environment } from '@environment';
 
-import {
-  IndividualAddDTO,
-  IndividualUpdateDTO,
-  IndividualsQueryDTO,
-} from '../model/individual-request.model';
+import { IndividualAddDTO, IndividualUpdateDTO } from '../model/individual-request.model';
 import { IndividualModel } from '../model/individual.model';
 
 @Injectable({ providedIn: 'root' })
@@ -35,9 +31,7 @@ export class IndividualAPIService {
     return this.httpClient.post<IndividualModel>(`${environment.API}/individual/${id}`, payload);
   }
 
-  getIndividuals(
-    payload: Partial<IndividualsQueryDTO> = {},
-  ): Observable<PageModel<IndividualModel>> {
+  getIndividuals(payload: Partial<BaseQueryDTO> = {}): Observable<PageModel<IndividualModel>> {
     return this.httpClient.post<PageModel<IndividualModel>>(
       `${environment.API}/individuals/query`,
       payload,

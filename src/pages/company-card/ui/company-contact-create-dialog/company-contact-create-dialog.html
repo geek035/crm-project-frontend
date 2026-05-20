@@ -1,0 +1,85 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="true"
+  [style]="{ width: 'min(64rem, calc(100vw - 2rem))' }"
+  [contentStyle]="{ 'max-width': '100%', 'overflow-x': 'hidden' }"
+  (onHide)="resetForm()"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">Создание контакта компании</h2>
+    </header>
+  </ng-template>
+
+  @let stateObj = state();
+
+  <form
+    class="mt-2 grid min-w-0 gap-4"
+    [id]="formID"
+    [formGroup]="contactForm"
+    (ngSubmit)="handleSubmit()"
+  >
+    @if (stateObj.state === 'error') {
+      <p-message severity="error" variant="simple">
+        {{ stateObj.error?.message }}
+      </p-message>
+    }
+
+    <section class="min-w-0 md:w-1/2" aria-labelledby="company-contact-role">
+      <h3 id="company-contact-role" class="sr-only">Роль контакта</h3>
+
+      <p-float-label variant="on">
+        <p-select
+          fluid
+          appendTo="body"
+          inputId="company-contact-role"
+          optionLabel="description"
+          optionValue="code"
+          [options]="roles()"
+          [loading]="rolesLoading()"
+          [formControl]="contactControls.roleCode"
+        ></p-select>
+        <label for="company-contact-role">Роль</label>
+      </p-float-label>
+
+      @if (contactControls.roleCode.touched && contactControls.roleCode.invalid) {
+        <p-message severity="error" variant="simple">Выберите роль контакта</p-message>
+      }
+
+      @if (rolesError(); as error) {
+        <p-message severity="error" variant="simple">{{ error }}</p-message>
+      }
+    </section>
+
+    <section class="min-w-0" aria-labelledby="company-contact-individual">
+      <h3 id="company-contact-individual" class="crm-heading-3 mb-2">Физическое лицо</h3>
+
+      @if (contactControls.individualID.touched && contactControls.individualID.invalid) {
+        <p-message class="mb-2" severity="error" variant="simple">
+          Выберите физическое лицо
+        </p-message>
+      }
+
+      <crm-individuals-registry
+        [showCommands]="false"
+        [selectedValue]="selectedIndividual()"
+        (selectedValueChange)="handleIndividualSelection($event)"
+      ></crm-individuals-registry>
+    </section>
+  </form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="formID"
+        [disabled]="contactForm.invalid"
+        [loading]="stateObj.state === 'loading'"
+      >
+        <span pButtonLabel>Создать</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>
