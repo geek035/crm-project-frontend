@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { COMPANIES_REGISTRY_PAGE_ROUTE } from '@pages/companies-registry';
 import { COMPANY_CARD_PAGE_ROUTE } from '@pages/company-card';
 import { COMPANY_CREATE_ROUTE } from '@pages/company-create';
+import { DEAL_CARD_PAGE_ROUTE } from '@pages/deal-card';
 import { DEALS_REGISTRY_PAGE_ROUTE } from '@pages/deals-registry';
 import { INDIVIDUAL_CARD_PAGE_ROUTE } from '@pages/individual-card';
 import { INDIVIDUAL_CREATE_ROUTE } from '@pages/individual-create';
@@ -23,5 +24,5 @@ export const routes: Routes = [
     COMPANY_CREATE_ROUTE,
     COMPANIES_REGISTRY_PAGE_ROUTE,
   ]),
-  getDealsRoutes([DEALS_REGISTRY_PAGE_ROUTE]),
+  getDealsRoutes([DEAL_CARD_PAGE_ROUTE, DEALS_REGISTRY_PAGE_ROUTE]),
 ];

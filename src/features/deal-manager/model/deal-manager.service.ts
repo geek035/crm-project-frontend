@@ -16,6 +16,19 @@ interface DealManagerCommandOptions<S, E, R> {
 export class DealManagerService {
   private readonly dealAPI = inject(DealAPIService);
 
+  getDealByID<R = DealDTO>(
+    id: DealDTO['id'],
+    options?: Pick<DealManagerCommandOptions<null, DealDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор сделки');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.dealAPI.findByID(id).pipe(handledOptions.postprocessor);
+  }
+
   getDeals<R>(
     query: BaseQueryDTO,
     options?: Pick<DealManagerCommandOptions<null, PageModel<DealDTO>, R>, 'postprocessor'>,
