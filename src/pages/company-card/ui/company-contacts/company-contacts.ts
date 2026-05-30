@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, effect, inject, untracked } from '@angular/core';
 
-import { CompanyContactManagerService } from '@features/company-contact-manager';
-
 import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
 import { CompanyContactsRegistryConfigService } from '../../config/company-contacts-registry-config.service';
+import { CompanyContactManagerService } from '../../model/company-contact-manager.service';
 import { CompanyContactCreateDialog } from '../company-contact-create-dialog/company-contact-create-dialog';
 import { CompanyContactUpdateDialog } from '../company-contact-update-dialog/company-contact-update-dialog';
 import { CompanyContactsController } from './company-contacts.controller';

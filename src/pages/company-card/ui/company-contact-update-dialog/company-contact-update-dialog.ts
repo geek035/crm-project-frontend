@@ -20,16 +20,13 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { Observable, catchError, combineLatest, filter, of, switchMap, tap } from 'rxjs';
 
-import {
-  CompanyContactAPIService,
-  CompanyContactDTO,
-  CompanyContactRoleCode,
-  CompanyContactStatusCode,
-} from '@entities/company-contact';
-
 import { watchSource } from '@shared/lib';
 import { DirectoryEntryDTO } from '@shared/model';
 
+import { CompanyContactAPIService } from '../../api/company-contact-api.service';
+import { CompanyContactDTO } from '../../model/company-contact-dto.model';
+import { CompanyContactRoleCode } from '../../model/company-contact-role-code.enum';
+import { CompanyContactStatusCode } from '../../model/company-contact-status-code';
 import { CompanyContactUpdateDialogController } from './company-contact-update-dialog.controller';
 import {
   CompanyContactUpdateMode,

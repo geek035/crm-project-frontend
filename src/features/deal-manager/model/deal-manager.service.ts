@@ -1,7 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { DealAPIService, DealCreateDTO, DealDTO, DealUpdateDTO } from '@entities/deal';
+import {
+  DealAPIService,
+  DealChangeStageDTO,
+  DealChangeStatusDTO,
+  DealCreateDTO,
+  DealDTO,
+  DealStageCode,
+  DealStatusCode,
+  DealUpdateDTO,
+} from '@entities/deal';
 
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
 import { BaseQueryDTO, PageModel } from '@shared/model';
@@ -88,6 +97,66 @@ export class DealManagerService {
     const handledOptions = this.handleProcessors(options);
 
     return this.dealAPI.update(id, command).pipe(handledOptions.postprocessor);
+  }
+
+  changeStage<R = DealDTO>(
+    id: DealDTO['id'],
+    command: DealChangeStageDTO,
+    options?: Pick<DealManagerCommandOptions<null, DealDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор сделки');
+    }
+
+    if (!command.stageCode) {
+      throw new NotValidValueError('Не задан этап сделки');
+    }
+
+    if (this.isStageCloseInfoRequired(command.stageCode) && !command.closeInfo) {
+      throw new NotValidValueError('Не задана причина закрытия сделки');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+    const payload: DealChangeStageDTO = {
+      ...command,
+      closeInfo: this.isStageCloseInfoRequired(command.stageCode) ? command.closeInfo : null,
+    };
+
+    return this.dealAPI.changeStage(id, payload).pipe(handledOptions.postprocessor);
+  }
+
+  changeStatus<R = DealDTO>(
+    id: DealDTO['id'],
+    command: DealChangeStatusDTO,
+    options?: Pick<DealManagerCommandOptions<null, DealDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор сделки');
+    }
+
+    if (!command.statusCode) {
+      throw new NotValidValueError('Не задан статус сделки');
+    }
+
+    if (this.isStatusCloseInfoRequired(command.statusCode) && !command.closeInfo) {
+      throw new NotValidValueError('Не задана причина закрытия сделки');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+    const payload: DealChangeStatusDTO = {
+      ...command,
+      closeInfo: this.isStatusCloseInfoRequired(command.statusCode) ? command.closeInfo : null,
+    };
+
+    return this.dealAPI.changeStatus(id, payload).pipe(handledOptions.postprocessor);
+  }
+
+  private isStageCloseInfoRequired(stageCode: DealStageCode): boolean {
+    return stageCode === DealStageCode.CANCELLED || stageCode === DealStageCode.LOST;
+  }
+
+  private isStatusCloseInfoRequired(statusCode: DealStatusCode): boolean {
+    return statusCode === DealStatusCode.CANCELLED || statusCode === DealStatusCode.FAILED;
   }
 
   private handleProcessors<S, E, R>(

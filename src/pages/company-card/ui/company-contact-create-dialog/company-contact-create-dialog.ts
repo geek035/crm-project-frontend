@@ -19,16 +19,14 @@ import { catchError, combineLatest, filter, of, switchMap, tap } from 'rxjs';
 
 import { IndividualsRegistry } from '@widgets/individuals-registry';
 
-import {
-  CompanyContactCreateCommand,
-  CompanyContactManagerService,
-} from '@features/company-contact-manager';
-
-import { CompanyContactAPIService, CompanyContactRoleCode } from '@entities/company-contact';
 import { IndividualModel } from '@entities/individual';
 
 import { watchSource } from '@shared/lib';
 
+import { CompanyContactAPIService } from '../../api/company-contact-api.service';
+import { CompanyContactCreateCommand } from '../../model/commands/company-contact-create-command.model';
+import { CompanyContactManagerService } from '../../model/company-contact-manager.service';
+import { CompanyContactRoleCode } from '../../model/company-contact-role-code.enum';
 import { CompanyContactCreateDialogController } from './company-contact-create-dialog.controller';
 
 @Component({

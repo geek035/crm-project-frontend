@@ -2,12 +2,9 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import {
-  CompanyContactAPIService,
-  CompanyContactRoleCode,
-  CompanyContactStatusCode,
-} from '@entities/company-contact';
-
+import { CompanyContactAPIService } from '../../api/company-contact-api.service';
+import { CompanyContactRoleCode } from '../../model/company-contact-role-code.enum';
+import { CompanyContactStatusCode } from '../../model/company-contact-status-code';
 import { CompanyContactUpdateDialog } from './company-contact-update-dialog';
 import { CompanyContactUpdateDialogController } from './company-contact-update-dialog.controller';
 

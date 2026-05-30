@@ -17,6 +17,7 @@ import { InfoBlockEmptyPipe, InfoBlockState } from '@shared/ui/info-block';
 
 import { DEAL_CARD_BREADCRUMB_TOKEN } from '../../lib/deal-card-breadcrumb-token.const';
 import { DealGeneralInfo } from '../deal-general-info/deal-general-info';
+import { DealStateUpdateDialog } from '../deal-state-update-dialog/deal-state-update-dialog';
 import { DealUpdateDialog } from '../deal-update-dialog/deal-update-dialog';
 import { DealCardController } from './deal-card-page.controller';
 
@@ -30,6 +31,7 @@ import { DealCardController } from './deal-card-page.controller';
   ],
   imports: [
     DealGeneralInfo,
+    DealStateUpdateDialog,
     DealUpdateDialog,
     InfoBlockState,
     InfoBlockEmptyPipe,
@@ -49,6 +51,8 @@ export class DealCardPage {
   readonly state = this.controller.state;
   readonly error = this.controller.error;
   readonly updateDialogOpened = signal(false);
+  readonly stageUpdateDialogOpened = signal(false);
+  readonly statusUpdateDialogOpened = signal(false);
 
   constructor() {
     effect(() => {
@@ -73,12 +77,16 @@ export class DealCardPage {
     });
   }
 
-  refreshDeal(): void {
-    this.controller.update();
-  }
-
   openUpdateDialog(): void {
     this.updateDialogOpened.set(true);
+  }
+
+  openStageUpdateDialog(): void {
+    this.stageUpdateDialogOpened.set(true);
+  }
+
+  openStatusUpdateDialog(): void {
+    this.statusUpdateDialogOpened.set(true);
   }
 
   handleDealUpdate(deal: DealDTO): void {
@@ -88,6 +96,26 @@ export class DealCardPage {
       key: CRM_TOAST_KEY,
       summary: 'Успешно',
       detail: 'Данные сделки успешно обновлены',
+    });
+  }
+
+  handleDealStageUpdate(deal: DealDTO): void {
+    this.controller.update(deal);
+    this.messageService.add({
+      severity: 'success',
+      key: CRM_TOAST_KEY,
+      summary: 'Успешно',
+      detail: 'Этап сделки успешно обновлен',
+    });
+  }
+
+  handleDealStatusUpdate(deal: DealDTO): void {
+    this.controller.update(deal);
+    this.messageService.add({
+      severity: 'success',
+      key: CRM_TOAST_KEY,
+      summary: 'Успешно',
+      detail: 'Статус сделки успешно обновлен',
     });
   }
 

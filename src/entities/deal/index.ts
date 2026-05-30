@@ -8,7 +8,12 @@ export { DealStageCode } from './model/deal-stage-code.enum';
 export { DealStatusCode } from './model/deal-status-code.enum';
 
 export type { DealDTO } from './model/deal.model';
-export type { DealCreateDTO, DealUpdateDTO, DealChangeStageDTO } from './model/deal-request.model';
+export type {
+  DealCreateDTO,
+  DealUpdateDTO,
+  DealChangeStageDTO,
+  DealChangeStatusDTO,
+} from './model/deal-request.model';
 
 export { mapDealPrioritySeverity } from './lib/deal-priority-severity.mapper';
 export { mapDealStageSeverity } from './lib/deal-stage-severity.mapper';

@@ -1,19 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction, filter, switchMap } from 'rxjs';
 
-import {
-  CompanyContactAPIService,
-  CompanyContactDTO,
-  CompanyContactRoleCode,
-  CompanyContactStatusCode,
-} from '@entities/company-contact';
-
 import { NotValidValueError } from '@shared/lib';
 import { ConfirmationDialogService } from '@shared/ui';
 import { getEntityFullname } from '@shared/ui/info-block';
 
+import { CompanyContactAPIService } from '../api/company-contact-api.service';
 import { mapToCompanyContactCreateDTO } from '../lib/company-contact-manager-command.mapper';
 import { CompanyContactCreateCommand } from './commands/company-contact-create-command.model';
+import { CompanyContactDTO } from './company-contact-dto.model';
+import { CompanyContactRoleCode } from './company-contact-role-code.enum';
+import { CompanyContactStatusCode } from './company-contact-status-code';
 
 interface CompanyContactManagerCommandOptions<S, E, R> {
   preprocessor: MonoTypeOperatorFunction<S>;

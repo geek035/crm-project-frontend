@@ -8,6 +8,20 @@
       [(visible)]="updateDialogOpened"
       (updated)="handleDealUpdate($event)"
     ></crm-deal-update-dialog>
+
+    <crm-deal-state-update-dialog
+      kind="stage"
+      [model]="dealObj"
+      [(visible)]="stageUpdateDialogOpened"
+      (updated)="handleDealStageUpdate($event)"
+    ></crm-deal-state-update-dialog>
+
+    <crm-deal-state-update-dialog
+      kind="status"
+      [model]="dealObj"
+      [(visible)]="statusUpdateDialogOpened"
+      (updated)="handleDealStatusUpdate($event)"
+    ></crm-deal-state-update-dialog>
   }
 
   <div class="flex flex-wrap justify-between gap-4">
@@ -33,13 +47,25 @@
       ></p-button>
 
       <p-button
-        icon="pi pi-refresh"
-        ariaLabel="Обновить"
-        pTooltip="Обновить"
+        icon="pi pi-sitemap"
+        ariaLabel="Изменить этап"
+        pTooltip="Изменить этап"
         tooltipStyleClass="text-sm"
         [rounded]="true"
         [outlined]="true"
-        (onClick)="refreshDeal()"
+        [disabled]="!dealObj"
+        (onClick)="openStageUpdateDialog()"
+      ></p-button>
+
+      <p-button
+        icon="pi pi-flag"
+        ariaLabel="Изменить статус"
+        pTooltip="Изменить статус"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        [disabled]="!dealObj"
+        (onClick)="openStatusUpdateDialog()"
       ></p-button>
     </nav>
   </div>

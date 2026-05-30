@@ -11,7 +11,12 @@ import { DealCurrencyCode } from '../model/deal-currency-code.enum';
 import { DealLossReasonCode } from '../model/deal-loss-reason-code.enum';
 import { DealPriorityCode } from '../model/deal-priority-code.enum';
 import { DealProductCode } from '../model/deal-product-code.enum';
-import { DealChangeStageDTO, DealCreateDTO, DealUpdateDTO } from '../model/deal-request.model';
+import {
+  DealChangeStageDTO,
+  DealChangeStatusDTO,
+  DealCreateDTO,
+  DealUpdateDTO,
+} from '../model/deal-request.model';
 import { DealSourceCode } from '../model/deal-source-code.enum';
 import { DealStageCode } from '../model/deal-stage-code.enum';
 import { DealStatusCode } from '../model/deal-status-code.enum';
@@ -34,6 +39,10 @@ export class DealAPIService {
   }
 
   changeStage(id: string, payload: DealChangeStageDTO): Observable<DealDTO> {
+    return this.httpClient.post<DealDTO>(`${environment.API}/deals/${id}/stage`, payload);
+  }
+
+  changeStatus(id: string, payload: DealChangeStatusDTO): Observable<DealDTO> {
     return this.httpClient.post<DealDTO>(`${environment.API}/deals/${id}/status`, payload);
   }
 
