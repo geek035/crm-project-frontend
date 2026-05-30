@@ -30,7 +30,7 @@ export class DealAPIService {
   }
 
   update(id: string, payload: DealUpdateDTO): Observable<DealDTO> {
-    return this.httpClient.post<DealDTO>(`${environment.API}/deals/${id}`, payload);
+    return this.httpClient.put<DealDTO>(`${environment.API}/deals/${id}`, payload);
   }
 
   changeStage(id: string, payload: DealChangeStageDTO): Observable<DealDTO> {

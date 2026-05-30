@@ -2,6 +2,14 @@
   @let dealObj = deal();
   @let stateObj = state();
 
+  @if (dealObj) {
+    <crm-deal-update-dialog
+      [model]="dealObj"
+      [(visible)]="updateDialogOpened"
+      (updated)="handleDealUpdate($event)"
+    ></crm-deal-update-dialog>
+  }
+
   <div class="flex flex-wrap justify-between gap-4">
     <h1 class="crm-heading-1 grow self-end">
       <crm-info-block-state [state]="stateObj">
@@ -13,6 +21,17 @@
       class="border-primary flex w-fit gap-4 rounded-[calc(var(--p-button-border-radius)+var(--deal-card-nav-padding))] border p-(--deal-card-nav-padding) [--deal-card-nav-padding:--spacing(2)]"
       aria-label="Действия со сделкой"
     >
+      <p-button
+        icon="pi pi-pencil"
+        ariaLabel="Редактировать"
+        pTooltip="Редактировать"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        [disabled]="!dealObj"
+        (onClick)="openUpdateDialog()"
+      ></p-button>
+
       <p-button
         icon="pi pi-refresh"
         ariaLabel="Обновить"

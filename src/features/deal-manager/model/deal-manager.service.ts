@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { DealAPIService, DealCreateDTO, DealDTO } from '@entities/deal';
+import { DealAPIService, DealCreateDTO, DealDTO, DealUpdateDTO } from '@entities/deal';
 
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
 import { BaseQueryDTO, PageModel } from '@shared/model';
@@ -70,6 +70,24 @@ export class DealManagerService {
     const handledOptions = this.handleProcessors(options);
 
     return this.dealAPI.findByParams(query).pipe(handledOptions.postprocessor);
+  }
+
+  updateDeal<R = DealDTO>(
+    id: DealDTO['id'],
+    command: DealUpdateDTO,
+    options?: Pick<DealManagerCommandOptions<null, DealDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор сделки');
+    }
+
+    if (!command.title || !command.priorityCode || !command.sourceCode) {
+      throw new NotValidValueError('Не валидные данные команды обновления сделки');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.dealAPI.update(id, command).pipe(handledOptions.postprocessor);
   }
 
   private handleProcessors<S, E, R>(

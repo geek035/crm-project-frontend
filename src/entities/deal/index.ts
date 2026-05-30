@@ -1,5 +1,6 @@
 export { DealClientTypeCode } from './model/deal-client-type-code.enum';
 export { DealCurrencyCode } from './model/deal-currency-code.enum';
+export { DealLossReasonCode } from './model/deal-loss-reason-code.enum';
 export { DealPriorityCode } from './model/deal-priority-code.enum';
 export { DealProductCode } from './model/deal-product-code.enum';
 export { DealSourceCode } from './model/deal-source-code.enum';
