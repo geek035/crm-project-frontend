@@ -56,6 +56,7 @@
     <p-tablist>
       <p-tab value="general-info">Основная информация</p-tab>
       <p-tab value="contacts">Контакты</p-tab>
+      <p-tab value="deals">Сделки</p-tab>
     </p-tablist>
     <p-tabpanels [style]="{ 'padding': 0 }">
       <p-tabpanel value="general-info" [style]="{ 'padding': 0 }">
@@ -64,6 +65,15 @@
 
       <p-tabpanel value="contacts" [style]="{ 'padding': 0 }">
         <crm-company-contacts></crm-company-contacts>
+      </p-tabpanel>
+
+      <p-tabpanel value="deals" [style]="{ 'padding': 0 }">
+        @if (companyObj) {
+          <crm-deals-registry
+            [companyID]="companyObj.id"
+            [stateSavingEnabled]="false"
+          ></crm-deals-registry>
+        }
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>

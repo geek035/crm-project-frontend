@@ -26,11 +26,17 @@ import {
 
 import { mapDealsQueryFilter } from '../api/deals-query-filter.mapper';
 
+type DealsRegistryOwner =
+  | { type: 'all' }
+  | { type: 'company'; id: DealDTO['companyID'] }
+  | { type: 'individual'; id: DealDTO['individualID'] };
+
 @Injectable()
 export class DealsRegistryConfigService extends RegistryConfigService<DealDTO> {
   private readonly dealAPI = inject(DealAPIService);
   private readonly dealManager = inject(DealManagerService);
   private readonly moneyFormatter = new Intl.NumberFormat('ru-RU');
+  private readonly owner = signal<DealsRegistryOwner>({ type: 'all' });
 
   protected override config = signal<RegistryConfigModel<DealDTO>>({
     rowsPerPageOptions: [5, 10],
@@ -182,6 +188,50 @@ export class DealsRegistryConfigService extends RegistryConfigService<DealDTO> {
       filters: mappedFilters,
     };
 
-    return this.dealManager.getDeals(mappedParams);
+    const owner = this.owner();
+
+    switch (owner.type) {
+      case 'company':
+        return this.dealAPI.findByCompanyID(owner.id, mappedParams);
+      case 'individual':
+        return this.dealAPI.findByIndividualID(owner.id, mappedParams);
+      case 'all':
+        return this.dealManager.getDeals(mappedParams);
+    }
+  }
+
+  setCompanyID(id: DealDTO['companyID']): void {
+    this.setOwner({ type: 'company', id });
+  }
+
+  setIndividualID(id: DealDTO['individualID']): void {
+    this.setOwner({ type: 'individual', id });
+  }
+
+  setAllDeals(): void {
+    this.setOwner({ type: 'all' });
+  }
+
+  private setOwner(owner: DealsRegistryOwner): void {
+    const currentOwner = this.owner();
+
+    if (this.isSameOwner(currentOwner, owner)) {
+      return;
+    }
+
+    this.owner.set(owner);
+    this.refresh();
+  }
+
+  private isSameOwner(currentOwner: DealsRegistryOwner, owner: DealsRegistryOwner): boolean {
+    if (currentOwner.type !== owner.type) {
+      return false;
+    }
+
+    if (currentOwner.type === 'all' || owner.type === 'all') {
+      return true;
+    }
+
+    return currentOwner.id === owner.id;
   }
 }

@@ -12,7 +12,7 @@ describe('DealsRegistry', () => {
       imports: [DealsRegistry],
     })
       .overrideComponent(DealsRegistry, {
-        set: { imports: [], providers: [], schemas: [NO_ERRORS_SCHEMA] },
+        set: { imports: [], schemas: [NO_ERRORS_SCHEMA] },
       })
       .compileComponents();
 

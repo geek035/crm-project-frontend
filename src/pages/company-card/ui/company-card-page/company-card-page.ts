@@ -5,6 +5,8 @@ import { ButtonModule } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { DealsRegistry } from '@widgets/deals-registry';
+
 import { CompanyManagerService } from '@features/company-manager';
 
 import { CompanyDTO } from '@entities/company';
@@ -27,6 +29,7 @@ import { CompanyCardController } from './company-card-page.controller';
   imports: [
     CompanyGeneralInfo,
     CompanyContacts,
+    DealsRegistry,
     CompanyLifecycleUpdateDialog,
     CompanyUpdateDialog,
     InfoBlockState,

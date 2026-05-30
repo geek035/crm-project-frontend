@@ -6,6 +6,8 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { DealsRegistry } from '@widgets/deals-registry';
+
 import { IndividualManagerService } from '@features/individual-manager';
 
 import { IndividualModel } from '@entities/individual';
@@ -37,12 +39,14 @@ import { IndividualCardController } from './individual-card-page.controller';
     InfoBlockLinkPipe,
     InfoBlockEmptyPipe,
     IndividualUpdateDialog,
+    DealsRegistry,
     RouterModule,
     CardModule,
     ButtonModule,
     TooltipModule,
   ],
   templateUrl: './individual-card-page.component.html',
+  styleUrl: './individual-card-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndividualCardPage {
