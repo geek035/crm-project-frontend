@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
 
-import { DealAPIService, DealDTO } from '@entities/deal';
+import { DealAPIService, DealCreateDTO, DealDTO } from '@entities/deal';
 
 import { NotPositiveOrZeroValueError, NotValidValueError } from '@shared/lib';
 import { BaseQueryDTO, PageModel } from '@shared/model';
@@ -15,6 +15,32 @@ interface DealManagerCommandOptions<S, E, R> {
 @Injectable()
 export class DealManagerService {
   private readonly dealAPI = inject(DealAPIService);
+
+  createDeal<R = DealDTO['id']>(
+    command: DealCreateDTO,
+    options?: Pick<DealManagerCommandOptions<null, DealDTO['id'], R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (
+      !command.number ||
+      !command.clientTypeCode ||
+      !command.clientID ||
+      !command.title ||
+      !command.productCode ||
+      !command.currencyCode ||
+      !command.priorityCode ||
+      !command.sourceCode
+    ) {
+      throw new NotValidValueError('Не валидные данные команды создания сделки');
+    }
+
+    if (command.amount < 0) {
+      throw new NotPositiveOrZeroValueError();
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.dealAPI.createDeal(command).pipe(handledOptions.postprocessor);
+  }
 
   getDealByID<R = DealDTO>(
     id: DealDTO['id'],

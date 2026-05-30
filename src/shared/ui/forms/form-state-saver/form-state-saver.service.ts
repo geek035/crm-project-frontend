@@ -27,7 +27,7 @@ export class FormStateSaverService {
     }
 
     return form.valueChanges.pipe(
-      filter(() => this.isFormEmpty(form.value)),
+      filter(() => form.dirty && this.hasFormValue(form.value)),
       map((value) => {
         this.cleanItem(key);
         this.setItem(key, value);
@@ -52,7 +52,7 @@ export class FormStateSaverService {
     sessionStorage.setItem(key, json);
   }
 
-  private isFormEmpty<T extends object>(formValue: T): boolean {
+  private hasFormValue<T extends object>(formValue: T): boolean {
     return !!Object.values(formValue).find((fieldValue) => !!fieldValue);
   }
 }

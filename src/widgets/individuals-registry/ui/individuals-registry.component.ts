@@ -22,4 +22,6 @@ import { IndividualsRegistryConfigService } from '../config/individuals-registry
 export class IndividualsRegistry {
   readonly selectedValue = model<IndividualModel | null>(null);
   readonly showCommands = input(true);
+  readonly useFullPageClass = input(true);
+  readonly stateSavingEnabled = input(true);
 }

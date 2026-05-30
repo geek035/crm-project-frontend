@@ -1,0 +1,11 @@
+<main class="mx-(--crm-page-mx) pb-4">
+  <p-toast></p-toast>
+
+  <h1 class="crm-heading-1 mb-4">Создание сделки</h1>
+
+  <crm-deal-create-form
+    [loading]="loading()"
+    (loadError)="handleLoadError($event)"
+    (formSubmit)="handleSubmit($event)"
+  ></crm-deal-create-form>
+</main>
