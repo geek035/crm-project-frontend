@@ -1,1 +1,6 @@
-<crm-registry [(selectedValue)]="selectedValue" [showCommands]="showCommands()"></crm-registry>
+<crm-registry
+  [showCommands]="showCommands()"
+  [useFullPageClass]="useFullPageClass()"
+  [stateSavingEnabled]="stateSavingEnabled()"
+  [(selectedValue)]="selectedValue"
+></crm-registry>

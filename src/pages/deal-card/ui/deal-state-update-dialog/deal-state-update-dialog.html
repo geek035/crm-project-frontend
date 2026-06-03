@@ -1,0 +1,91 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="false"
+  [style]="{ width: 'min(32rem, calc(100vw - 2rem))' }"
+  (onHide)="resetForm()"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">{{ title() }}</h2>
+    </header>
+  </ng-template>
+
+  @let stateObj = state();
+
+  <form class="mt-2 grid gap-4" [id]="formID()" [formGroup]="stateForm" (ngSubmit)="handleSubmit()">
+    @if (stateObj.state === 'error') {
+      <p-message severity="error" variant="simple">
+        {{ stateObj.error?.message }}
+      </p-message>
+    }
+
+    <section [attr.aria-labelledby]="selectID()">
+      <p-float-label variant="on">
+        <p-select
+          fluid
+          appendTo="body"
+          optionLabel="description"
+          optionValue="code"
+          [inputId]="selectID()"
+          [options]="options()"
+          [loading]="optionsLoading()"
+          [formControl]="stateControls.code"
+        ></p-select>
+        <label [for]="selectID()">{{ label() }}</label>
+      </p-float-label>
+
+      @if (stateControls.code.touched && stateControls.code.invalid) {
+        <p-message severity="error" variant="simple">
+          {{ invalidMessage() }}
+        </p-message>
+      }
+
+      @if (optionsError(); as error) {
+        <p-message severity="error" variant="simple">{{ error }}</p-message>
+      }
+    </section>
+
+    @if (closeInfoRequired()) {
+      <section [attr.aria-labelledby]="closeInfoID()">
+        <p-float-label variant="on">
+          <p-select
+            fluid
+            appendTo="body"
+            optionLabel="description"
+            optionValue="code"
+            [inputId]="closeInfoID()"
+            [options]="lossReasons()"
+            [loading]="lossReasonsLoading()"
+            [formControl]="stateControls.closeInfo"
+          ></p-select>
+          <label [for]="closeInfoID()">Причина закрытия</label>
+        </p-float-label>
+
+        @if (stateControls.closeInfo.touched && stateControls.closeInfo.invalid) {
+          <p-message severity="error" variant="simple">
+            {{ closeInfoInvalidMessage() }}
+          </p-message>
+        }
+
+        @if (lossReasonsError(); as error) {
+          <p-message severity="error" variant="simple">{{ error }}</p-message>
+        }
+      </section>
+    }
+  </form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end border-t pt-2">
+      <button
+        pButton
+        type="submit"
+        [attr.form]="formID()"
+        [disabled]="stateForm.invalid"
+        [loading]="stateObj.state === 'loading'"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>

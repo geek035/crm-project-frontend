@@ -1,0 +1,304 @@
+@let dealObj = deal();
+@let companyObj = company();
+@let individualObj = individual();
+@let stateObj = state();
+
+<div class="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+  <p-card class="crm-card h-fit">
+    <section aria-labelledby="deal-card-general-info">
+      <header class="mb-2 border-b">
+        <h2 id="deal-card-general-info" class="crm-heading-2">Основная информация</h2>
+      </header>
+
+      <crm-info-block-state-wrapper [state]="stateObj">
+        <dl class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div>
+            <dt class="text-muted-color text-sm">Название</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj?.title | infoBlockEmpty }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Номер</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj?.number | infoBlockEmpty }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div class="lg:col-span-2">
+            <dt class="text-muted-color text-sm">Описание</dt>
+            <dd>
+              <crm-info-block-state>
+                <span class="break-words whitespace-pre-line">
+                  {{ dealObj?.description | infoBlockEmpty }}
+                </span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+        </dl>
+      </crm-info-block-state-wrapper>
+    </section>
+  </p-card>
+
+  <p-card class="crm-card h-fit">
+    <section aria-labelledby="deal-card-client">
+      <header class="mb-2 border-b">
+        <h2 id="deal-card-client" class="crm-heading-2">Клиент</h2>
+      </header>
+
+      <crm-info-block-state-wrapper [state]="stateObj">
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
+          @if (dealObj?.clientType?.code === clientType.INDIVIDUAL) {
+            <div>
+              <dt class="text-muted-color text-sm">Физ. лицо</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (individualObj) {
+                    <a
+                      class="crm-link break-all"
+                      [routerLink]="getIndividualCardRouterLink(individualObj.id)"
+                    >
+                      {{ getIndividualName(individualObj) }}
+                    </a>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Контакты физ. лица</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (individualObj) {
+                    <div class="break-words">
+                      <a
+                        class="crm-link break-all"
+                        [attr.href]="individualObj?.phoneNumber | infoBlockLink: 'tel'"
+                      >
+                        {{ individualObj?.phoneNumber | infoBlockEmpty }}
+                      </a>
+
+                      <span>, </span>
+
+                      <a
+                        class="crm-link break-all"
+                        [attr.href]="individualObj?.email | infoBlockLink: 'mailto'"
+                      >
+                        {{ individualObj?.email | infoBlockEmpty }}
+                      </a>
+                    </div>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+          }
+
+          @if (dealObj?.clientType?.code === clientType.COMPANY) {
+            <div>
+              <dt class="text-muted-color text-sm">Компания</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (companyObj) {
+                    <a
+                      class="crm-link break-all"
+                      [routerLink]="getCompanyCardRouterLink(companyObj.id)"
+                    >
+                      {{ getCompanyName(companyObj) }}
+                    </a>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+
+            <div>
+              <dt class="text-muted-color text-sm">Реквизиты компании</dt>
+              <dd>
+                <crm-info-block-state>
+                  @if (companyObj) {
+                    <span class="break-words">
+                      {{ companyObj.officialName | infoBlockEmpty }}, ИНН
+                      {{ companyObj.inn | infoBlockEmpty }}
+                    </span>
+                  } @else {
+                    <span>{{ null | infoBlockEmpty }}</span>
+                  }
+                </crm-info-block-state>
+              </dd>
+            </div>
+          }
+        </dl>
+      </crm-info-block-state-wrapper>
+    </section>
+  </p-card>
+
+  <p-card class="crm-card h-fit">
+    <section aria-labelledby="deal-card-product-and-money">
+      <header class="mb-2 border-b">
+        <h2 id="deal-card-product-and-money" class="crm-heading-2">Продукт и сумма</h2>
+      </header>
+
+      <crm-info-block-state-wrapper [state]="stateObj">
+        <dl class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div>
+            <dt class="text-muted-color text-sm">Продукт</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag [value]="dealObj.product.description"></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Сумма</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj ? formatAmount(dealObj) : (null | infoBlockEmpty) }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Валюта</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag [value]="dealObj.currency.description"></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Источник</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag [value]="dealObj.source.description"></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+        </dl>
+      </crm-info-block-state-wrapper>
+    </section>
+  </p-card>
+
+  <p-card class="crm-card h-fit">
+    <section aria-labelledby="deal-card-stage-and-dates">
+      <header class="mb-2 border-b">
+        <h2 id="deal-card-stage-and-dates" class="crm-heading-2">Состояние и сроки</h2>
+      </header>
+
+      <crm-info-block-state-wrapper [state]="stateObj">
+        <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
+          <div>
+            <dt class="text-muted-color text-sm">Этап</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag
+                    [value]="dealObj.stage.description"
+                    [severity]="getStageSeverity(dealObj)"
+                  ></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Статус</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag
+                    [value]="dealObj.status.description"
+                    [severity]="getStatusSeverity(dealObj)"
+                  ></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Вероятность</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj ? formatProbability(dealObj) : (null | infoBlockEmpty) }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Приоритет</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj) {
+                  <p-tag
+                    [value]="dealObj.priority.description"
+                    [severity]="getPrioritySeverity(dealObj)"
+                  ></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Плановая дата закрытия</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj?.expectedCloseDate | date: dateFormat | infoBlockEmpty }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-muted-color text-sm">Фактическая дата закрытия</dt>
+            <dd>
+              <crm-info-block-state>
+                <span>{{ dealObj?.actualCloseDate | date: dateFormat | infoBlockEmpty }}</span>
+              </crm-info-block-state>
+            </dd>
+          </div>
+
+          <div class="sm:col-span-2 xl:col-span-1">
+            <dt class="text-muted-color text-sm">Причина проигрыша</dt>
+            <dd>
+              <crm-info-block-state>
+                @if (dealObj?.lossReason?.description) {
+                  <p-tag [value]="dealObj?.lossReason?.description" severity="danger"></p-tag>
+                } @else {
+                  <span>{{ null | infoBlockEmpty }}</span>
+                }
+              </crm-info-block-state>
+            </dd>
+          </div>
+        </dl>
+      </crm-info-block-state-wrapper>
+    </section>
+  </p-card>
+</div>

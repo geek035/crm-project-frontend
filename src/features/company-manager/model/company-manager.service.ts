@@ -23,6 +23,19 @@ interface CompanyManagerCommandOptions<S, E, R> {
 export class CompanyManagerService {
   private readonly companyAPI = inject(CompanyAPIService);
 
+  getCompanyByID<R = CompanyDTO>(
+    id: CompanyDTO['id'],
+    options?: Pick<CompanyManagerCommandOptions<null, CompanyDTO, R>, 'postprocessor'>,
+  ): Observable<R> {
+    if (!id) {
+      throw new NotValidValueError('Не задан идентификатор компании');
+    }
+
+    const handledOptions = this.handleProcessors(options);
+
+    return this.companyAPI.getCompanyByID(id).pipe(handledOptions.postprocessor);
+  }
+
   getCompanies<R>(
     query: BaseQueryDTO,
     options?: Pick<CompanyManagerCommandOptions<null, PageModel<CompanyDTO>, R>, 'postprocessor'>,

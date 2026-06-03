@@ -79,8 +79,12 @@ export class Registry<T> {
   readonly tableCaptionActionsId = `registry-actions-${Registry.nextId++}`;
 
   readonly showCommands = input(true);
+  readonly stateSavingEnabled = input(true);
   readonly selectedValue = model<T | null>(null);
   readonly searchValue = model<string>('');
+  readonly effectiveStateSaving = computed(() =>
+    this.stateSavingEnabled() ? this.stateSaving() : undefined,
+  );
   readonly tableCommands = computed(
     () => (this.selectedValue() ? this.commands()?.specific : this.commands()?.general) || [],
   );

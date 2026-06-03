@@ -1,16 +1,13 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { EMPTY, Observable, catchError } from 'rxjs';
 
-import { CompanyContactManagerService } from '@features/company-contact-manager';
-
-import {
-  CompanyContactDTO,
-  CompanyContactRoleCode,
-  CompanyContactStatusCode,
-} from '@entities/company-contact';
-
 import { watchSource } from '@shared/lib';
 import { CRMErrorModel, CRMStateModel } from '@shared/model';
+
+import { CompanyContactDTO } from '../../model/company-contact-dto.model';
+import { CompanyContactManagerService } from '../../model/company-contact-manager.service';
+import { CompanyContactRoleCode } from '../../model/company-contact-role-code.enum';
+import { CompanyContactStatusCode } from '../../model/company-contact-status-code';
 
 @Injectable()
 export class CompanyContactUpdateDialogController {

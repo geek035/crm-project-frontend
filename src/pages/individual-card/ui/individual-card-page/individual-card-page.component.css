@@ -1,0 +1,21 @@
+@media (min-width: 80rem) {
+  .individual-card-layout {
+    --individual-card-info-column-width: 26rem;
+    --individual-card-layout-gap: 1rem;
+    --individual-card-registry-underlap: calc(
+      var(--individual-card-info-column-width) + var(--individual-card-layout-gap)
+    );
+
+    grid-template-columns: var(--individual-card-info-column-width) minmax(0, 1fr);
+  }
+
+  .individual-card-main-info {
+    position: relative;
+    z-index: 1;
+  }
+
+  :host ::ng-deep .individual-card-deals .p-datatable-table-container {
+    margin-inline-start: calc(var(--individual-card-registry-underlap) * -1);
+    padding-inline-start: var(--individual-card-registry-underlap);
+  }
+}

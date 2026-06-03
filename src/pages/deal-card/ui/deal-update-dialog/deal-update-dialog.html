@@ -1,0 +1,141 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="true"
+  [style]="{ width: 'min(48rem, calc(100vw - 2rem))' }"
+  [contentStyle]="{ 'max-width': '100%', 'overflow-x': 'hidden' }"
+>
+  <ng-template #header>
+    <header>
+      <h2 class="crm-heading-2">Обновление данных сделки</h2>
+    </header>
+  </ng-template>
+
+  <crm-form-restore-suggestion
+    [formKey]="dealFormKey()"
+    (restore)="restoreForm()"
+  ></crm-form-restore-suggestion>
+
+  <form
+    class="mt-2 grid grid-cols-1 gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+    [id]="dealFormKey()"
+    [formGroup]="dealForm"
+    (ngSubmit)="handleSubmit()"
+  >
+    <section aria-labelledby="deal-update-general-info">
+      <h3 id="deal-update-general-info" class="sr-only">Основная информация сделки</h3>
+
+      <div class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap)">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <input fluid pInputText id="deal-update-title" [formControl]="dealControls.title" />
+              <label for="deal-update-title">Название</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.title"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <p-date-picker
+                fluid
+                showIcon
+                appendTo="body"
+                id="deal-update-expected-close-date"
+                [dateFormat]="dateFormat"
+                [placeholder]="datePlaceholder"
+                [formControl]="dealControls.expectedCloseDate"
+              ></p-date-picker>
+              <label for="deal-update-expected-close-date">Плановая дата закрытия</label>
+            </p-float-label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-update-priority"
+                optionLabel="description"
+                optionValue="code"
+                [options]="priorities()"
+                [loading]="prioritiesLoading()"
+                [formControl]="dealControls.priorityCode"
+              ></p-select>
+              <label for="deal-update-priority">Приоритет</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.priorityCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-update-source"
+                optionLabel="description"
+                optionValue="code"
+                [options]="sources()"
+                [loading]="sourcesLoading()"
+                [formControl]="dealControls.sourceCode"
+              ></p-select>
+              <label for="deal-update-source">Источник</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.sourceCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div>
+          <p-float-label variant="on">
+            <textarea
+              fluid
+              pInputText
+              id="deal-update-description"
+              rows="5"
+              [formControl]="dealControls.description"
+            ></textarea>
+            <label for="deal-update-description">Описание</label>
+          </p-float-label>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <ng-template #footer>
+    <footer class="border-primary flex w-full justify-end gap-2 border-t pt-2">
+      <p-button
+        icon="pi pi-undo"
+        ariaLabel="Очистить"
+        pTooltip="Очистить"
+        tooltipStyleClass="text-sm"
+        [rounded]="true"
+        [outlined]="true"
+        (onClick)="clearForm()"
+      ></p-button>
+
+      <button
+        pButton
+        type="submit"
+        [attr.form]="dealFormKey()"
+        [disabled]="dealForm.invalid"
+        [loading]="state().state === 'loading'"
+      >
+        <span pButtonLabel>Обновить</span>
+      </button>
+    </footer>
+  </ng-template>
+</p-dialog>

@@ -2,8 +2,7 @@ import { NO_ERRORS_SCHEMA, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { CompanyContactAPIService } from '@entities/company-contact';
-
+import { CompanyContactAPIService } from '../../api/company-contact-api.service';
 import { CompanyContactCreateDialog } from './company-contact-create-dialog';
 import { CompanyContactCreateDialogController } from './company-contact-create-dialog.controller';
 

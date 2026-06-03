@@ -10,7 +10,7 @@
     ></crm-individual-update-dialog>
   }
 
-  <div class="flex flex-wrap justify-between gap-4 sm:max-w-1/2">
+  <div class="flex flex-wrap justify-between gap-4">
     <h1 class="crm-heading-1 grow self-end">
       <crm-info-block-state [state]="stateObj">
         {{ individualObj | infoBlockFullname | infoBlockEmpty: 'Не удалось получить данные' }}
@@ -29,15 +29,15 @@
     </nav>
   </div>
 
-  <div class="mt-2 grid grid-cols-[1fr_auto]">
-    <p-card class="crm-card sm:w-1/2">
+  <div class="individual-card-layout mt-2 grid grid-cols-1 gap-4">
+    <p-card class="crm-card individual-card-main-info h-fit">
       <section aria-describedby="individual-card-general-info">
         <header class="mb-2 border-b">
           <h2 id="individual-card-general-info" class="crm-heading-2">Основная информация</h2>
         </header>
 
         <crm-info-block-state-wrapper [state]="stateObj">
-          <dl class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <dl class="grid grid-cols-1 gap-4">
             <div>
               <dt class="text-muted-color text-sm">Электронная почта</dt>
               <dd>
@@ -78,5 +78,19 @@
         </crm-info-block-state-wrapper>
       </section>
     </p-card>
+
+    @if (individualObj) {
+      <section aria-labelledby="individual-card-deals" class="individual-card-deals min-w-0">
+        <header class="mb-2 border-b">
+          <h2 id="individual-card-deals" class="crm-heading-2">Сделки</h2>
+        </header>
+
+        <crm-deals-registry
+          [individualID]="individualObj.id"
+          [useFullPageClass]="false"
+          [stateSavingEnabled]="false"
+        ></crm-deals-registry>
+      </section>
+    }
   </div>
 </main>

@@ -4,13 +4,6 @@ import { Observable, filter, switchMap, take } from 'rxjs';
 
 import { getIndividualCardURL } from '@features/individuals-navigation';
 
-import {
-  CompanyContactAPIService,
-  CompanyContactDTO,
-  mapCompanyContactRoleSeverity,
-  mapCompanyContactStatusSeverity,
-} from '@entities/company-contact';
-
 import { getEntityFullname } from '@shared/ui/info-block';
 import {
   RegistryColumnType,
@@ -21,6 +14,10 @@ import {
   RegistryLoadParamsModel,
 } from '@shared/ui/registry';
 
+import { CompanyContactAPIService } from '../api/company-contact-api.service';
+import { mapCompanyContactRoleSeverity } from '../lib/company-contact-role-severity.mapper';
+import { mapCompanyContactStatusSeverity } from '../lib/company-contact-status-severity.mapper';
+import { CompanyContactDTO } from '../model/company-contact-dto.model';
 import { CompanyCardController } from '../ui/company-card-page/company-card-page.controller';
 import { CompanyContactsController } from '../ui/company-contacts/company-contacts.controller';
 

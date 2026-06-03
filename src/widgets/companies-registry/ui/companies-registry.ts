@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 
 import { CompanyManagerService } from '@features/company-manager';
+
+import { CompanyDTO } from '@entities/company';
 
 import { Registry, RegistryConfigService } from '@shared/ui/registry';
 
@@ -17,4 +19,9 @@ import { CompaniesRegistryConfigService } from '../config/companies-registry-con
     { provide: RegistryConfigService, useExisting: CompaniesRegistryConfigService },
   ],
 })
-export class CompaniesRegistry {}
+export class CompaniesRegistry {
+  readonly selectedValue = model<CompanyDTO | null>(null);
+  readonly showCommands = input(true);
+  readonly useFullPageClass = input(true);
+  readonly stateSavingEnabled = input(true);
+}

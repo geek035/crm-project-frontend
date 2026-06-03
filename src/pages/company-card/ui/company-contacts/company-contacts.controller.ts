@@ -3,13 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
 import { EMPTY, catchError } from 'rxjs';
 
-import { CompanyContactManagerService } from '@features/company-contact-manager';
-
-import { CompanyContactDTO } from '@entities/company-contact';
-
 import { watchSource } from '@shared/lib';
 import { CRM_TOAST_KEY } from '@shared/ui';
 
+import { CompanyContactDTO } from '../../model/company-contact-dto.model';
+import { CompanyContactManagerService } from '../../model/company-contact-manager.service';
 import { CompanyCardController } from '../company-card-page/company-card-page.controller';
 import { CompanyContactUpdateMode } from '../company-contact-update-dialog/company-contact-update-dialog.model';
 

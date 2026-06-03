@@ -1,13 +1,11 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { EMPTY, Observable, catchError } from 'rxjs';
 
-import {
-  CompanyContactCreateCommand,
-  CompanyContactManagerService,
-} from '@features/company-contact-manager';
-
 import { watchSource } from '@shared/lib';
 import { CRMErrorModel, CRMStateModel } from '@shared/model';
+
+import { CompanyContactCreateCommand } from '../../model/commands/company-contact-create-command.model';
+import { CompanyContactManagerService } from '../../model/company-contact-manager.service';
 
 @Injectable()
 export class CompanyContactCreateDialogController {

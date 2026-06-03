@@ -1,0 +1,274 @@
+<main
+  class="mx-(--crm-page-mx) w-[calc(100%-var(--crm-page-mx)*2)] max-w-(--crm-max-w) justify-self-center"
+>
+  <header class="mb-4 flex flex-wrap items-end justify-between gap-4">
+    <div class="min-w-0">
+      <p class="text-muted-color text-sm">CRM для малых банковских предприятий</p>
+      <h1 class="crm-heading-1">Рабочий стол менеджера</h1>
+    </div>
+
+    <nav
+      class="border-primary flex flex-wrap gap-2 rounded-lg border p-2"
+      aria-labelledby="home-quick-actions"
+    >
+      <h2 id="home-quick-actions" class="sr-only">Быстрые действия</h2>
+
+      <a
+        pButton
+        [routerLink]="companyCreateLink"
+        pTooltip="Создать компанию"
+        tooltipStyleClass="text-sm"
+      >
+        <i class="pi pi-building" aria-hidden="true"></i>
+        <span pButtonLabel>Компания</span>
+      </a>
+
+      <a
+        pButton
+        [routerLink]="individualCreateLink"
+        pTooltip="Создать физ. лицо"
+        tooltipStyleClass="text-sm"
+        [outlined]="true"
+      >
+        <i class="pi pi-user-plus" aria-hidden="true"></i>
+        <span pButtonLabel>Физ. лицо</span>
+      </a>
+
+      <a
+        pButton
+        [routerLink]="dealCreateLink"
+        pTooltip="Создать сделку"
+        tooltipStyleClass="text-sm"
+        [outlined]="true"
+      >
+        <i class="pi pi-briefcase" aria-hidden="true"></i>
+        <span pButtonLabel>Сделка</span>
+      </a>
+    </nav>
+  </header>
+
+  @if (state().state === 'error') {
+    <p-message class="mb-4 block" severity="error" variant="outlined">
+      {{ error()?.message || 'Не удалось получить данные рабочего стола' }}
+    </p-message>
+  }
+
+  <section class="mb-4" aria-labelledby="home-metrics">
+    <h2 id="home-metrics" class="sr-only">Ключевые показатели</h2>
+
+    <ul class="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-4">
+      @for (metric of metrics(); track metric.label) {
+        <li>
+          <p-card class="crm-card home-kpi-card">
+            <div class="flex min-w-0 items-start gap-3">
+              <span
+                class="bg-primary text-primary-contrast inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
+                aria-hidden="true"
+              >
+                <i [class]="metric.icon"></i>
+              </span>
+
+              <div class="min-w-0">
+                <span class="text-muted-color block text-sm">{{ metric.label }}</span>
+                <strong class="block text-2xl leading-tight font-semibold">
+                  @if (dashboard()) {
+                    @if (metric.routerLink) {
+                      <a class="crm-link no-underline" [routerLink]="metric.routerLink">
+                        {{ formatCount(metric.value) }}
+                      </a>
+                    } @else {
+                      <span>{{ formatCount(metric.value) }}</span>
+                    }
+                  } @else {
+                    <p-skeleton width="4rem" height="2rem"></p-skeleton>
+                  }
+                </strong>
+              </div>
+            </div>
+          </p-card>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <div
+    class="home-dashboard-grid grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]"
+  >
+    <div class="grid min-w-0 gap-4">
+      <p-card class="crm-card min-w-0">
+        <section aria-labelledby="home-funnel">
+          <header class="mb-3 border-b pb-2">
+            <h2 id="home-funnel" class="crm-heading-2">Воронка сделок</h2>
+          </header>
+
+          @if (dashboard(); as data) {
+            <ol class="grid gap-3">
+              @for (stage of data.stages; track stage.code) {
+                <li class="grid gap-1">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <span class="font-medium">{{ stage.label }}</span>
+                    <span class="text-muted-color text-sm">
+                      {{ formatCount(stage.total) }}
+                    </span>
+                  </div>
+
+                  <div
+                    class="bg-surface-200 dark:bg-surface-700 h-2 overflow-hidden rounded-full"
+                    role="progressbar"
+                    [attr.aria-label]="stage.label"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    [attr.aria-valuenow]="stage.barWidth"
+                    [attr.aria-valuetext]="formatCount(stage.total) + ' сделок'"
+                  >
+                    <div
+                      class="bg-primary h-full rounded-full"
+                      [style.width.%]="stage.barWidth"
+                    ></div>
+                  </div>
+                </li>
+              }
+            </ol>
+          } @else {
+            <div class="grid gap-3" aria-hidden="true">
+              @for (item of [1, 2, 3, 4, 5]; track item) {
+                <p-skeleton height="2rem"></p-skeleton>
+              }
+            </div>
+          }
+        </section>
+      </p-card>
+
+      <p-card class="crm-card min-w-0">
+        <section aria-labelledby="home-products">
+          <header class="mb-3 border-b pb-2">
+            <h2 id="home-products" class="crm-heading-2">Портфель продуктов</h2>
+          </header>
+
+          @if (dashboard(); as data) {
+            <ul class="grid gap-3">
+              @for (product of data.products; track product.code) {
+                <li class="grid gap-1">
+                  <div class="flex flex-wrap items-baseline justify-between gap-2">
+                    <span class="font-medium">{{ product.label }}</span>
+                    <span class="text-muted-color text-sm">
+                      {{ formatCount(product.total) }}
+                    </span>
+                  </div>
+
+                  <div
+                    class="bg-surface-200 dark:bg-surface-700 h-2 overflow-hidden rounded-full"
+                    role="progressbar"
+                    [attr.aria-label]="product.label"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    [attr.aria-valuenow]="product.barWidth"
+                    [attr.aria-valuetext]="formatCount(product.total) + ' сделок'"
+                  >
+                    <div
+                      class="home-product-bar h-full rounded-full"
+                      [style.width.%]="product.barWidth"
+                    ></div>
+                  </div>
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="grid gap-3" aria-hidden="true">
+              @for (item of [1, 2, 3, 4]; track item) {
+                <p-skeleton height="2rem"></p-skeleton>
+              }
+            </div>
+          }
+        </section>
+      </p-card>
+    </div>
+
+    <div class="grid min-w-0 gap-4">
+      <p-card class="crm-card min-w-0">
+        <section aria-labelledby="home-process">
+          <header class="mb-3 border-b pb-2">
+            <h2 id="home-process" class="crm-heading-2">Процесс обслуживания</h2>
+          </header>
+
+          <ol class="grid gap-3">
+            @for (step of processSteps; track step.label) {
+              <li>
+                <a
+                  class="home-process-link border-primary hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950 grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-lg border p-3 transition-colors"
+                  [routerLink]="step.routerLink"
+                >
+                  <span
+                    class="bg-surface-100 text-primary dark:bg-surface-800 inline-flex size-9 items-center justify-center rounded-lg"
+                    aria-hidden="true"
+                  >
+                    <i [class]="step.icon"></i>
+                  </span>
+
+                  <span class="min-w-0">
+                    <span class="block font-medium">{{ step.label }}</span>
+                    <span class="text-muted-color block text-sm">{{ step.detail }}</span>
+                  </span>
+
+                  <i class="pi pi-arrow-right text-muted-color" aria-hidden="true"></i>
+                </a>
+              </li>
+            }
+          </ol>
+        </section>
+      </p-card>
+
+      <p-card class="crm-card min-w-0">
+        <section aria-labelledby="home-attention">
+          <header class="mb-3 border-b pb-2">
+            <h2 id="home-attention" class="crm-heading-2">Очередь внимания</h2>
+          </header>
+
+          @if (attentionDeals().length) {
+            <ul class="grid gap-3">
+              @for (deal of attentionDeals(); track deal.id) {
+                <li class="border-primary rounded-lg border p-3">
+                  <div class="flex flex-wrap items-start justify-between gap-2">
+                    <a class="crm-link font-semibold" [routerLink]="getDealRouterLink(deal)">
+                      {{ deal.title || deal.number }}
+                    </a>
+
+                    <p-tag
+                      [value]="deal.priority.description"
+                      [severity]="getPrioritySeverity(deal)"
+                    ></p-tag>
+                  </div>
+
+                  <dl class="mt-2 grid gap-1 text-sm">
+                    <div class="flex flex-wrap justify-between gap-2">
+                      <dt class="text-muted-color">Продукт</dt>
+                      <dd>{{ deal.product.description }}</dd>
+                    </div>
+
+                    <div class="flex flex-wrap justify-between gap-2">
+                      <dt class="text-muted-color">Сумма</dt>
+                      <dd>{{ formatAmount(deal) }}</dd>
+                    </div>
+
+                    <div class="flex flex-wrap justify-between gap-2">
+                      <dt class="text-muted-color">Плановое закрытие</dt>
+                      <dd>{{ deal.expectedCloseDate | date: dateFormat }}</dd>
+                    </div>
+                  </dl>
+                </li>
+              }
+            </ul>
+          } @else if (dashboard()) {
+            <p class="text-muted-color">Нет открытых сделок с высоким приоритетом</p>
+          } @else {
+            <div class="grid gap-3" aria-hidden="true">
+              @for (item of [1, 2, 3]; track item) {
+                <p-skeleton height="5rem"></p-skeleton>
+              }
+            </div>
+          }
+        </section>
+      </p-card>
+    </div>
+  </div>
+</main>

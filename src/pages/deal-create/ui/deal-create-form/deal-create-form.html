@@ -1,0 +1,293 @@
+<crm-form-restore-suggestion
+  [formKey]="dealFormKey"
+  (restore)="restoreForm()"
+></crm-form-restore-suggestion>
+
+<form
+  class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+  [id]="dealFormKey"
+  [formGroup]="dealForm"
+  (ngSubmit)="handleSubmit()"
+>
+  <section aria-labelledby="deal-client-selection">
+    <p-card class="border-primary min-w-0 border shadow-xl">
+      <ng-template #title>
+        <h2 id="deal-client-selection">Клиент</h2>
+      </ng-template>
+
+      <div class="grid min-w-0 gap-(--form-gap)">
+        <div aria-live="polite">
+          @if (selectedCompany()) {
+            <p-message severity="success" variant="simple">
+              Выбрана компания:
+              {{ selectedCompany()?.commercialName || selectedCompany()?.officialName }}
+            </p-message>
+          } @else if (selectedIndividual()) {
+            <p-message severity="success" variant="simple">
+              Выбрано физ. лицо: {{ selectedIndividual()?.secondName }}
+              {{ selectedIndividual()?.firstName }}
+              {{ selectedIndividual()?.surname ?? '' }}
+            </p-message>
+          } @else {
+            <p-message severity="secondary" variant="simple">
+              Выберите компанию или физ. лицо из реестра
+            </p-message>
+          }
+        </div>
+
+        <crm-form-message-error
+          [control]="dealControls.clientID"
+          [defaultErrors]="['required']"
+        ></crm-form-message-error>
+
+        <div class="w-full max-w-full min-w-0 overflow-x-auto">
+          <div class="min-w-0">
+            <p-tabs [value]="clientTab()">
+              <p-tablist>
+                <p-tab value="companies">Компании</p-tab>
+                <p-tab value="individuals">Физ. лица</p-tab>
+              </p-tablist>
+
+              <p-tabpanels [style]="{ 'padding': '0' }">
+                <p-tabpanel value="companies" [style]="{ 'padding': 0 }">
+                  <crm-companies-registry
+                    [showCommands]="false"
+                    [useFullPageClass]="false"
+                    [stateSavingEnabled]="false"
+                    [selectedValue]="selectedCompany()"
+                    (selectedValueChange)="handleCompanySelection($event)"
+                  ></crm-companies-registry>
+                </p-tabpanel>
+
+                <p-tabpanel value="individuals" [style]="{ 'padding': 0 }">
+                  <crm-individuals-registry
+                    [showCommands]="false"
+                    [useFullPageClass]="false"
+                    [stateSavingEnabled]="false"
+                    [selectedValue]="selectedIndividual()"
+                    (selectedValueChange)="handleIndividualSelection($event)"
+                  ></crm-individuals-registry>
+                </p-tabpanel>
+              </p-tabpanels>
+            </p-tabs>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  <section aria-labelledby="deal-general-info">
+    <p-card class="border-primary border shadow-xl">
+      <ng-template #title>
+        <div class="flex">
+          <h2 class="w-fit" id="deal-general-info">Основная информация</h2>
+          <p-button
+            class="ms-auto"
+            icon="pi pi-undo"
+            pTooltip="Очистить"
+            tooltipStyleClass="text-sm"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="clearForm()"
+          ></p-button>
+        </div>
+      </ng-template>
+
+      <div
+        class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+      >
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <input fluid pInputText id="deal-number" [formControl]="dealControls.number" />
+              <label for="deal-number">Номер сделки</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.number"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input fluid pInputText id="deal-title" [formControl]="dealControls.title" />
+              <label for="deal-title">Название</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.title"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div>
+          <p-float-label variant="on">
+            <textarea
+              fluid
+              pInputText
+              id="deal-description"
+              rows="4"
+              [formControl]="dealControls.description"
+            ></textarea>
+            <label for="deal-description">Описание</label>
+          </p-float-label>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  <section aria-labelledby="deal-product-info">
+    <p-card class="border-primary border shadow-xl">
+      <ng-template #title>
+        <h2 id="deal-product-info">Продукт и условия</h2>
+      </ng-template>
+
+      <div
+        class="grid grid-cols-1 grid-rows-[repeat(auto-fit,minmax(0,1fr))] gap-y-(--form-gap) [--form-gap:--spacing(4)]"
+      >
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-product"
+                optionLabel="description"
+                optionValue="code"
+                [options]="products()"
+                [loading]="productsLoading()"
+                [formControl]="dealControls.productCode"
+              ></p-select>
+              <label for="deal-product">Продукт</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.productCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <input
+                fluid
+                pInputText
+                type="number"
+                id="deal-amount"
+                min="0"
+                [formControl]="dealControls.amount"
+              />
+              <label for="deal-amount">Сумма</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.amount"
+              [defaultErrors]="['required']"
+              [customErrors]="['min']"
+            >
+              @if (dealControls.amount.hasError('min')) {
+                <p-message severity="error" variant="simple"
+                  >Сумма не может быть отрицательной</p-message
+                >
+              }
+            </crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-currency"
+                optionLabel="description"
+                optionValue="code"
+                [options]="currencies()"
+                [loading]="currenciesLoading()"
+                [formControl]="dealControls.currencyCode"
+              ></p-select>
+              <label for="deal-currency">Валюта</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.currencyCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-(--form-gap)">
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-priority"
+                optionLabel="description"
+                optionValue="code"
+                [options]="priorities()"
+                [loading]="prioritiesLoading()"
+                [formControl]="dealControls.priorityCode"
+              ></p-select>
+              <label for="deal-priority">Приоритет</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.priorityCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <p-select
+                fluid
+                appendTo="body"
+                inputId="deal-source"
+                optionLabel="description"
+                optionValue="code"
+                [options]="sources()"
+                [loading]="sourcesLoading()"
+                [formControl]="dealControls.sourceCode"
+              ></p-select>
+              <label for="deal-source">Источник</label>
+            </p-float-label>
+
+            <crm-form-message-error
+              [control]="dealControls.sourceCode"
+              [defaultErrors]="['required']"
+            ></crm-form-message-error>
+          </div>
+
+          <div>
+            <p-float-label variant="on">
+              <p-date-picker
+                fluid
+                showIcon
+                appendTo="body"
+                id="deal-expected-close-date"
+                [dateFormat]="dateFormat"
+                [placeholder]="datePlaceholder"
+                [formControl]="dealControls.expectedCloseDate"
+              ></p-date-picker>
+              <label for="deal-expected-close-date">Плановая дата закрытия</label>
+            </p-float-label>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </section>
+
+  <p-card class="border-primary border shadow-xl">
+    <button
+      pButton
+      type="submit"
+      [attr.form]="dealFormKey"
+      [disabled]="dealForm.invalid"
+      [loading]="loading()"
+    >
+      <span pButtonLabel>Создать</span>
+    </button>
+  </p-card>
+</form>
