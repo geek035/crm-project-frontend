@@ -6,6 +6,7 @@ import { COMPANY_CREATE_ROUTE } from '@pages/company-create';
 import { DEAL_CARD_PAGE_ROUTE } from '@pages/deal-card';
 import { DEAL_CREATE_ROUTE } from '@pages/deal-create';
 import { DEALS_REGISTRY_PAGE_ROUTE } from '@pages/deals-registry';
+import { HOME_PAGE_ROUTE } from '@pages/home';
 import { INDIVIDUAL_CARD_PAGE_ROUTE } from '@pages/individual-card';
 import { INDIVIDUAL_CREATE_ROUTE } from '@pages/individual-create';
 import { INDIVIDUALS_REGISTRY_PAGE_ROUTE } from '@pages/individuals-registry';
@@ -15,6 +16,7 @@ import { getDealsRoutes } from '@features/deals-navigation';
 import { getIndividualsRoutes } from '@features/individuals-navigation';
 
 export const routes: Routes = [
+  HOME_PAGE_ROUTE,
   getIndividualsRoutes([
     INDIVIDUAL_CARD_PAGE_ROUTE,
     INDIVIDUAL_CREATE_ROUTE,
